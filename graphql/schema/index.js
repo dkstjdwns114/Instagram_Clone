@@ -1,6 +1,12 @@
 const { buildSchema } = require("graphql");
 
 module.exports = buildSchema(`
+type Saved {
+  _id: ID!
+  media: Media!
+  user:  User!
+}
+
 type Liked {
   _id: ID!
   media: Media!
@@ -46,6 +52,8 @@ type RootMutation {
   createUser(userInput: UserInput): User
   likedMedia(mediaId: ID!): Liked!
   cancelLiked(likedId: ID!): Media!
+  savedMedia(mediaId: ID!): Saved!
+  cancelSaved(savedId: ID!): Media!
 }
 
 schema {

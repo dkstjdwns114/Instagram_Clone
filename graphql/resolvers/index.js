@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const Media = require("../../models/media");
 const User = require("../../models/user");
 const Liked = require("../../models/liked");
+const Saved = require("../../models/saved");
 
 const medias = async (mediaIds) => {
   try {
@@ -70,6 +71,21 @@ module.exports = {
           _id: liked.id,
           user: user.bind(this, liked._doc.user),
           media: singleMedia.bind(this, liked._doc.media)
+        };
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
+  saveds: async () => {
+    try {
+      const saveds = await Saved.find();
+      return saveds.map((saveds) => {
+        return {
+          ...saveds._doc,
+          _id: saveds.id,
+          user: user.bind(this, saveds._doc.user),
+          media: singleMedia.bind(this, saveds._doc.media)
         };
       });
     } catch (err) {
@@ -152,6 +168,34 @@ module.exports = {
         creator: user.bind(this, liked.media._doc.creator)
       };
       await Liked.deleteOne({ _id: args.likedId });
+      return media;
+    } catch (err) {
+      throw err;
+    }
+  },
+  savedMedia: async (args) => {
+    const fetchedMedia = await Media.findOne({ _id: args.mediaId });
+    const saved = new Saved({
+      user: "601566f405fd7104d4b911f4",
+      media: fetchedMedia
+    });
+    const result = await saved.save();
+    return {
+      ...result._doc,
+      _id: result.id,
+      user: user.bind(this, result._doc.user),
+      media: singleMedia.bind(this, result._doc.media)
+    };
+  },
+  cancelSaved: async (args) => {
+    try {
+      const saved = await Saved.findById(args.savedId).populate("media");
+      const media = {
+        ...saved.media._doc,
+        _id: saved.media.id,
+        creator: user.bind(this, saved.media._doc.creator)
+      };
+      await Saved.deleteOne({ _id: args.savedId });
       return media;
     } catch (err) {
       throw err;
