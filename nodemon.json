@@ -1,0 +1,7 @@
+{
+  "env": {
+    "MONGO_USER": "test1",
+    "MONGO_PASSWORD": "KQ2DmS5BaPpKIBxL",
+    "MONGO_DB": "instagram-clone"
+  }
+}
