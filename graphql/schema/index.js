@@ -1,6 +1,12 @@
 const { buildSchema } = require("graphql");
 
 module.exports = buildSchema(`
+type Liked {
+  _id: ID!
+  media: Media!
+  user:  User!
+}
+
 type Media {
   _id: ID!
   media_url: String!
@@ -32,11 +38,14 @@ input UserInput {
 
 type RootQuery {
   medias: [Media!]!
+  likeds: [Liked!]!
 }
 
 type RootMutation {
   createMedia(mediaInput: MediaInput): Media
   createUser(userInput: UserInput): User
+  likedMedia(mediaId: ID!): Liked!
+  cancelLiked(likedId: ID!): Media!
 }
 
 schema {

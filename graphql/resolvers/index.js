@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 
 const Media = require("../../models/media");
 const User = require("../../models/user");
+const Liked = require("../../models/liked");
 
 const medias = async (mediaIds) => {
   try {
@@ -14,6 +15,19 @@ const medias = async (mediaIds) => {
         creator: user.bind(this, media.creator)
       };
     });
+  } catch (err) {
+    throw err;
+  }
+};
+
+const singleMedia = async (mediaId) => {
+  try {
+    const media = await Media.findById(mediaId);
+    return {
+      ...media._doc,
+      _id: media.id,
+      creator: user.bind(this, media.creator)
+    };
   } catch (err) {
     throw err;
   }
@@ -41,6 +55,21 @@ module.exports = {
           ...media._doc,
           _id: media.id,
           creator: user.bind(this, media._doc.creator)
+        };
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
+  likeds: async () => {
+    try {
+      const likeds = await Liked.find();
+      return likeds.map((liked) => {
+        return {
+          ...liked._doc,
+          _id: liked.id,
+          user: user.bind(this, liked._doc.user),
+          media: singleMedia.bind(this, liked._doc.media)
         };
       });
     } catch (err) {
@@ -96,6 +125,34 @@ module.exports = {
       });
       const result = await user.save();
       return { ...result._doc, password: null, _id: result.id };
+    } catch (err) {
+      throw err;
+    }
+  },
+  likedMedia: async (args) => {
+    const fetchedMedia = await Media.findOne({ _id: args.mediaId });
+    const liked = new Liked({
+      user: "601566f405fd7104d4b911f4",
+      media: fetchedMedia
+    });
+    const result = await liked.save();
+    return {
+      ...result._doc,
+      _id: result.id,
+      user: user.bind(this, result._doc.user),
+      media: singleMedia.bind(this, result._doc.media)
+    };
+  },
+  cancelLiked: async (args) => {
+    try {
+      const liked = await Liked.findById(args.likedId).populate("media");
+      const media = {
+        ...liked.media._doc,
+        _id: liked.media.id,
+        creator: user.bind(this, liked.media._doc.creator)
+      };
+      await Liked.deleteOne({ _id: args.likedId });
+      return media;
     } catch (err) {
       throw err;
     }
