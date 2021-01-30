@@ -4,6 +4,7 @@ const Media = require("../../models/media");
 const User = require("../../models/user");
 const Liked = require("../../models/liked");
 const Saved = require("../../models/saved");
+const Commented = require("../../models/comment");
 
 const medias = async (mediaIds) => {
   try {
@@ -86,6 +87,21 @@ module.exports = {
           _id: saveds.id,
           user: user.bind(this, saveds._doc.user),
           media: singleMedia.bind(this, saveds._doc.media)
+        };
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
+  comments: async () => {
+    try {
+      const comments = await Commented.find();
+      return comments.map((comments) => {
+        return {
+          ...comments._doc,
+          _id: comments.id,
+          user: user.bind(this, comments._doc.user),
+          media: singleMedia.bind(this, comments._doc.media)
         };
       });
     } catch (err) {
@@ -196,6 +212,40 @@ module.exports = {
         creator: user.bind(this, saved.media._doc.creator)
       };
       await Saved.deleteOne({ _id: args.savedId });
+      return media;
+    } catch (err) {
+      throw err;
+    }
+  },
+  createComment: async (args) => {
+    const fetchedMedia = await Media.findOne({
+      _id: args.commentInput.mediaId
+    });
+    const commented = new Commented({
+      creator: "601566f405fd7104d4b911f4",
+      media_comment: args.commentInput.media_comment,
+      date: +new Date().getTime(),
+      media: fetchedMedia
+    });
+    const result = await commented.save();
+    return {
+      ...result._doc,
+      _id: result.id,
+      creator: user.bind(this, result._doc.creator),
+      media: singleMedia.bind(this, result._doc.media)
+    };
+  },
+  deleteComment: async (args) => {
+    try {
+      const commented = await Commented.findById(args.commentId).populate(
+        "media"
+      );
+      const media = {
+        ...commented.media._doc,
+        _id: commented.media.id,
+        creator: user.bind(this, commented.media._doc.creator)
+      };
+      await Commented.deleteOne({ _id: args.commentId });
       return media;
     } catch (err) {
       throw err;

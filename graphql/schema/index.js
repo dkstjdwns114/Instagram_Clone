@@ -1,6 +1,14 @@
 const { buildSchema } = require("graphql");
 
 module.exports = buildSchema(`
+type Comment {
+  _id: ID!
+  media: Media!
+  creator: User!
+  media_comment: String!
+  date: String!
+}
+
 type Saved {
   _id: ID!
   media: Media!
@@ -42,9 +50,16 @@ input UserInput {
   profile_pic_url: String
 }
 
+input CommentInput {
+  mediaId: ID!
+  media_comment: String!
+}
+
 type RootQuery {
   medias: [Media!]!
   likeds: [Liked!]!
+  saveds: [Saved!]!
+  comments: [Comment!]!
 }
 
 type RootMutation {
@@ -54,6 +69,8 @@ type RootMutation {
   cancelLiked(likedId: ID!): Media!
   savedMedia(mediaId: ID!): Saved!
   cancelSaved(savedId: ID!): Media!
+  createComment(commentInput: CommentInput): Comment!
+  deleteComment(commentId: ID!): Media!
 }
 
 schema {
