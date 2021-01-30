@@ -14,6 +14,10 @@ const mediaSchema = new Schema({
   date: {
     type: Number,
     required: true
+  },
+  creator: {
+    type: Schema.Types.ObjectId,
+    ref: "User"
   }
 });
 
