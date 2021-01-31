@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 
+import AuthContext from "../context/auth-context";
+
 import "./Auth.css";
 
 class AuthPage extends Component {
@@ -13,6 +15,8 @@ class AuthPage extends Component {
       isLogin: true
     };
   }
+
+  static contextType = AuthContext;
 
   switchModelHandler = () => {
     this.setState((prevState) => {
@@ -45,7 +49,6 @@ class AuthPage extends Component {
       const username = this.nicknameEl.current.value
         .toLowerCase()
         .replaceAll(" ", "");
-      console.log(username);
 
       requestBody = {
         query: `
@@ -75,8 +78,15 @@ class AuthPage extends Component {
       .then((resData) => {
         if (resData.data.createUser === null) {
           this.setState({ isExist: true });
+          return;
         }
-        console.log(resData);
+        if (resData.data.login.token) {
+          this.context.login(
+            resData.data.login.token,
+            resData.data.login.userId,
+            resData.data.login.tokenExpiration
+          );
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -86,15 +96,12 @@ class AuthPage extends Component {
   render() {
     return (
       <form className="auth-form" onSubmit={this.submitHandler}>
-        {console.log(this.state.isLogin)}
         <h2>{this.state.isLogin ? "Login" : "Signup"}</h2>
         <div className="form-control">
           <label htmlFor="email">E-Mail</label>
           <input type="email" id="email" ref={this.emailEl} />
         </div>
-        {this.state.isLogin ? (
-          ""
-        ) : (
+        {!this.state.isLogin && (
           <div className="form-control">
             <label htmlFor="nickname">nickname</label>
             <input type="text" id="nickname" ref={this.nicknameEl} />
@@ -104,10 +111,8 @@ class AuthPage extends Component {
           <label htmlFor="password">Password</label>
           <input type="password" id="password" ref={this.passwordEl} />
         </div>
-        {this.state.isExist ? (
+        {this.state.isExist && (
           <p className="redText">이미 존재하는 이메일 또는 닉네임 입니다.</p>
-        ) : (
-          ""
         )}
         <div className="form-actions">
           <button type="submit">Submit</button>
