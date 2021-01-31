@@ -39,6 +39,12 @@ type User {
   createdMedias: [Media!]
 }
 
+type AuthData {
+  userId: ID!
+  token: String!
+  tokenExpiration: Int!
+}
+
 input MediaInput {
   media_url: String!
   media_caption: String!
@@ -61,6 +67,7 @@ type RootQuery {
   likeds: [Liked!]!
   saveds: [Saved!]!
   comments: [Comment!]!
+  login(email: String!, password: String!): AuthData!
 }
 
 type RootMutation {

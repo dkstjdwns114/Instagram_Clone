@@ -14,16 +14,22 @@ module.exports = {
       throw err;
     }
   },
-  savedMedia: async (args) => {
+  savedMedia: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
     const fetchedMedia = await Media.findOne({ _id: args.mediaId });
     const saved = new Saved({
-      user: "60164665ea5d512a88a0a295",
+      user: req.userId,
       media: fetchedMedia
     });
     const result = await saved.save();
     return transformLikedAndSaved(result);
   },
-  cancelSaved: async (args) => {
+  cancelSaved: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
     try {
       const saved = await Saved.findById(args.savedId).populate("media");
       const media = {

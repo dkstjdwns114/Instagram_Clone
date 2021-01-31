@@ -13,18 +13,21 @@ module.exports = {
       throw err;
     }
   },
-  createMedia: async (args) => {
+  createMedia: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
     const media = new Media({
       media_url: args.mediaInput.media_url,
       media_caption: args.mediaInput.media_caption,
       date: +new Date().getTime(),
-      creator: "60164665ea5d512a88a0a295"
+      creator: req.userId
     });
     let createdMedia;
     try {
       const result = await media.save();
       createdMedia = transformMedia(result);
-      const creator = await User.findById("60164665ea5d512a88a0a295");
+      const creator = await User.findById(req.userId);
       if (!creator) {
         throw new Error("User not found.");
       }
@@ -36,7 +39,10 @@ module.exports = {
       throw err;
     }
   },
-  deleteMedia: async (args) => {
+  deleteMedia: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
     try {
       const media = await Media.findById(args.mediaId);
       if (!media) {
