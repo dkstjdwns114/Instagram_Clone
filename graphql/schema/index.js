@@ -66,7 +66,7 @@ type RootQuery {
   medias: [Media!]!
   likeds: [Liked!]!
   saveds: [Saved!]!
-  comments: [Comment!]!
+  comments: [Comment!]
   login(email: String!, password: String!): AuthData!
 }
 
