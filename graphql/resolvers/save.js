@@ -17,7 +17,7 @@ module.exports = {
   savedMedia: async (args) => {
     const fetchedMedia = await Media.findOne({ _id: args.mediaId });
     const saved = new Saved({
-      user: "601566f405fd7104d4b911f4",
+      user: "60164665ea5d512a88a0a295",
       media: fetchedMedia
     });
     const result = await saved.save();

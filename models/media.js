@@ -18,7 +18,13 @@ const mediaSchema = new Schema({
   creator: {
     type: Schema.Types.ObjectId,
     ref: "User"
-  }
+  },
+  commentTexts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Comment"
+    }
+  ]
 });
 
 module.exports = mongoose.model("Media", mediaSchema);

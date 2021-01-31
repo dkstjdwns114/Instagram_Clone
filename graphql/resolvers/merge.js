@@ -61,6 +61,16 @@ const transformLikedAndSaved = (liked) => {
   };
 };
 
+const transformComment = (result) => {
+  return {
+    ...result._doc,
+    _id: result.id,
+    creator: User.bind(this, result._doc.creator),
+    media: singleMedia.bind(this, result._doc.media)
+  };
+};
+
 exports.transformMedia = transformMedia;
 exports.transformLikedAndSaved = transformLikedAndSaved;
 exports.singleMedia = singleMedia;
+exports.transformComment = transformComment;

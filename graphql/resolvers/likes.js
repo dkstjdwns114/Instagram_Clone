@@ -1,7 +1,7 @@
 const Media = require("../../models/media");
 const Liked = require("../../models/liked");
+const User = require("../../models/user");
 const { transformLikedAndSaved } = require("./merge");
-const user = require("../../models/user");
 
 module.exports = {
   likeds: async () => {
@@ -17,7 +17,7 @@ module.exports = {
   likedMedia: async (args) => {
     const fetchedMedia = await Media.findOne({ _id: args.mediaId });
     const liked = new Liked({
-      user: "601566f405fd7104d4b911f4",
+      user: "60164665ea5d512a88a0a295",
       media: fetchedMedia
     });
     await liked.save();
@@ -29,7 +29,7 @@ module.exports = {
       const media = {
         ...liked.media._doc,
         _id: liked.media.id,
-        creator: user.bind(this, liked.media._doc.creator)
+        creator: User.bind(this, liked.media._doc.creator)
       };
       await Liked.deleteOne({ _id: args.likedId });
       return media;

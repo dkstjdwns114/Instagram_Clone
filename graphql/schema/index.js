@@ -27,6 +27,7 @@ type Media {
   media_caption: String!
   date: String!
   creator: User!
+  commentTexts: [Comment!]
 }
 
 type User {
@@ -64,6 +65,7 @@ type RootQuery {
 
 type RootMutation {
   createMedia(mediaInput: MediaInput): Media
+  deleteMedia(mediaId: ID!): User
   createUser(userInput: UserInput): User
   likedMedia(mediaId: ID!): Liked!
   cancelLiked(likedId: ID!): Media!
