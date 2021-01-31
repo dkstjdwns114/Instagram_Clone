@@ -15,12 +15,22 @@ class App extends Component {
     userId: null
   };
 
+  componentDidMount() {
+    let token = localStorage.getItem("access_token");
+    let userId = localStorage.getItem("userId");
+    this.setState({ token: token, userId: userId });
+  }
+
   login = (token, userId, tokenExpiration) => {
     this.setState({ token: token, userId: userId });
+    localStorage.setItem("access_token", token);
+    localStorage.setItem("userId", userId);
   };
 
   logout = () => {
     this.setState({ token: null, userId: null });
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("userId");
   };
 
   render() {
@@ -37,7 +47,6 @@ class App extends Component {
           <MainNavigation />
           <main className="main-content">
             <Switch>
-              {!this.state.token && <Redirect from="/" to="/auth" exact />}
               {this.state.token && <Redirect from="/" to="/timeline" exact />}
               {this.state.token && (
                 <Redirect from="/auth" to="/timeline" exact />
@@ -47,6 +56,7 @@ class App extends Component {
               {this.state.token && (
                 <Route path="/saved" component={SavedPage} />
               )}
+              {!this.state.token && <Redirect to="/auth" exact />}
             </Switch>
           </main>
         </AuthContext.Provider>

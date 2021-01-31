@@ -32,7 +32,7 @@ const mainNavigation = (props) => (
                     <NavLink to="/saved">Saved</NavLink>
                   </li>
                   <li>
-                    <button onClick={null}>Logout</button>
+                    <button onClick={context.logout}>Logout</button>
                   </li>
                 </>
               )}
