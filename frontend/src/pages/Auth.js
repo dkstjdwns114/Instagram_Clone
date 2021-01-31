@@ -9,30 +9,55 @@ class AuthPage extends Component {
     this.passwordEl = React.createRef();
     this.nicknameEl = React.createRef();
     this.state = {
-      isExist: false
+      isExist: false,
+      isLogin: true
     };
   }
+
+  switchModelHandler = () => {
+    this.setState((prevState) => {
+      return { isLogin: !prevState.isLogin };
+    });
+  };
 
   submitHandler = (e) => {
     e.preventDefault();
     const email = this.emailEl.current.value;
     const password = this.passwordEl.current.value;
-    const username = this.nicknameEl.current.value.toLowerCase();
 
     if (email.trim().length === 0 || password.trim().length === 0) {
       return;
     }
 
-    const requestBody = {
+    let requestBody = {
       query: `
-        mutation {
-          createUser(userInput: {email: "${email}", password: "${password}", username: "${username}"}) {
-            _id
-            email
+        query {
+          login(email: "${email}", password: "${password}") {
+            userId
+            token
+            tokenExpiration
           }
         }
       `
     };
+
+    if (!this.state.isLogin) {
+      const username = this.nicknameEl.current.value
+        .toLowerCase()
+        .replaceAll(" ", "");
+      console.log(username);
+
+      requestBody = {
+        query: `
+          mutation {
+            createUser(userInput: {email: "${email}", password: "${password}", username: "${username}"}) {
+              _id
+              email
+            }
+          }
+        `
+      };
+    }
 
     fetch("http://localhost:8000/graphql", {
       method: "POST",
@@ -49,7 +74,6 @@ class AuthPage extends Component {
       })
       .then((resData) => {
         if (resData.data.createUser === null) {
-          console.log("if문에 들어왔다");
           this.setState({ isExist: true });
         }
         console.log(resData);
@@ -62,23 +86,35 @@ class AuthPage extends Component {
   render() {
     return (
       <form className="auth-form" onSubmit={this.submitHandler}>
+        {console.log(this.state.isLogin)}
+        <h2>{this.state.isLogin ? "Login" : "Signup"}</h2>
         <div className="form-control">
           <label htmlFor="email">E-Mail</label>
           <input type="email" id="email" ref={this.emailEl} />
         </div>
-        <div className="form-control">
-          <label htmlFor="nickname">nickname</label>
-          <input type="text" id="nickname" ref={this.nicknameEl} />
-        </div>
+        {this.state.isLogin ? (
+          ""
+        ) : (
+          <div className="form-control">
+            <label htmlFor="nickname">nickname</label>
+            <input type="text" id="nickname" ref={this.nicknameEl} />
+          </div>
+        )}
         <div className="form-control">
           <label htmlFor="password">Password</label>
           <input type="password" id="password" ref={this.passwordEl} />
         </div>
+        {this.state.isExist ? (
+          <p className="redText">이미 존재하는 이메일 또는 닉네임 입니다.</p>
+        ) : (
+          ""
+        )}
         <div className="form-actions">
           <button type="submit">Submit</button>
-          <button type="button">Switch to Signup</button>
+          <button type="button" onClick={this.switchModelHandler}>
+            Switch to {this.state.isLogin ? "Signup" : "Login"}
+          </button>
         </div>
-        {this.state.isExist ? <p>이미 존재하는 이메일/비밀번호 입니다.</p> : ""}
       </form>
     );
   }
