@@ -12,7 +12,7 @@ const mainNavigation = (props) => (
         <header className="main-navigation">
           <div className="main-navigation__logo">
             <Link to="/">
-              <h1>InstagramClone</h1>
+              <h1>Anstagram</h1>
             </Link>
           </div>
           <nav className="main-navigation__items">
