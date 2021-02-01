@@ -105,6 +105,11 @@ class TimelinePage extends Component {
                 username
               }
             }
+            likeds {
+              user {
+                username
+              }
+            }
           }
         }
       `
@@ -150,6 +155,8 @@ class TimelinePage extends Component {
           <img src={media.media_url} alt={media.media_url} />
           <br />
           {media.media_caption}
+          <hr />
+          <p>좋아요 {media.likeds.length}명</p>
           <hr />
           {comment}
         </li>

@@ -24,6 +24,12 @@ const mediaSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: "Comment"
     }
+  ],
+  likeds: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Liked"
+    }
   ]
 });
 

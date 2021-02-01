@@ -18,7 +18,7 @@ type Saved {
 type Liked {
   _id: ID!
   media: Media!
-  user:  User!
+  user: User!
 }
 
 type Media {
@@ -28,6 +28,7 @@ type Media {
   date: String!
   creator: User!
   commentTexts: [Comment!]
+  likeds: [Liked!]
 }
 
 type User {

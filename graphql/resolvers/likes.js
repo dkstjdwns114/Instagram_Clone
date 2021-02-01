@@ -15,16 +15,30 @@ module.exports = {
     }
   },
   likedMedia: async (args, req) => {
-    if (!req.isAuth) {
-      throw new Error("Unauthenticated!");
-    }
+    // if (!req.isAuth) {
+    //   throw new Error("Unauthenticated!");
+    // }
     const fetchedMedia = await Media.findOne({ _id: args.mediaId });
     const liked = new Liked({
-      user: req.userId,
+      // user: req.userId,
+      user: "6017c04392f52159c47c2ea5",
       media: fetchedMedia
     });
-    await liked.save();
-    return transformLikedAndSaved(liked);
+    let likedMedia;
+    try {
+      await liked.save();
+      likedMedia = transformLikedAndSaved(liked);
+      const media = await Media.findById(args.mediaId);
+      if (!media) {
+        throw new Error("Post not found.");
+      }
+      media.likeds.push(liked);
+      await media.save();
+      return likedMedia;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
   },
   cancelLiked: async (args, req) => {
     if (!req.isAuth) {
