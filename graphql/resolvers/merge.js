@@ -1,5 +1,6 @@
 const Media = require("../../models/media");
 const User = require("../../models/user");
+const Comment = require("../../models/comment");
 
 const medias = async (mediaIds) => {
   try {
@@ -9,7 +10,8 @@ const medias = async (mediaIds) => {
         ...media._doc,
         _id: media.id,
         date: +new Date().getTime(),
-        creator: user.bind(this, media.creator)
+        creator: user.bind(this, media.creator),
+        commentTexts: comment.bind(this, media)
       };
     });
   } catch (err) {
@@ -43,12 +45,29 @@ const user = async (userId) => {
   }
 };
 
+const comment = async (mediaId) => {
+  try {
+    const comments = await Comment.find({ media: mediaId });
+    const retComment = comments.map((comment) => {
+      return {
+        ...comment._doc,
+        _id: comment.id,
+        creator: user.bind(this, comment.creator)
+      };
+    });
+    return retComment;
+  } catch (err) {
+    throw err;
+  }
+};
+
 const transformMedia = (media) => {
   return {
     ...media._doc,
     _id: media.id,
     date: media._doc.date,
-    creator: user.bind(this, media.creator)
+    creator: user.bind(this, media.creator),
+    commentTexts: comment.bind(this, media)
   };
 };
 
