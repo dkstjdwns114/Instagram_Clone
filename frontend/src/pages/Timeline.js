@@ -2,13 +2,17 @@ import React, { Component } from "react";
 
 import Modal from "../components/Modal/Modal";
 import Backdrop from "../components/Backdrop/Backdrop";
+import TimelineList from "../components/Timeline/TimelineList/TimelineList";
+import Spinner from "../components/Spinner/Spinner";
 import AuthContext from "../context/auth-context";
 import "./Timeline.css";
 
 class TimelinePage extends Component {
   state = {
     creating: false,
-    medias: []
+    medias: [],
+    isLoading: false,
+    selectedMedia: null
   };
 
   static contextType = AuthContext;
@@ -20,7 +24,7 @@ class TimelinePage extends Component {
   }
 
   componentDidMount() {
-    this.fetchMedia();
+    this.fetchMedias();
   }
 
   startCreateEventHandler = () => {
@@ -49,7 +53,7 @@ class TimelinePage extends Component {
             date
             creator {
               _id
-              email
+              username
             }
           }
         }
@@ -73,7 +77,22 @@ class TimelinePage extends Component {
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
+        this.setState((prevState) => {
+          const updatedMedias = [...prevState.medias];
+          updatedMedias.push({
+            _id: resData.data.createMedia._id,
+            media_url: resData.data.createMedia.media_url,
+            media_caption: resData.data.createMedia.media_caption,
+            date: resData.data.createMedia.date,
+            creator: {
+              _id: this.context.userId,
+              username: resData.data.createMedia.creator.username
+            },
+            commentTexts: [],
+            likeds: []
+          });
+          return { medias: updatedMedias };
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -81,10 +100,11 @@ class TimelinePage extends Component {
   };
 
   modalCancelHandler = () => {
-    this.setState({ creating: false });
+    this.setState({ creating: false, selectedMedia: null });
   };
 
-  fetchMedia() {
+  fetchMedias() {
+    this.setState({ isLoading: true });
     const requestBody = {
       query: `
         query {
@@ -130,41 +150,27 @@ class TimelinePage extends Component {
       })
       .then((resData) => {
         const medias = resData.data.medias;
-        this.setState({ medias: medias });
-        console.log(resData);
+        this.setState({ medias: medias, isLoading: false });
       })
       .catch((err) => {
         console.log(err);
+        this.setState({ isLoading: false });
       });
   }
 
-  render() {
-    const mediaList = this.state.medias.map((media) => {
-      const comment = media.commentTexts.map((media_caption, idx) => {
-        return (
-          <p key={media_caption._id}>
-            <span key={media_caption.creator._id}>
-              {media_caption.creator.username}
-            </span>{" "}
-            : {media_caption.media_comment}
-          </p>
-        );
-      });
-      return (
-        <li key={media._id} className="events__list-item">
-          <img src={media.media_url} alt={media.media_url} />
-          <br />
-          {media.media_caption}
-          <hr />
-          <p>좋아요 {media.likeds.length}명</p>
-          <hr />
-          {comment}
-        </li>
-      );
+  showDetailHandler = (mediaId) => {
+    this.setState((prevState) => {
+      const selectedMedia = prevState.medias.find((e) => e._id === mediaId);
+      return { selectedMedia: selectedMedia };
     });
+  };
+
+  saveMediaHandler = () => {};
+
+  render() {
     return (
       <>
-        {this.state.creating && <Backdrop />}
+        {(this.state.creating || this.state.selectedMedia) && <Backdrop />}
         {this.state.creating && (
           <Modal
             title="Add Post"
@@ -172,6 +178,7 @@ class TimelinePage extends Component {
             canConfirm
             onCancel={this.modalCancelHandler}
             onConfirm={this.modalConfirmHandler}
+            confirmText="Confirm"
           >
             <form>
               <div className="form-control">
@@ -185,6 +192,18 @@ class TimelinePage extends Component {
             </form>
           </Modal>
         )}
+        {this.state.selectedMedia && (
+          <Modal
+            title="게시물 상세보기 페이지"
+            canCancel
+            canConfirm
+            onCancel={this.modalCancelHandler}
+            onConfirm={this.saveMediaHandler}
+            confirmText="Save"
+          >
+            <h1>{this.state.selectedMedia.media_url}</h1>
+          </Modal>
+        )}
         {this.context.token && (
           <div className="events-control">
             <p>게시물을 작성해보세요!!</p>
@@ -193,7 +212,15 @@ class TimelinePage extends Component {
             </button>
           </div>
         )}
-        <ul className="events__list">{mediaList}</ul>
+        {this.state.isLoading ? (
+          <Spinner />
+        ) : (
+          <TimelineList
+            medias={this.state.medias}
+            authUserId={this.context.userId}
+            onViewDetail={this.showDetailHandler}
+          />
+        )}
       </>
     );
   }
