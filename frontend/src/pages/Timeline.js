@@ -56,11 +56,14 @@ class TimelinePage extends Component {
       `
     };
 
+    const token = this.context.token;
+
     fetch("http://localhost:8000/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
       }
     })
       .then((res) => {
@@ -92,21 +95,26 @@ class TimelinePage extends Component {
             date
             creator {
               _id
-              email
+              username
+            }
+            commentTexts {
+              _id
+              media_comment
+              date
+              creator {
+                username
+              }
             }
           }
         }
       `
     };
 
-    const token = this.context.token;
-
     fetch("http://localhost:8000/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + token
+        "Content-Type": "application/json"
       }
     })
       .then((res) => {
@@ -127,11 +135,23 @@ class TimelinePage extends Component {
 
   render() {
     const mediaList = this.state.medias.map((media) => {
+      const comment = media.commentTexts.map((media_caption, idx) => {
+        return (
+          <p key={media_caption._id}>
+            <span key={media_caption.creator._id}>
+              {media_caption.creator.username}
+            </span>{" "}
+            : {media_caption.media_comment}
+          </p>
+        );
+      });
       return (
         <li key={media._id} className="events__list-item">
           <img src={media.media_url} alt={media.media_url} />
           <br />
           {media.media_caption}
+          <hr />
+          {comment}
         </li>
       );
     });

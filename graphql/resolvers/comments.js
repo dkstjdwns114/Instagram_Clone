@@ -20,14 +20,15 @@ module.exports = {
     }
   },
   createComment: async (args, req) => {
-    // if (!req.isAuth) {
-    //   throw new Error("Unauthenticated!");
-    // }
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
     const fetchedMedia = await Media.findOne({
       _id: args.commentInput.mediaId
     });
     const commented = new Commented({
-      creator: "60164665ea5d512a88a0a295",
+      creator: req.userId,
+      // creator: "6017c04392f52159c47c2ea5",
       media_comment: args.commentInput.media_comment,
       date: +new Date().getTime(),
       media: fetchedMedia

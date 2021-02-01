@@ -52,6 +52,8 @@ const comment = async (mediaId) => {
       return {
         ...comment._doc,
         _id: comment.id,
+        media_comment: comment.media_comment,
+        date: comment.date,
         creator: user.bind(this, comment.creator)
       };
     });

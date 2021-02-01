@@ -21,7 +21,7 @@ module.exports = {
         email: args.userInput.email,
         username: args.userInput.username,
         password: hashedPassword,
-        profile_pic_url: args.userInput.profile_pic_url
+        profile_pic_url: null
       });
       const result = await user.save();
       return { ...result._doc, password: null, _id: result.id };
