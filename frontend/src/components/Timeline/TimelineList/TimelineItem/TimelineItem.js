@@ -7,17 +7,25 @@ const timelineItem = (props) => (
     {props.mediaCaption}
     <hr />
     <p>
+      좋아요 {props.mediaLiked.length}명 | 댓글 {props.comment.length}개
+    </p>
+    {(props.mediaLiked.length !== 0 || props.comment.length !== 0) && <hr />}
+    {props.mediaLiked.length !== 0 && (
       <button
         className="btn"
-        onClick={props.onDetail.bind(this, props.mediaId)}
+        onClick={props.likeDetail.bind(this, props.mediaId)}
       >
-        게시물 상세보기
+        좋아요 상세보기
       </button>
-      {"   "}좋아요 {props.mediaLikeCnt}명
-    </p>
-
-    <hr />
-    {props.comment}
+    )}
+    {props.comment.length !== 0 && (
+      <button
+        className="btn"
+        onClick={props.commentDetail.bind(this, props.mediaId)}
+      >
+        댓글 {props.comment.length}개 상세보기
+      </button>
+    )}
     <div>
       {/* props.userId === props.creatorId  // 이 게시물이 내가 쓴것인지 확인하는 코드*/}
     </div>

@@ -19,11 +19,12 @@ const timelineList = (props) => {
         mediaId={media._id}
         mediaUrl={media.media_url}
         mediaCaption={media.media_caption}
-        mediaLikeCnt={media.likeds.length}
+        mediaLiked={media.likeds}
         comment={comment}
         creatorId={media.creator._id}
         userId={props.authUserId}
-        onDetail={props.onViewDetail}
+        likeDetail={props.onLikeDetail}
+        commentDetail={props.onCommentDetail}
       />
     );
   });

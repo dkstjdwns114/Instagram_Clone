@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 import Modal from "../components/Modal/Modal";
 import Backdrop from "../components/Backdrop/Backdrop";
@@ -12,7 +13,8 @@ class TimelinePage extends Component {
     creating: false,
     medias: [],
     isLoading: false,
-    selectedMedia: null
+    selectedLikeMedia: null,
+    selectedCommentMedia: null
   };
 
   static contextType = AuthContext;
@@ -100,7 +102,11 @@ class TimelinePage extends Component {
   };
 
   modalCancelHandler = () => {
-    this.setState({ creating: false, selectedMedia: null });
+    this.setState({
+      creating: false,
+      selectedLikeMedia: null,
+      selectedCommentMedia: null
+    });
   };
 
   fetchMedias() {
@@ -158,10 +164,19 @@ class TimelinePage extends Component {
       });
   }
 
-  showDetailHandler = (mediaId) => {
+  showLikeDetailHandler = (mediaId) => {
     this.setState((prevState) => {
-      const selectedMedia = prevState.medias.find((e) => e._id === mediaId);
-      return { selectedMedia: selectedMedia };
+      const selectedLikeMedia = prevState.medias.find((e) => e._id === mediaId);
+      return { selectedLikeMedia: selectedLikeMedia };
+    });
+  };
+
+  showCommentDetailHandler = (mediaId) => {
+    this.setState((prevState) => {
+      const selectedCommentMedia = prevState.medias.find(
+        (e) => e._id === mediaId
+      );
+      return { selectedCommentMedia: selectedCommentMedia };
     });
   };
 
@@ -170,7 +185,9 @@ class TimelinePage extends Component {
   render() {
     return (
       <>
-        {(this.state.creating || this.state.selectedMedia) && <Backdrop />}
+        {(this.state.creating ||
+          this.state.selectedCommentMedia ||
+          this.state.selectedLikeMedia) && <Backdrop />}
         {this.state.creating && (
           <Modal
             title="Add Post"
@@ -192,16 +209,49 @@ class TimelinePage extends Component {
             </form>
           </Modal>
         )}
-        {this.state.selectedMedia && (
+        {this.state.selectedLikeMedia && (
           <Modal
-            title="게시물 상세보기 페이지"
+            title={
+              this.state.selectedLikeMedia.creator.username +
+              "님의 게시물 좋아요"
+            }
+            canCancel
+            canConfirm
+            onCancel={this.modalCancelHandler}
+            onConfirm={this.saveMediaHandler}
+            confirmText="Like"
+          >
+            {this.state.selectedLikeMedia.likeds.map((like) => {
+              return (
+                <p key={like.user.username}>
+                  <Link to="#">{like.user.username}</Link>
+                </p>
+              );
+            })}
+          </Modal>
+        )}
+        {this.state.selectedCommentMedia && (
+          <Modal
+            title={
+              this.state.selectedCommentMedia.creator.username +
+              "님의 게시물 댓글"
+            }
             canCancel
             canConfirm
             onCancel={this.modalCancelHandler}
             onConfirm={this.saveMediaHandler}
             confirmText="Save"
           >
-            <h1>{this.state.selectedMedia.media_url}</h1>
+            {this.state.selectedCommentMedia.commentTexts.map(
+              (commentTexts) => {
+                return (
+                  <p key={commentTexts._id}>
+                    <Link to="#">{commentTexts.creator.username}</Link> :{" "}
+                    {commentTexts.media_comment}
+                  </p>
+                );
+              }
+            )}
           </Modal>
         )}
         {this.context.token && (
@@ -218,7 +268,8 @@ class TimelinePage extends Component {
           <TimelineList
             medias={this.state.medias}
             authUserId={this.context.userId}
-            onViewDetail={this.showDetailHandler}
+            onLikeDetail={this.showLikeDetailHandler}
+            onCommentDetail={this.showCommentDetailHandler}
           />
         )}
       </>
