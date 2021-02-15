@@ -1,0 +1,247 @@
+.social-article {
+  margin: 180px auto;
+  max-width: 1300px;
+  max-height: 700px;
+  display: flex;
+  height: auto;
+  min-height: auto;
+  min-width: auto;
+  position: relative;
+  width: calc(100% - 2px);
+  border-radius: 3px;
+  border: 1px solid #dbdbdb;
+  align-items: stretch;
+  background-color: #fff;
+  flex: 0 0 auto;
+  flex-flow: row nowrap;
+  font: normal normal 400 normal 14px/18px -apple-system, system-ui, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+}
+
+.social-right-col {
+  width: 40%;
+  align-items: center;
+  border-top: 0px solid black;
+  border-right: 0px solid black;
+  border-bottom: 1px solid #efefef;
+  border-left: 1px solid #efefef;
+  flex: 0 0 auto;
+  padding-bottom: 30px;
+}
+.social-right-col .social-name {
+  color: #262626;
+  text-decoration: none solid #262626;
+  text-size-adjust: 100%;
+  font-weight: 600;
+  margin: 0px 0px 0px -5px;
+  outline: #262626 none 0px;
+  overflow: hidden;
+  padding: 0px 0px 0px 5px;
+}
+.social-right-col .social-header {
+  position: relative;
+  display: flex;
+  text-size-adjust: 100%;
+  width: 100%;
+  align-items: center;
+  align-self: center;
+  flex: 0 0 auto;
+  flex-flow: row nowrap;
+  padding: 16px;
+  border-bottom: 1px solid #efefef;
+}
+.social-right-col .social-header .social-profile-img {
+  height: 34px;
+  left: 0px;
+  position: relative;
+  width: 34px;
+  border: 0px none #003569;
+  border-radius: 50% 50% 50% 50%;
+  flex: 0 0 auto;
+  outline: #003569 none 0px;
+  overflow: hidden;
+  margin: 0 18px 0 0;
+}
+.social-right-col .social-header .social-profile-img img {
+  cursor: pointer;
+  height: 34px;
+  width: 34px;
+  border: 0px none #003569;
+  outline: #003569 none 0px;
+}
+.social-right-col .social-header .social-follow {
+  display: flex;
+  height: 18px;
+  position: relative;
+  width: 100%;
+  flex: 1 1 auto;
+  flex-flow: row nowrap;
+  overflow: hidden;
+}
+.social-right-col .social-header .social-follow button {
+  border: 0;
+  color: #3897f0;
+  display: inline;
+  padding: 0;
+  font-weight: 600;
+}
+.social-right-col .social-header .social-follow .SPAN_13 {
+  margin: 0px 4px;
+}
+.social-right-col .social-comments-wrap {
+  display: flex;
+  height: 80%;
+  width: 100%;
+  align-items: stretch;
+  flex: 0 0 auto;
+  flex-flow: column nowrap;
+}
+.social-right-col .social-post {
+  bottom: 0px;
+  box-sizing: border-box;
+  display: flex;
+  transform-origin: 167px 112px;
+  border: 0px solid black;
+  flex-flow: column nowrap;
+  overflow: hidden auto;
+  flex-grow: 1;
+  height: 100%;
+}
+.social-right-col .social-post .social-header {
+  align-items: flex-start;
+}
+.social-right-col .social-post .social-copy .social-post-copy {
+  margin-left: 6px;
+}
+.social-right-col .social-post .social-copy time {
+  margin: 16px 0 4px;
+  color: #999;
+  display: block;
+  font-size: 12px;
+}
+.social-right-col .social-date {
+  bottom: 0px;
+  box-sizing: border-box;
+  height: 19px;
+  align-items: stretch;
+  flex: 0 0 auto;
+  flex-flow: column nowrap;
+  padding: 0px 0px 0px 16px;
+}
+.social-right-col .social-date time {
+  color: #999999;
+  letter-spacing: 0.2px;
+  text-decoration: none solid #999999;
+  text-transform: uppercase;
+  font-size: 10px;
+}
+.social-right-col .icons-section {
+  display: flex;
+  height: 45px;
+  position: relative;
+  align-items: stretch;
+  flex: 0 0 auto;
+  padding: 4px 16px 0px;
+}
+.social-right-col .icons-section .icons-button {
+  background-position: 0px 0px;
+  cursor: pointer;
+  display: flex;
+  height: 40px;
+  min-height: 40px;
+  min-width: 40px;
+  width: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: rgba(0, 0, 0, 0) none repeat scroll 0px 0px / auto padding-box
+    border-box;
+}
+.social-right-col .icons-section .icons-button span {
+  color: rgba(0, 0, 0, 0.847);
+  cursor: pointer;
+  display: block;
+  height: 24px;
+  min-height: auto;
+  min-width: auto;
+  text-align: center;
+  width: 24px;
+  background: rgba(0, 0, 0, 0)
+    url("https://www.instagram.com/static/bundles/es6/sprite_glyphs_7f5bab945363.png/7f5bab945363.png")
+    no-repeat scroll -231px -130px / auto padding-box border-box;
+}
+.social-right-col .icons-section .icons-button span.icon1 {
+  background-position: -231px -130px;
+}
+.social-right-col .icons-section .icons-button span.liked {
+  background-position: -231px -104px;
+}
+.social-right-col .icons-section .icons-button span.icon2 {
+  background-position: 0px -177px;
+}
+.social-right-col .icons-section .icons-button span.icon4 {
+  background-position: -208px -255px;
+}
+.social-right-col .icons-section .icons-button span.saved {
+  background-position: -130px -255px;
+}
+.social-right-col .icons-section .icons-button:last-child {
+  margin-left: auto;
+}
+.social-right-col .likes-wrap {
+  color: #262626;
+  font-weight: 600;
+  padding: 0 0 0 16px;
+}
+
+.social-left-col {
+  bottom: 0px;
+  display: flex;
+  height: 100%;
+  width: 60%;
+  min-height: 450px;
+  min-width: auto;
+  position: relative;
+  align-items: stretch;
+  justify-content: center;
+  background: black none repeat scroll 0% 0% / auto padding-box border-box;
+  border: 0px solid black;
+  flex: 0 0 auto;
+  flex-flow: column nowrap;
+}
+.social-left-col .social-img-wrap {
+  bottom: 0px;
+  box-sizing: border-box;
+  height: 0;
+  left: 0px;
+  position: relative;
+  right: 0px;
+  top: 0px;
+  width: 100%;
+  align-items: stretch;
+  border: 0px solid black;
+  flex: 0 0 auto;
+  flex-flow: column nowrap;
+  overflow: hidden;
+  padding: 0px 0px 70%;
+}
+.social-left-col .social-img {
+  bottom: 0px;
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  width: 100%;
+  user-select: none;
+}
+
+.comment-add {
+  margin-top: 10px;
+  padding-left: 20px;
+}
+
+#commentarea {
+  width: 200px;
+  height: 20px;
+  margin-right: 5px;
+}
