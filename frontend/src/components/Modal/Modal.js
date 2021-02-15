@@ -8,6 +8,11 @@ const modal = (props) => (
       <h1>{props.title}</h1>
     </header>
     <section className="modal__content">{props.children}</section>
+    {props.isComment && (
+      <form>
+        <input type="text" />
+      </form>
+    )}
     <section className="modal__actions">
       {props.canCancel && (
         <button className="btn" onClick={props.onCancel}>
