@@ -12,7 +12,8 @@ class AuthPage extends Component {
     this.nicknameEl = React.createRef();
     this.state = {
       isExist: false,
-      isLogin: true
+      isLogin: true,
+      isWrong: false
     };
   }
 
@@ -71,6 +72,7 @@ class AuthPage extends Component {
     })
       .then((res) => {
         if (res.status !== 200 && res.status !== 201) {
+          this.setState({ isWrong: true });
           throw new Error("Failed!");
         }
         return res.json();
@@ -113,6 +115,9 @@ class AuthPage extends Component {
         </div>
         {this.state.isExist && (
           <p className="redText">이미 존재하는 이메일 또는 닉네임 입니다.</p>
+        )}
+        {this.state.isWrong && (
+          <p className="redText">아이디 또는 비밀번호를 확인하세요!</p>
         )}
         <div className="form-actions">
           <button type="submit">Submit</button>
