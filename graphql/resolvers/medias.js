@@ -13,6 +13,17 @@ module.exports = {
       throw err;
     }
   },
+  media: async (args, req) => {
+    try {
+      const media = await Media.findById(args.mediaId);
+      if (!media) {
+        throw new Error("Media not found.");
+      }
+      return transformMedia(media);
+    } catch (err) {
+      throw err;
+    }
+  },
   createMedia: async (args, req) => {
     if (!req.isAuth) {
       throw new Error("Unauthenticated!");
