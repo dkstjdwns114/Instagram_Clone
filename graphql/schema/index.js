@@ -65,6 +65,7 @@ input CommentInput {
 
 type RootQuery {
   medias: [Media!]!
+  media(mediaId: String!): Media!
   likeds: [Liked!]!
   saveds: [Saved!]!
   comments: [Comment!]
