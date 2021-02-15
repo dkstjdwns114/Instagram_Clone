@@ -182,6 +182,46 @@ class TimelinePage extends Component {
 
   saveMediaHandler = () => {};
 
+  likeMediaHandler = () => {
+    if (!this.context.token) {
+      this.setState({ selectedLikeMedia: null });
+      return;
+    }
+    const requestBody = {
+      query: `
+        mutation {
+          likedMedia(mediaId: "${this.state.selectedLikeMedia._id}") {
+            _id
+          }
+        }
+      `
+    };
+
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.context.token
+      }
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        console.log(resData);
+        this.setState({ selectedLikeMedia: null });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  commentMediaHandler = () => {};
+
   render() {
     return (
       <>
@@ -195,7 +235,7 @@ class TimelinePage extends Component {
             canConfirm
             onCancel={this.modalCancelHandler}
             onConfirm={this.modalConfirmHandler}
-            confirmText="Confirm"
+            confirmText={this.context.token ? "Save" : "Confirm"}
           >
             <form>
               <div className="form-control">
@@ -218,13 +258,13 @@ class TimelinePage extends Component {
             canCancel
             canConfirm
             onCancel={this.modalCancelHandler}
-            onConfirm={this.saveMediaHandler}
+            onConfirm={this.likeMediaHandler}
             confirmText="Like"
           >
-            {this.state.selectedLikeMedia.likeds.map((like) => {
+            {this.state.selectedLikeMedia.likeds.map((like, idx) => {
               return (
                 <p key={like.user.username}>
-                  <Link to="#">{like.user.username}</Link>
+                  {idx + 1}. <Link to="#">{like.user.username}</Link>
                 </p>
               );
             })}
@@ -240,7 +280,8 @@ class TimelinePage extends Component {
             canConfirm
             onCancel={this.modalCancelHandler}
             onConfirm={this.saveMediaHandler}
-            confirmText="Save"
+            confirmText="Confirm"
+            isComment={true}
           >
             {this.state.selectedCommentMedia.commentTexts.map(
               (commentTexts) => {
