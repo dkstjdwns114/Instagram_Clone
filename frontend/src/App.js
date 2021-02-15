@@ -6,6 +6,9 @@ import TimelinePage from "./pages/Timeline";
 import SavedPage from "./pages/Saved";
 import MainNavigation from "./components/Navigation/MainNavigation";
 import AuthContext from "./context/auth-context";
+import PostDetail from "./pages/PostDetail";
+
+import TestPage from "./pages/Test";
 
 import "./App.css";
 
@@ -53,9 +56,12 @@ class App extends Component {
               )}
               {!this.state.token && <Route path="/auth" component={AuthPage} />}
               <Route path="/timeline" component={TimelinePage} />
+              <Route path="/test" component={TestPage} />
+              <Route path="/p/:id" component={PostDetail} />
               {this.state.token && (
                 <Route path="/saved" component={SavedPage} />
               )}
+              {this.state.token && <Route path="/test" component={TestPage} />}
               {!this.state.token && <Redirect to="/auth" exact />}
             </Switch>
           </main>
