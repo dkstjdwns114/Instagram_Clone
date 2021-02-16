@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import Backdrop from "../components/Backdrop/Backdrop";
+import LikeModal from "../components/Modal/LikeModal";
+import PostDetailView from "../components/PostDetail/PostDetailView";
 import Spinner from "../components/Spinner/Spinner";
 
 import "./PostDetail.css";
@@ -14,7 +17,8 @@ class PostDetail extends Component {
     isSaved: false,
     media_caption: null,
     media_url: null,
-    date: null
+    date: null,
+    isModal: false
   };
 
   componentDidMount() {
@@ -74,7 +78,6 @@ class PostDetail extends Component {
           media_url: media.media_url,
           date: media.date
         });
-        console.log(media);
       })
       .catch((err) => {
         console.log(err);
@@ -98,113 +101,40 @@ class PostDetail extends Component {
     document.getElementById("commentarea").focus();
   };
 
+  likeModal = () => {
+    this.setState({ isModal: true });
+  };
+
+  modalCloseHandler = () => {
+    this.setState({ isModal: false });
+  };
+
   render() {
-    console.log(this.state.creatorname);
     return (
       <>
+        {this.state.isModal && <Backdrop />}
+        {this.state.isModal && (
+          <LikeModal
+            likes={this.state.likeds}
+            onClose={this.modalCloseHandler}
+          />
+        )}
         {this.state.isLoading ? (
           <Spinner />
         ) : (
-          <article className="social-article">
-            <div className="social-left-col">
-              <div className="social-img-wrap">
-                <img
-                  className="social-img"
-                  src={this.state.media_url}
-                  alt={this.state.media_url}
-                />
-              </div>
-            </div>
-            <div className="social-right-col">
-              <div className="social-header">
-                <a href="/gllcollege/" className="social-profile-img">
-                  <img
-                    src="https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/s320x320/131994802_214284176856542_767716126641019031_n.jpg?_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=PDorBUdEWtwAX9sYsr4&tp=1&oh=cf29f6436cf30c756daf0b3772249b4e&oe=60534882"
-                    alt="gllcollege's profile picture"
-                  />
-                </a>
-                <div className="social-follow">
-                  <a
-                    title="gllcollege"
-                    href="/gllcollege/"
-                    className="social-name"
-                  >
-                    {this.state.creatorname}
-                  </a>
-                  <span className="SPAN_13">•</span>
-                  <button type="button">Follow</button>
-                </div>
-              </div>
-              <div className="social-header">
-                <span>{this.state.media_caption}</span>
-              </div>
-              <div className="social-comments-wrap">
-                <div className="social-post">
-                  {this.state.comments.map((comment, idx) => {
-                    return (
-                      <div key={idx} className="social-header">
-                        <a href="/gllcollege/" className="social-profile-img">
-                          <img
-                            src="https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/s320x320/93220711_3143709632340205_7652637101535526912_n.jpg?_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=Jw8owoE_3kEAX8tlHZD&tp=1&oh=d398d00901eda38513c1bf88ab571022&oe=6052768E"
-                            alt="gllcollege's profile picture"
-                          />
-                        </a>
-                        <div className="social-copy">
-                          <span className="social-name">
-                            {comment.creator.username}
-                          </span>
-                          <span className="social-post-copy">
-                            {comment.media_comment}
-                          </span>
-                          <time>123123</time>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-                <div className="social-icons">
-                  <section className="icons-section">
-                    <button className="icons-button" onClick={this.likeHandler}>
-                      {!this.state.isLiked ? (
-                        <span className="icon1"></span>
-                      ) : (
-                        <span className="liked"></span>
-                      )}
-                    </button>
-                    <button
-                      className="icons-button"
-                      onClick={this.commentFocus}
-                    >
-                      <span className="icon2"></span>
-                    </button>
-                    <button className="icons-button" onClick={this.saveHandler}>
-                      {!this.state.isSaved ? (
-                        <span className="icon4"></span>
-                      ) : (
-                        <span className="saved"></span>
-                      )}
-                    </button>
-                  </section>
-                  <div className="likes-wrap">
-                    <span>16</span> likes
-                  </div>
-                </div>
-                <div className="social-date">
-                  <time>April 18</time>
-                </div>
-                <div className="comment-add">
-                  <form>
-                    <input
-                      type="text"
-                      id="commentarea"
-                      placeholder="Add a comment..."
-                    />
-                    <input type="button" className="btn" value="SUBMIT" />
-                  </form>
-                </div>
-              </div>
-            </div>
-          </article>
+          <PostDetailView
+            media_url={this.state.media_url}
+            creator_name={this.state.creatorname}
+            media_caption={this.state.media_caption}
+            comments={this.state.comments}
+            commentFocus={this.commentFocus}
+            saveHandler={this.saveHandler}
+            likeHandler={this.likeHandler}
+            isLiked={this.state.isLiked}
+            isSaved={this.state.isSaved}
+            likeds={this.state.likeds}
+            likeModal={this.likeModal}
+          />
         )}
       </>
     );
