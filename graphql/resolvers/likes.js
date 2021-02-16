@@ -14,14 +14,23 @@ module.exports = {
       throw err;
     }
   },
+  isLike: async (args, req) => {
+    try {
+      const liked = await Liked.findOne({
+        $and: [{ media: args.mediaId }, { user: args.userId }]
+      });
+      return true;
+    } catch (err) {
+      return false;
+    }
+  },
   likedMedia: async (args, req) => {
-    // if (!req.isAuth) {
-    //   throw new Error("Unauthenticated!");
-    // }
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
     const fetchedMedia = await Media.findOne({ _id: args.mediaId });
     const liked = new Liked({
-      // user: req.userId,
-      user: "6017c04392f52159c47c2ea5",
+      user: req.userId,
       media: fetchedMedia
     });
     let likedMedia;

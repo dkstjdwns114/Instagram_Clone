@@ -14,13 +14,24 @@ module.exports = {
       throw err;
     }
   },
-  savedMedia: async (args, req) => {
-    if (!req.isAuth) {
-      throw new Error("Unauthenticated!");
+  isSave: async (args, req) => {
+    try {
+      const saved = await Saved.findOne({
+        $and: [{ media: args.mediaId }, { user: args.userId }]
+      });
+      return true;
+    } catch (err) {
+      return false;
     }
+  },
+  savedMedia: async (args, req) => {
+    // if (!req.isAuth) {
+    //   throw new Error("Unauthenticated!");
+    // }
     const fetchedMedia = await Media.findOne({ _id: args.mediaId });
     const saved = new Saved({
-      user: req.userId,
+      // user: req.userId,
+      user: "6017c04392f52159c47c2ea5",
       media: fetchedMedia
     });
     const result = await saved.save();

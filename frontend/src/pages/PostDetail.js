@@ -27,6 +27,7 @@ class PostDetail extends Component {
 
   fetchMedias() {
     this.setState({ isLoading: true });
+    let userId = localStorage.getItem("userId");
     const requestBody = {
       query: `
       query {
@@ -50,6 +51,8 @@ class PostDetail extends Component {
             }
           }
         }
+        isLike(mediaId: "${this.state.mediaId}", userId: "${userId}")
+        isSave(mediaId: "${this.state.mediaId}", userId: "${userId}")
       }
       `
     };
@@ -76,7 +79,9 @@ class PostDetail extends Component {
           creatorname: media.creator.username,
           media_caption: media.media_caption,
           media_url: media.media_url,
-          date: media.date
+          date: media.date,
+          isLiked: resData.data.isLike,
+          isSaved: resData.data.isSave
         });
       })
       .catch((err) => {
@@ -109,10 +114,31 @@ class PostDetail extends Component {
     this.setState({ isModal: false });
   };
 
+  convertTime = (date) => {
+    let timestamp = date * 1;
+    let d = new Date(timestamp);
+    let s =
+      this.leadingZeros(d.getFullYear(), 4) +
+      "년 " +
+      this.leadingZeros(d.getMonth() + 1, 2) +
+      "월 " +
+      this.leadingZeros(d.getDate(), 2) +
+      "일";
+    return s;
+  };
+
+  leadingZeros = (n, digits) => {
+    let zero = "";
+    n = n.toString();
+
+    if (n.length < digits) {
+      for (let i = 0; i < digits - n.length; i++) zero += "0";
+    }
+    return zero + n;
+  };
   render() {
     return (
       <>
-        {this.state.isModal && <Backdrop />}
         {this.state.isModal && (
           <LikeModal
             likes={this.state.likeds}
@@ -122,19 +148,23 @@ class PostDetail extends Component {
         {this.state.isLoading ? (
           <Spinner />
         ) : (
-          <PostDetailView
-            media_url={this.state.media_url}
-            creator_name={this.state.creatorname}
-            media_caption={this.state.media_caption}
-            comments={this.state.comments}
-            commentFocus={this.commentFocus}
-            saveHandler={this.saveHandler}
-            likeHandler={this.likeHandler}
-            isLiked={this.state.isLiked}
-            isSaved={this.state.isSaved}
-            likeds={this.state.likeds}
-            likeModal={this.likeModal}
-          />
+          <>
+            <PostDetailView
+              media_url={this.state.media_url}
+              creator_name={this.state.creatorname}
+              media_caption={this.state.media_caption}
+              comments={this.state.comments}
+              commentFocus={this.commentFocus}
+              saveHandler={this.saveHandler}
+              likeHandler={this.likeHandler}
+              isLiked={this.state.isLiked}
+              isSaved={this.state.isSaved}
+              likeds={this.state.likeds}
+              likeModal={this.likeModal}
+              date={this.convertTime(this.state.date)}
+            />
+            {this.state.isModal && <Backdrop />}
+          </>
         )}
       </>
     );
