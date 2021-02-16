@@ -225,9 +225,7 @@ class TimelinePage extends Component {
   render() {
     return (
       <>
-        {(this.state.creating ||
-          this.state.selectedCommentMedia ||
-          this.state.selectedLikeMedia) && <Backdrop />}
+        {this.state.creating && <Backdrop />}
         {this.state.creating && (
           <Modal
             title="Add Post"
@@ -247,52 +245,6 @@ class TimelinePage extends Component {
                 <textarea id="caption" rows="4" ref={this.captionElRef} />
               </div>
             </form>
-          </Modal>
-        )}
-        {this.state.selectedLikeMedia && (
-          <Modal
-            title={
-              this.state.selectedLikeMedia.creator.username +
-              "님의 게시물 좋아요"
-            }
-            canCancel
-            canConfirm
-            onCancel={this.modalCancelHandler}
-            onConfirm={this.likeMediaHandler}
-            confirmText="Like"
-          >
-            {this.state.selectedLikeMedia.likeds.map((like, idx) => {
-              return (
-                <p key={like.user.username}>
-                  {idx + 1}. <Link to="#">{like.user.username}</Link>
-                </p>
-              );
-            })}
-          </Modal>
-        )}
-        {this.state.selectedCommentMedia && (
-          <Modal
-            title={
-              this.state.selectedCommentMedia.creator.username +
-              "님의 게시물 댓글"
-            }
-            canCancel
-            canConfirm
-            onCancel={this.modalCancelHandler}
-            onConfirm={this.saveMediaHandler}
-            confirmText="Confirm"
-            isComment={true}
-          >
-            {this.state.selectedCommentMedia.commentTexts.map(
-              (commentTexts) => {
-                return (
-                  <p key={commentTexts._id}>
-                    <Link to="#">{commentTexts.creator.username}</Link> :{" "}
-                    {commentTexts.media_comment}
-                  </p>
-                );
-              }
-            )}
           </Modal>
         )}
         {this.context.token && (
