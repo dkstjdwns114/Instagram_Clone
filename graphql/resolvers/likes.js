@@ -19,9 +19,9 @@ module.exports = {
       const liked = await Liked.findOne({
         $and: [{ media: args.mediaId }, { user: args.userId }]
       });
-      return true;
+      return liked;
     } catch (err) {
-      return false;
+      return new Error(false);
     }
   },
   likedMedia: async (args, req) => {

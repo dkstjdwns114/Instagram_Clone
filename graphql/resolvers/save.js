@@ -19,9 +19,9 @@ module.exports = {
       const saved = await Saved.findOne({
         $and: [{ media: args.mediaId }, { user: args.userId }]
       });
-      return true;
+      return saved;
     } catch (err) {
-      return false;
+      throw new Error(false);
     }
   },
   savedMedia: async (args, req) => {

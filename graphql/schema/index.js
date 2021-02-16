@@ -70,8 +70,8 @@ type RootQuery {
   saveds: [Saved!]!
   comments: [Comment!]
   login(email: String!, password: String!): AuthData!
-  isLike(mediaId: String!, userId: String!): Boolean!
-  isSave(mediaId: String!, userId: String!): Boolean!
+  isLike(mediaId: String!, userId: String!): Liked
+  isSave(mediaId: String!, userId: String!): Saved
 }
 
 type RootMutation {
