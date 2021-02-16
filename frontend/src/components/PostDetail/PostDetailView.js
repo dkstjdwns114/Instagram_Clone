@@ -80,7 +80,7 @@ const postDetailView = (props) => {
             </div>
           </div>
           <div className="social-date">
-            <time>April 18</time>
+            <time>{props.date}</time>
           </div>
           <div className="comment-add">
             <form>
