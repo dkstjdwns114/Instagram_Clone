@@ -90,13 +90,13 @@ class PostDetail extends Component {
       });
   }
 
-  likeHandler = () => {
+  likeMediaHandler = () => {
     this.setState({
       isLiked: !this.state.isLiked
     });
   };
 
-  saveHandler = () => {
+  saveMediaHandler = () => {
     this.setState({
       isSaved: !this.state.isSaved
     });
@@ -155,8 +155,8 @@ class PostDetail extends Component {
               media_caption={this.state.media_caption}
               comments={this.state.comments}
               commentFocus={this.commentFocus}
-              saveHandler={this.saveHandler}
-              likeHandler={this.likeHandler}
+              saveHandler={this.saveMediaHandler}
+              likeHandler={this.likeMediaHandler}
               isLiked={this.state.isLiked}
               isSaved={this.state.isSaved}
               likeds={this.state.likeds}
