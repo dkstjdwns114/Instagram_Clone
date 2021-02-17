@@ -25,13 +25,12 @@ module.exports = {
     }
   },
   savedMedia: async (args, req) => {
-    // if (!req.isAuth) {
-    //   throw new Error("Unauthenticated!");
-    // }
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
     const fetchedMedia = await Media.findOne({ _id: args.mediaId });
     const saved = new Saved({
-      // user: req.userId,
-      user: "6017c04392f52159c47c2ea5",
+      user: req.userId,
       media: fetchedMedia
     });
     const result = await saved.save();
