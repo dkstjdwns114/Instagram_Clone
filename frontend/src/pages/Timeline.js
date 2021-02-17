@@ -80,7 +80,7 @@ class TimelinePage extends Component {
       .then((resData) => {
         this.setState((prevState) => {
           const updatedMedias = [...prevState.medias];
-          updatedMedias.push({
+          updatedMedias.unshift({
             _id: resData.data.createMedia._id,
             media_url: resData.data.createMedia.media_url,
             media_caption: resData.data.createMedia.media_caption,
@@ -154,7 +154,7 @@ class TimelinePage extends Component {
         return res.json();
       })
       .then((resData) => {
-        const medias = resData.data.medias;
+        const medias = resData.data.medias.reverse();
         this.setState({ medias: medias, isLoading: false });
       })
       .catch((err) => {

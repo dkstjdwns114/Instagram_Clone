@@ -3,7 +3,7 @@ import React from "react";
 import TimelineItem from "./TimelineItem/TimelineItem";
 
 const timelineList = (props) => {
-  const medias = props.medias.reverse().map((media) => {
+  const medias = props.medias.map((media) => {
     return (
       <TimelineItem
         mediaId={media._id}
