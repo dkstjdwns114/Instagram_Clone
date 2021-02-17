@@ -48,6 +48,7 @@ class PostDetail extends Component {
             creator {
               username
             }
+            date
             media_comment
           }
           likeds {
@@ -336,15 +337,25 @@ class PostDetail extends Component {
   };
 
   convertTime = (date) => {
+    let s;
     let timestamp = date * 1;
     let d = new Date(timestamp);
-    let s =
-      this.leadingZeros(d.getFullYear(), 4) +
-      "년 " +
-      this.leadingZeros(d.getMonth() + 1, 2) +
-      "월 " +
-      this.leadingZeros(d.getDate(), 2) +
-      "일";
+    let now = new Date();
+
+    d.getFullYear() === now.getFullYear()
+      ? (s =
+          this.leadingZeros(d.getMonth() + 1, 2) +
+          "월 " +
+          this.leadingZeros(d.getDate(), 2) +
+          "일")
+      : (s =
+          this.leadingZeros(d.getFullYear(), 4) +
+          "년 " +
+          this.leadingZeros(d.getMonth() + 1, 2) +
+          "월 " +
+          this.leadingZeros(d.getDate(), 2) +
+          "일");
+
     return s;
   };
 
@@ -385,6 +396,7 @@ class PostDetail extends Component {
               date={this.convertTime(this.state.date)}
               mediaId={this.state.mediaId}
               contextToken={this.context.token}
+              convertTime={this.convertTime}
             />
             {this.state.isModal && <Backdrop />}
           </>

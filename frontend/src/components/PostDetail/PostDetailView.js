@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 const PostDetailView = (props) => {
-  const [commentareaElRef, setCommenttextElRef] = useState(React.createRef());
+  const [commentareaElRef, setCommenttextElRef] = useState(null);
   const [token, setAccessToken] = useState(null);
   const [comments, setComments] = useState([]);
 
@@ -9,6 +9,7 @@ const PostDetailView = (props) => {
     let access_token = localStorage.getItem("access_token");
     setAccessToken(access_token);
     setComments(props.comments.reverse());
+    setCommenttextElRef(React.createRef());
   }, []);
 
   const commentMediaHandler = (e) => {
@@ -52,7 +53,8 @@ const PostDetailView = (props) => {
         setComments((state) => [
           {
             creator: { username: createCommentUsername },
-            media_comment: text
+            media_comment: text,
+            date: new Date().getTime()
           },
           ...state
         ]);
@@ -61,6 +63,26 @@ const PostDetailView = (props) => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const commentTimeSet = (date) => {
+    let currentTime = new Date().getTime();
+    let time = currentTime - Number(date);
+    let gapTime = Math.floor(time / 1000);
+    let txt;
+    if (gapTime < 60) {
+      txt = gapTime + "초 전";
+    } else if (60 <= gapTime && gapTime < 3600) {
+      txt = Math.floor(gapTime / 60) + "분 전";
+    } else if (3600 <= gapTime && gapTime < 86400) {
+      txt = Math.floor(gapTime / 3600) + "시간 전";
+    } else if (86400 <= gapTime && gapTime < 604800) {
+      txt = Math.floor(gapTime / 86400) + "일 전";
+    } else {
+      txt = props.convertTime(date);
+    }
+
+    return txt;
   };
 
   return (
@@ -111,7 +133,7 @@ const PostDetailView = (props) => {
                     <span className="social-post-copy">
                       {comment.media_comment}
                     </span>
-                    <time>123123</time>
+                    <time>{commentTimeSet(comment.date)}</time>
                   </div>
                 </div>
               );
