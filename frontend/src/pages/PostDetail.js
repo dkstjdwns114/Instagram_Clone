@@ -95,6 +95,9 @@ class PostDetail extends Component {
         if (resData.data.isLike) {
           this.setState({ likedId: resData.data.isLike._id });
         }
+        if (resData.data.isSave) {
+          this.setState({ savedId: resData.data.isSave._id });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -113,7 +116,6 @@ class PostDetail extends Component {
         }
         `
     };
-
     fetch("http://localhost:8000/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
@@ -131,6 +133,38 @@ class PostDetail extends Component {
         if (resData.data.isLike) {
           this.setState({ likedId: resData.data.isLike._id });
         }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  getSavedId = () => {
+    let userId = localStorage.getItem("userId");
+    const requestBody = {
+      query: `
+        query {
+          isSave(mediaId: "${this.state.mediaId}", userId: "${userId}"){
+            _id
+          }
+        }
+        `
+    };
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        this.setState({ savedId: resData.data.isSave._id });
       })
       .catch((err) => {
         console.log(err);
@@ -225,6 +259,70 @@ class PostDetail extends Component {
     this.setState({
       isSaved: !this.state.isSaved
     });
+    if (!this.state.isSaved) {
+      const requestBody = {
+        query: `
+          mutation {
+            savedMedia(mediaId: "${this.state.mediaId}") {
+              _id
+            }
+          }
+        `
+      };
+      fetch("http://localhost:8000/graphql", {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.context.token
+        }
+      })
+        .then((res) => {
+          if (res.status !== 200 && res.status !== 201) {
+            throw new Error("Failed!");
+          }
+          return res.json();
+        })
+        .then((resData) => {
+          console.log(resData);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      this.getSavedId();
+      console.log(this.state.savedId);
+      const requestBody = {
+        query: `
+          mutation {
+            cancelSaved(savedId: "${this.state.savedId}"){
+              _id
+            }
+          }
+        `
+      };
+      fetch("http://localhost:8000/graphql", {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.context.token
+        }
+      })
+        .then((res) => {
+          if (res.status !== 200 && res.status !== 201) {
+            throw new Error("Failed!");
+          }
+          return res.json();
+        })
+        .then((resData) => {
+          console.log(resData);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      console.log("저장 취소");
+    }
   };
 
   commentFocus = () => {
