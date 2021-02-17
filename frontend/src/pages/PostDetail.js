@@ -3,6 +3,7 @@ import Backdrop from "../components/Backdrop/Backdrop";
 import LikeModal from "../components/Modal/LikeModal";
 import PostDetailView from "../components/PostDetail/PostDetailView";
 import Spinner from "../components/Spinner/Spinner";
+import AuthContext from "../context/auth-context";
 
 import "./PostDetail.css";
 
@@ -18,8 +19,12 @@ class PostDetail extends Component {
     media_caption: null,
     media_url: null,
     date: null,
-    isModal: false
+    isModal: false,
+    likedId: null,
+    savedId: null
   };
+
+  static contextType = AuthContext;
 
   componentDidMount() {
     this.fetchMedias();
@@ -51,8 +56,12 @@ class PostDetail extends Component {
             }
           }
         }
-        isLike(mediaId: "${this.state.mediaId}", userId: "${userId}")
-        isSave(mediaId: "${this.state.mediaId}", userId: "${userId}")
+        isLike(mediaId: "${this.state.mediaId}", userId: "${userId}"){
+          _id
+        }
+        isSave(mediaId: "${this.state.mediaId}", userId: "${userId}"){
+          _id
+        }
       }
       `
     };
@@ -83,6 +92,9 @@ class PostDetail extends Component {
           isLiked: resData.data.isLike,
           isSaved: resData.data.isSave
         });
+        if (resData.data.isLike) {
+          this.setState({ likedId: resData.data.isLike._id });
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -90,10 +102,123 @@ class PostDetail extends Component {
       });
   }
 
+  getLikedId = () => {
+    let userId = localStorage.getItem("userId");
+    const requestBody = {
+      query: `
+        query {
+          isLike(mediaId: "${this.state.mediaId}", userId: "${userId}"){
+            _id
+          }
+        }
+        `
+    };
+
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        if (resData.data.isLike) {
+          this.setState({ likedId: resData.data.isLike._id });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   likeMediaHandler = () => {
     this.setState({
       isLiked: !this.state.isLiked
     });
+    if (!this.state.isLiked) {
+      const requestBody = {
+        query: `
+          mutation {
+            likedMedia(mediaId: "${this.state.mediaId}") {
+              _id
+              user {
+                username
+              }
+            }
+          }
+        `
+      };
+      fetch("http://localhost:8000/graphql", {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.context.token
+        }
+      })
+        .then((res) => {
+          if (res.status !== 200 && res.status !== 201) {
+            throw new Error("Failed!");
+          }
+          return res.json();
+        })
+        .then((resData) => {
+          this.setState({ likedId: resData.data.likedMedia._id });
+          this.setState((prevState) => {
+            const updatedLikeds = [...prevState.likeds];
+            updatedLikeds.push({
+              user: {
+                username: resData.data.likedMedia.user.username
+              }
+            });
+            return { likeds: updatedLikeds };
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      this.getLikedId();
+      const requestBody = {
+        query: `
+          mutation {
+            cancelLiked(likedId: "${this.state.likedId}"){
+              _id
+            }
+          }
+        `
+      };
+      fetch("http://localhost:8000/graphql", {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + this.context.token
+        }
+      })
+        .then((res) => {
+          if (res.status !== 200 && res.status !== 201) {
+            throw new Error("Failed!");
+          }
+          return res.json();
+        })
+        .then((resData) => {
+          this.setState((prevState) => {
+            const currentLikeds = [...prevState.likeds];
+            currentLikeds.pop();
+            return { likeds: currentLikeds };
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   saveMediaHandler = () => {
