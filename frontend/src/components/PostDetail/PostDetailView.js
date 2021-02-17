@@ -11,7 +11,9 @@ const PostDetailView = (props) => {
     setComments(props.comments.reverse());
   }, []);
 
-  const commentMediaHandler = () => {
+  const commentMediaHandler = (e) => {
+    e.preventDefault();
+
     let text = commentareaElRef.current.value;
 
     if (text.trim().length === 0) {
@@ -143,19 +145,14 @@ const PostDetailView = (props) => {
             <time>{props.date}</time>
           </div>
           <div className="comment-add">
-            <form>
+            <form onSubmit={commentMediaHandler}>
               <input
                 type="text"
                 id="commentarea"
                 placeholder="Add a comment..."
                 ref={commentareaElRef}
               />
-              <input
-                type="button"
-                className="btn"
-                value="SUBMIT"
-                onClick={commentMediaHandler}
-              />
+              <input type="submit" className="btn" value="SUBMIT" />
             </form>
           </div>
         </div>
