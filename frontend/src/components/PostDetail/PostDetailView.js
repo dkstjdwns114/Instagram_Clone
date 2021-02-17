@@ -1,6 +1,66 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-const postDetailView = (props) => {
+const PostDetailView = (props) => {
+  const [commentareaElRef, setCommenttextElRef] = useState(React.createRef());
+  const [token, setAccessToken] = useState(null);
+  const [comments, setComments] = useState([]);
+
+  useEffect(() => {
+    let access_token = localStorage.getItem("access_token");
+    setAccessToken(access_token);
+    setComments(props.comments.reverse());
+  }, []);
+
+  const commentMediaHandler = () => {
+    let text = commentareaElRef.current.value;
+
+    if (text.trim().length === 0) {
+      commentareaElRef.current.value = "";
+      return;
+    }
+
+    const requestBody = {
+      query: `
+        mutation {
+          createComment(commentInput: {mediaId: "${props.mediaId}", media_comment: "${text}"}){
+            _id
+            creator {
+              username
+            }
+          }
+        }
+      `
+    };
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      }
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        let createCommentUsername = resData.data.createComment.creator.username;
+        setComments((state) => [
+          {
+            creator: { username: createCommentUsername },
+            media_comment: text
+          },
+          ...state
+        ]);
+        commentareaElRef.current.value = "";
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <article className="social-article">
       <div className="social-left-col">
@@ -33,7 +93,7 @@ const postDetailView = (props) => {
         </div>
         <div className="social-comments-wrap">
           <div className="social-post">
-            {props.comments.map((comment, idx) => {
+            {comments.map((comment, idx) => {
               return (
                 <div key={idx} className="social-header">
                   <a href="/gllcollege/" className="social-profile-img">
@@ -88,8 +148,14 @@ const postDetailView = (props) => {
                 type="text"
                 id="commentarea"
                 placeholder="Add a comment..."
+                ref={commentareaElRef}
               />
-              <input type="button" className="btn" value="SUBMIT" />
+              <input
+                type="button"
+                className="btn"
+                value="SUBMIT"
+                onClick={commentMediaHandler}
+              />
             </form>
           </div>
         </div>
@@ -98,4 +164,4 @@ const postDetailView = (props) => {
   );
 };
 
-export default postDetailView;
+export default PostDetailView;
