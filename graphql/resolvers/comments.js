@@ -20,15 +20,14 @@ module.exports = {
     }
   },
   createComment: async (args, req) => {
-    // if (!req.isAuth) {
-    //   throw new Error("Unauthenticated!");
-    // }
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
     const fetchedMedia = await Media.findOne({
       _id: args.commentInput.mediaId
     });
     const commented = new Commented({
-      // creator: req.userId,
-      creator: "6017c04392f52159c47c2ea5",
+      creator: req.userId,
       media_comment: args.commentInput.media_comment,
       date: +new Date().getTime(),
       media: fetchedMedia
@@ -57,13 +56,11 @@ module.exports = {
       const commented = await Commented.findById(args.commentId).populate(
         "media"
       );
-
       const media = {
         ...commented.media._doc,
         _id: commented.media.id,
         creator: User.bind(this, commented.media._doc.creator)
       };
-
       const commentMedia = await Media.findById(media._id);
       await Commented.deleteOne({ _id: args.commentId });
       await commentMedia.commentTexts.pull({ _id: args.commentId });

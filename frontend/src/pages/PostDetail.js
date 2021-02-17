@@ -291,7 +291,6 @@ class PostDetail extends Component {
         });
     } else {
       this.getSavedId();
-      console.log(this.state.savedId);
       const requestBody = {
         query: `
           mutation {
@@ -321,7 +320,6 @@ class PostDetail extends Component {
         .catch((err) => {
           console.log(err);
         });
-      console.log("저장 취소");
     }
   };
 
@@ -385,6 +383,8 @@ class PostDetail extends Component {
               likeds={this.state.likeds}
               likeModal={this.likeModal}
               date={this.convertTime(this.state.date)}
+              mediaId={this.state.mediaId}
+              contextToken={this.context.token}
             />
             {this.state.isModal && <Backdrop />}
           </>

@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 
 import Modal from "../components/Modal/Modal";
 import Backdrop from "../components/Backdrop/Backdrop";
@@ -219,8 +218,6 @@ class TimelinePage extends Component {
         console.log(err);
       });
   };
-
-  commentMediaHandler = () => {};
 
   render() {
     return (

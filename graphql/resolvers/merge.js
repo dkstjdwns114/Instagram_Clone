@@ -106,7 +106,7 @@ const transformComment = (result) => {
   return {
     ...result._doc,
     _id: result.id,
-    creator: User.bind(this, result._doc.creator),
+    creator: user.bind(this, result._doc.creator),
     media: singleMedia.bind(this, result._doc.media)
   };
 };
