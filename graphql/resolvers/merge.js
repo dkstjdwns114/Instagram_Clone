@@ -1,7 +1,17 @@
+const DataLoader = require("dataloader");
+
 const Media = require("../../models/media");
 const User = require("../../models/user");
 const Comment = require("../../models/comment");
 const Like = require("../../models/liked");
+
+const mediaLoader = new DataLoader((mediaIds) => {
+  return medias(mediaIds);
+});
+
+const userLoader = new DataLoader((userIds) => {
+  return User.find({ _id: { $in: userIds } });
+});
 
 const medias = async (mediaIds) => {
   try {
@@ -23,12 +33,8 @@ const medias = async (mediaIds) => {
 
 const singleMedia = async (mediaId) => {
   try {
-    const media = await Media.findById(mediaId);
-    return {
-      ...media._doc,
-      _id: media.id,
-      creator: user.bind(this, media.creator)
-    };
+    const media = await mediaLoader.load(mediaId.toString());
+    return media;
   } catch (err) {
     throw err;
   }
@@ -36,11 +42,11 @@ const singleMedia = async (mediaId) => {
 
 const user = async (userId) => {
   try {
-    const user = await User.findById(userId);
+    const user = await userLoader.load(userId.toString());
     return {
       ...user._doc,
       _id: user.id,
-      createdMedias: medias.bind(this, user._doc.createdMedias)
+      createdMedias: () => mediaLoader.loadMany(this, user._doc.createdMedias)
     };
   } catch (err) {
     throw err;
