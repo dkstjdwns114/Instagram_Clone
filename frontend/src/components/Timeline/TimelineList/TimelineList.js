@@ -12,6 +12,8 @@ const timelineList = (props) => {
         mediaLiked={media.likeds}
         commentCnt={media.commentTexts.length}
         creatorId={media.creator._id}
+        creatorProfile={media.creator.profile_pic_url}
+        creatorName={media.creator.username}
         userId={props.authUserId}
       />
     );

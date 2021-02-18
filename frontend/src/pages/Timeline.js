@@ -121,6 +121,7 @@ class TimelinePage extends Component {
             creator {
               _id
               username
+              profile_pic_url
             }
             commentTexts {
               _id

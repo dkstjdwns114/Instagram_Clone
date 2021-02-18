@@ -13,6 +13,7 @@ class PostDetail extends Component {
     comments: [],
     likeds: [],
     creatorname: null,
+    creatorProfile: null,
     isLoading: false,
     isLiked: false,
     isSaved: false,
@@ -43,10 +44,12 @@ class PostDetail extends Component {
           date
           creator {
             username
+            profile_pic_url
           }
           commentTexts {
             creator {
               username
+              profile_pic_url
             }
             date
             media_comment
@@ -54,6 +57,7 @@ class PostDetail extends Component {
           likeds {
             user {
               username
+              profile_pic_url
             }
           }
         }
@@ -81,12 +85,14 @@ class PostDetail extends Component {
         return res.json();
       })
       .then((resData) => {
+        console.log(resData);
         const media = resData.data.media;
         this.setState({
           comments: media.commentTexts,
           likeds: media.likeds,
           isLoading: false,
           creatorname: media.creator.username,
+          creatorProfile: media.creator.profile_pic_url,
           media_caption: media.media_caption,
           media_url: media.media_url,
           date: media.date,
@@ -184,6 +190,7 @@ class PostDetail extends Component {
               _id
               user {
                 username
+                profile_pic_url
               }
             }
           }
@@ -384,6 +391,7 @@ class PostDetail extends Component {
             <PostDetailView
               media_url={this.state.media_url}
               creator_name={this.state.creatorname}
+              creator_profile={this.state.creatorProfile}
               media_caption={this.state.media_caption}
               comments={this.state.comments}
               commentFocus={this.commentFocus}

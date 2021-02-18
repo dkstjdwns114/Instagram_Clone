@@ -41,8 +41,8 @@ const likeModal = (props) => (
                 <div className="social-header" key={like.user.username}>
                   <a href="/gllcollege/" className="social-profile-img">
                     <img
-                      src="https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/s320x320/131994802_214284176856542_767716126641019031_n.jpg?_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=PDorBUdEWtwAX9sYsr4&tp=1&oh=cf29f6436cf30c756daf0b3772249b4e&oe=60534882"
-                      alt="gllcollege's profile picture"
+                      src={like.user.profile_pic_url}
+                      alt={like.user.username + "님의 프로필 사진"}
                     />
                   </a>
                   <div className="social-follow">
