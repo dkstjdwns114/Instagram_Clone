@@ -11,14 +11,18 @@ class TimelinePage extends Component {
   state = {
     creating: false,
     medias: [],
-    isLoading: false
+    isLoading: false,
+    fileInputState: "",
+    previewSource: "",
+    isGetImage: undefined,
+    imageUrl: ""
   };
 
   static contextType = AuthContext;
 
   constructor(props) {
     super(props);
-    this.imagesElRef = React.createRef();
+    this.imageElRef = React.createRef();
     this.captionElRef = React.createRef();
   }
 
@@ -30,19 +34,38 @@ class TimelinePage extends Component {
     this.setState({ creating: true });
   };
 
-  modalConfirmHandler = () => {
-    this.setState({ creating: false });
-    const images = this.imagesElRef.current.value;
-    const caption = this.captionElRef.current.value;
-
-    if (images.trim().length === 0) {
-      return;
+  loadImage = async () => {
+    try {
+      const res = await fetch("/api/image");
+      while (this.state.isGetImage === undefined) {
+        const data = await res.json();
+        this.setState({ isGetImage: data.url });
+      }
+      return this.state.isGetImage;
+    } catch (error) {
+      console.error(error);
     }
+  };
+
+  modalConfirmHandler = async () => {
+    const caption = this.captionElRef.current.value;
+    if (!this.state.previewSource || caption.length === 0) return;
+
+    this.setState({ creating: false });
+    this.uploadImage(this.state.previewSource);
+
+    await this.loadImage()
+      .then((res) => {
+        this.setState({ imageUrl: res });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
     const requestBody = {
       query: `
         mutation {
-          createMedia(mediaInput: {media_url: "${images}", media_caption: "${caption}"}) {
+          createMedia(mediaInput: {media_url: "${this.state.imageUrl}", media_caption: "${caption}"}) {
             _id
             media_url
             media_caption
@@ -101,6 +124,31 @@ class TimelinePage extends Component {
     this.setState({
       creating: false
     });
+  };
+
+  handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    this.previewFile(file);
+  };
+
+  previewFile = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      this.setState({ previewSource: reader.result });
+    };
+  };
+
+  uploadImage = async (base64EncodedImage) => {
+    try {
+      await fetch("http://localhost:8000/api/upload", {
+        method: "POST",
+        body: JSON.stringify({ data: base64EncodedImage }),
+        headers: { "Content-type": "application/json" }
+      });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   fetchMedias() {
@@ -174,8 +222,21 @@ class TimelinePage extends Component {
           >
             <form>
               <div className="form-control">
-                <label htmlFor="images">사진</label>
-                <input type="text" id="images" ref={this.imagesElRef} />
+                <label htmlFor="image">사진</label>
+                <input
+                  type="file"
+                  id="image"
+                  ref={this.imageElRef}
+                  onChange={this.handleFileInputChange}
+                  value={this.state.fileInputState}
+                />
+                {this.state.previewSource && (
+                  <img
+                    src={this.state.previewSource}
+                    alt="chosen"
+                    style={{ height: "300px" }}
+                  />
+                )}
               </div>
               <div className="form-control">
                 <label htmlFor="caption">설명</label>
