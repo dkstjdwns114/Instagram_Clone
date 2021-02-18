@@ -216,7 +216,8 @@ class PostDetail extends Component {
             const updatedLikeds = [...prevState.likeds];
             updatedLikeds.push({
               user: {
-                username: resData.data.likedMedia.user.username
+                username: resData.data.likedMedia.user.username,
+                profile_pic_url: resData.data.likedMedia.user.profile_pic_url
               }
             });
             return { likeds: updatedLikeds };

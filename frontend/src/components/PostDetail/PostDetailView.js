@@ -51,9 +51,14 @@ const PostDetailView = (props) => {
       })
       .then((resData) => {
         let createCommentUsername = resData.data.createComment.creator.username;
+        let createCommentUserProfile =
+          resData.data.createComment.creator.profile_pic_url;
         setComments((state) => [
           {
-            creator: { username: createCommentUsername },
+            creator: {
+              username: createCommentUsername,
+              profile_pic_url: createCommentUserProfile
+            },
             media_comment: text,
             date: new Date().getTime()
           },
