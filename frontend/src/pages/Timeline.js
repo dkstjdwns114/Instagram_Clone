@@ -11,9 +11,7 @@ class TimelinePage extends Component {
   state = {
     creating: false,
     medias: [],
-    isLoading: false,
-    selectedLikeMedia: null,
-    selectedCommentMedia: null
+    isLoading: false
   };
 
   static contextType = AuthContext;
@@ -41,9 +39,6 @@ class TimelinePage extends Component {
       return;
     }
 
-    const post = { images, caption };
-    console.log(post);
-
     const requestBody = {
       query: `
         mutation {
@@ -55,6 +50,7 @@ class TimelinePage extends Component {
             creator {
               _id
               username
+              profile_pic_url
             }
           }
         }
@@ -87,7 +83,8 @@ class TimelinePage extends Component {
             date: resData.data.createMedia.date,
             creator: {
               _id: this.context.userId,
-              username: resData.data.createMedia.creator.username
+              username: resData.data.createMedia.creator.username,
+              profile_pic_url: resData.data.createMedia.creator.profile_pic_url
             },
             commentTexts: [],
             likeds: []
@@ -102,9 +99,7 @@ class TimelinePage extends Component {
 
   modalCancelHandler = () => {
     this.setState({
-      creating: false,
-      selectedLikeMedia: null,
-      selectedCommentMedia: null
+      creating: false
     });
   };
 
@@ -164,62 +159,6 @@ class TimelinePage extends Component {
       });
   }
 
-  showLikeDetailHandler = (mediaId) => {
-    this.setState((prevState) => {
-      const selectedLikeMedia = prevState.medias.find((e) => e._id === mediaId);
-      return { selectedLikeMedia: selectedLikeMedia };
-    });
-  };
-
-  showCommentDetailHandler = (mediaId) => {
-    this.setState((prevState) => {
-      const selectedCommentMedia = prevState.medias.find(
-        (e) => e._id === mediaId
-      );
-      return { selectedCommentMedia: selectedCommentMedia };
-    });
-  };
-
-  saveMediaHandler = () => {};
-
-  likeMediaHandler = () => {
-    if (!this.context.token) {
-      this.setState({ selectedLikeMedia: null });
-      return;
-    }
-    const requestBody = {
-      query: `
-        mutation {
-          likedMedia(mediaId: "${this.state.selectedLikeMedia._id}") {
-            _id
-          }
-        }
-      `
-    };
-
-    fetch("http://localhost:8000/graphql", {
-      method: "POST",
-      body: JSON.stringify(requestBody),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + this.context.token
-      }
-    })
-      .then((res) => {
-        if (res.status !== 200 && res.status !== 201) {
-          throw new Error("Failed!");
-        }
-        return res.json();
-      })
-      .then((resData) => {
-        console.log(resData);
-        this.setState({ selectedLikeMedia: null });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   render() {
     return (
       <>
@@ -231,7 +170,7 @@ class TimelinePage extends Component {
             canConfirm
             onCancel={this.modalCancelHandler}
             onConfirm={this.modalConfirmHandler}
-            confirmText={this.context.token ? "Save" : "Confirm"}
+            confirmText={this.context.token ? "Upload" : "Confirm"}
           >
             <form>
               <div className="form-control">
@@ -259,8 +198,6 @@ class TimelinePage extends Component {
           <TimelineList
             medias={this.state.medias}
             authUserId={this.context.userId}
-            onLikeDetail={this.showLikeDetailHandler}
-            onCommentDetail={this.showCommentDetailHandler}
           />
         )}
       </>
