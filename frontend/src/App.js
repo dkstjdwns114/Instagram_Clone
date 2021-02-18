@@ -57,9 +57,9 @@ class App extends Component {
               {!this.state.token && <Route path="/auth" component={AuthPage} />}
               <Route path="/timeline" component={TimelinePage} />
               <Route path="/test" component={TestPage} />
+              <Route path="/p/:id" component={PostDetail} />
               {this.state.token && (
                 <>
-                  <Route path="/p/:id" component={PostDetail} />
                   <Route path="/saved" component={SavedPage} />
                 </>
               )}
