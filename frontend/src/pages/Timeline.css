@@ -74,3 +74,13 @@
 .social-header .social-follow .SPAN_13 {
   margin: 0px 4px;
 }
+.social-header .social-name {
+  color: #262626;
+  text-decoration: none solid #262626;
+  text-size-adjust: 100%;
+  font-weight: 550;
+  margin: 0px 0px 0px -5px;
+  outline: #262626 none 0px;
+  overflow: hidden;
+  padding: 0px 0px 0px 5px;
+}
