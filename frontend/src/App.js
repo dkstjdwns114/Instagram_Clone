@@ -14,25 +14,29 @@ import "./App.css";
 class App extends Component {
   state = {
     token: null,
-    userId: null
+    userId: null,
+    userName: null
   };
 
   componentDidMount() {
     let token = localStorage.getItem("access_token");
     let userId = localStorage.getItem("userId");
-    this.setState({ token: token, userId: userId });
+    let userName = localStorage.getItem("userName");
+    this.setState({ token: token, userId: userId, userName: userName });
   }
 
-  login = (token, userId, tokenExpiration) => {
+  login = (token, userId, tokenExpiration, userName) => {
     this.setState({ token: token, userId: userId });
     localStorage.setItem("access_token", token);
     localStorage.setItem("userId", userId);
+    localStorage.setItem("userName", userName);
   };
 
   logout = () => {
     this.setState({ token: null, userId: null });
     localStorage.removeItem("access_token");
     localStorage.removeItem("userId");
+    localStorage.removeItem("userName");
   };
 
   render() {
@@ -42,6 +46,7 @@ class App extends Component {
           value={{
             token: localStorage.getItem("access_token"),
             userId: localStorage.getItem("userId"),
+            userName: localStorage.getItem("userName"),
             login: this.login,
             logout: this.logout
           }}
@@ -55,7 +60,7 @@ class App extends Component {
             <Route path="/timeline" component={TimelinePage} />
             <Route path="/test" component={TestPage} />
             <Route path="/p/:id" component={PostDetail} />
-            <Route path="/mypage" component={ProfileDetail} />
+            <Route path="/profile/:username" component={ProfileDetail} />
             {/* 로그인 안되어있을경우 튕겨내는 코드 */}
             {this.state.token && <></>}
             {/* -------------------------------- */}

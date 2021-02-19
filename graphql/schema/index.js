@@ -44,6 +44,7 @@ type AuthData {
   userId: ID!
   token: String!
   tokenExpiration: Int!
+  userName: String!
 }
 
 input MediaInput {
