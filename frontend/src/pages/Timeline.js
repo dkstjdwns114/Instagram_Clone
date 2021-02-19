@@ -7,9 +7,9 @@ import Spinner from "../components/Spinner/Spinner";
 import AuthContext from "../context/auth-context";
 // import "./Timeline.css";
 
-import "./Common.css";
-import "./Main.css";
-import "./Reset.css";
+import "./css/Common.css";
+import "./css/Main.css";
+import "./css/Reset.css";
 
 import TimelineRight from "../components/Timeline/TimelineRight";
 

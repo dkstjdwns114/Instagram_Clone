@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import "./ProfileDetail.css";
+import "./css/ProfileDetail.css";
 
 class ProfileDetail extends Component {
   render() {
