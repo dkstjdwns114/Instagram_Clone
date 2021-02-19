@@ -185,8 +185,8 @@ class PostDetail extends Component {
     if (!this.state.isLiked) {
       const requestBody = {
         query: `
-          mutation {
-            likedMedia(mediaId: "${this.state.mediaId}") {
+          mutation LikedMedia($mediaId: ID!){
+            likedMedia(mediaId: $mediaId) {
               _id
               user {
                 username
@@ -194,7 +194,10 @@ class PostDetail extends Component {
               }
             }
           }
-        `
+        `,
+        variables: {
+          mediaId: this.state.mediaId
+        }
       };
       fetch("http://localhost:8000/graphql", {
         method: "POST",
@@ -230,12 +233,15 @@ class PostDetail extends Component {
       this.getLikedId();
       const requestBody = {
         query: `
-          mutation {
-            cancelLiked(likedId: "${this.state.likedId}"){
+          mutation CancelLiked($likedId: ID!) {
+            cancelLiked(likedId: $likedId){
               _id
             }
           }
-        `
+        `,
+        variables: {
+          likedId: this.state.likedId
+        }
       };
       fetch("http://localhost:8000/graphql", {
         method: "POST",
@@ -271,12 +277,15 @@ class PostDetail extends Component {
     if (!this.state.isSaved) {
       const requestBody = {
         query: `
-          mutation {
-            savedMedia(mediaId: "${this.state.mediaId}") {
+          mutation SavedMedia($mediaId: ID!) {
+            savedMedia(mediaId: $mediaId) {
               _id
             }
           }
-        `
+        `,
+        variables: {
+          mediaId: this.state.mediaId
+        }
       };
       fetch("http://localhost:8000/graphql", {
         method: "POST",
@@ -302,12 +311,15 @@ class PostDetail extends Component {
       this.getSavedId();
       const requestBody = {
         query: `
-          mutation {
-            cancelSaved(savedId: "${this.state.savedId}"){
+          mutation CancelSaved($savedId: ID!) {
+            cancelSaved(savedId: $savedId){
               _id
             }
           }
-        `
+        `,
+        variables: {
+          savedId: this.state.savedId
+        }
       };
       fetch("http://localhost:8000/graphql", {
         method: "POST",

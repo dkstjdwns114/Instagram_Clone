@@ -15,7 +15,8 @@ class TimelinePage extends Component {
     fileInputState: "",
     previewSource: "",
     isGetImage: undefined,
-    imageUrl: ""
+    imageUrl: "",
+    prevIsGetImage: ""
   };
 
   static contextType = AuthContext;
@@ -36,8 +37,11 @@ class TimelinePage extends Component {
 
   loadImage = async () => {
     try {
-      const res = await fetch("/api/image");
-      while (this.state.isGetImage === undefined) {
+      while (
+        this.state.isGetImage === undefined ||
+        this.state.isGetImage === this.state.prevIsGetImage
+      ) {
+        const res = await fetch("/api/image");
         const data = await res.json();
         this.setState({ isGetImage: data.url });
       }
@@ -62,10 +66,19 @@ class TimelinePage extends Component {
         console.log(error);
       });
 
+    if (this.state.imageUrl === undefined) {
+      await this.loadImage()
+        .then((res) => {
+          this.setState({ imageUrl: res });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
     const requestBody = {
       query: `
-        mutation {
-          createMedia(mediaInput: {media_url: "${this.state.imageUrl}", media_caption: "${caption}"}) {
+        mutation CreateMedia($media_url: String!, $media_caption: String!) {
+          createMedia(mediaInput: {media_url: $media_url, media_caption: $media_caption}) {
             _id
             media_url
             media_caption
@@ -77,7 +90,11 @@ class TimelinePage extends Component {
             }
           }
         }
-      `
+      `,
+      variables: {
+        media_url: this.state.imageUrl,
+        media_caption: caption
+      }
     };
 
     const token = this.context.token;
@@ -97,6 +114,7 @@ class TimelinePage extends Component {
         return res.json();
       })
       .then((resData) => {
+        this.setState({ prevIsGetImage: resData.data.createMedia.media_url });
         this.setState((prevState) => {
           const updatedMedias = [...prevState.medias];
           updatedMedias.unshift({

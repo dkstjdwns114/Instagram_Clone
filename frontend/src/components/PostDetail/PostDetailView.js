@@ -24,8 +24,8 @@ const PostDetailView = (props) => {
 
     const requestBody = {
       query: `
-        mutation {
-          createComment(commentInput: {mediaId: "${props.mediaId}", media_comment: "${text}"}){
+        mutation CreateComment($mediaId: ID!, $media_comment: String!) {
+          createComment(commentInput: {mediaId: $mediaId, media_comment: $media_comment}){
             _id
             creator {
               username
@@ -33,7 +33,11 @@ const PostDetailView = (props) => {
             }
           }
         }
-      `
+      `,
+      variables: {
+        mediaId: props.mediaId,
+        media_comment: text
+      }
     };
     fetch("http://localhost:8000/graphql", {
       method: "POST",

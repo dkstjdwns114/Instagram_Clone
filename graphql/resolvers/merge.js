@@ -46,7 +46,7 @@ const user = async (userId) => {
     return {
       ...user._doc,
       _id: user.id,
-      createdMedias: () => mediaLoader.loadMany(this, user._doc.createdMedias)
+      createdMedias: () => mediaLoader.loadMany(user._doc.createdMedias)
     };
   } catch (err) {
     throw err;
