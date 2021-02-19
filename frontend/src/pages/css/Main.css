@@ -54,7 +54,7 @@
 }
 .feed_info {
   position: relative;
-  padding: 10px 20px;
+  padding: 10px;
 }
 .feed_info .feed_state {
   display: flex;
@@ -63,6 +63,7 @@
   margin-bottom: 10px;
 }
 .feed_comments {
+  padding: 0px 10px;
 }
 .feed_comments .feed_likes {
   display: flex;

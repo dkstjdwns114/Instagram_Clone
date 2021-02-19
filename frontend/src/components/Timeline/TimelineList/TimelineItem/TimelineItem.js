@@ -14,10 +14,7 @@ const timelineItem = (props) => (
       </div>
       <div className="profile_add link_list">
         <button type="button" className="state_btn">
-          <img
-            src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/more.png"
-            alt=""
-          />
+          <span className="icon-dots"></span>
         </button>
       </div>
     </div>
@@ -25,41 +22,21 @@ const timelineItem = (props) => (
       <img key={props.mediaId} src={props.mediaUrl} alt={props.mediaUrl} />
     </div>
     <div className="feed_info">
-      <div className="feed_state">
-        <ul className="link_list">
-          <li>
-            <button type="button" className="state_btn">
-              <img
-                src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/heart.png"
-                alt="like_img"
-              />
-            </button>
-          </li>
-          <li>
-            <button type="button" className="state_btn">
-              <img
-                src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/comment.png"
-                alt="comment_img"
-              />
-            </button>
-          </li>
-          <li>
-            <button type="button" className="state_btn">
-              <img
-                src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/share.png"
-                alt="share_img"
-              />
-            </button>
-          </li>
-        </ul>
-        <div className="link_list">
-          <button type="button" className="state_btn">
-            <img
-              src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/bookmark.png"
-              alt="bookmark_img"
-            />
+      {/* new */}
+      <div className="social-icons">
+        <section className="icons-section">
+          <button className="icons-button" onClick={null}>
+            <span className="icon1"></span>
+            {/* <span className="liked"></span> */}
           </button>
-        </div>
+          <button className="icons-button" onClick={null}>
+            <span className="icon2"></span>
+          </button>
+          <button className="icons-button" onClick={null}>
+            <span className="icon4"></span>
+            {/* <span className="saved"></span> */}
+          </button>
+        </section>
       </div>
       <div className="feed_comments">
         <div className="feed_likes comments_margin">
