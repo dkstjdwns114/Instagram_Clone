@@ -53,7 +53,6 @@ class App extends Component {
           }}
         >
           <MainNavigation />
-          {/* <main className="main-content"> */}
           <Switch>
             {this.state.token && <Redirect from="/" to="/timeline" exact />}
             {this.state.token && <Redirect from="/auth" to="/timeline" exact />}
@@ -64,11 +63,9 @@ class App extends Component {
             <Route path="/profile/:username" component={ProfileDetail} />
             {/* 로그인 안되어있을경우 튕겨내는 코드 */}
             {this.state.token && <></>}
-            {/* -------------------------------- */}
             {this.state.token && <Route path="/test" component={TestPage} />}
             {!this.state.token && <Redirect to="/auth" exact />}
           </Switch>
-          {/* </main> */}
         </AuthContext.Provider>
       </BrowserRouter>
     );
