@@ -303,6 +303,7 @@ class PostDetail extends Component {
         })
         .then((resData) => {
           console.log(resData);
+          this.setState({ savedId: resData.data.savedMedia._id });
         })
         .catch((err) => {
           console.log(err);
