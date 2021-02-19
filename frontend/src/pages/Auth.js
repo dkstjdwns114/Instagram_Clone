@@ -1,23 +1,23 @@
 import React, { Component } from "react";
 
+import "./css/Auth.css";
 import AuthContext from "../context/auth-context";
 
-import "./css/Auth.css";
-
 class AuthPage extends Component {
+  state = {
+    isExist: false,
+    isLogin: true,
+    isWrong: false
+  };
+
+  static contextType = AuthContext;
+
   constructor(props) {
     super(props);
     this.emailEl = React.createRef();
     this.passwordEl = React.createRef();
     this.nicknameEl = React.createRef();
-    this.state = {
-      isExist: false,
-      isLogin: true,
-      isWrong: false
-    };
   }
-
-  static contextType = AuthContext;
 
   switchModelHandler = () => {
     this.setState((prevState) => {
@@ -92,8 +92,7 @@ class AuthPage extends Component {
           this.setState({ isExist: true });
           return;
         }
-        if (resData.data.login.token) {
-          console.log("Auth.js resData.data.login", resData.data.login);
+        if (this.state.isLogin) {
           this.context.login(
             resData.data.login.token,
             resData.data.login.userId,
