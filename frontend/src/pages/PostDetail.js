@@ -5,7 +5,7 @@ import PostDetailView from "../components/PostDetail/PostDetailView";
 import Spinner from "../components/Spinner/Spinner";
 import AuthContext from "../context/auth-context";
 
-import "./PostDetail.css";
+import "./css/PostDetail.css";
 
 class PostDetail extends Component {
   state = {

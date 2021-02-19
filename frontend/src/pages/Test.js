@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import "./PostDetail.css";
+import "./css/PostDetail.css";
 
 class TestPage extends Component {
   render() {

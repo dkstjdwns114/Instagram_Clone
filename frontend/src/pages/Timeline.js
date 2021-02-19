@@ -5,7 +5,13 @@ import Backdrop from "../components/Backdrop/Backdrop";
 import TimelineList from "../components/Timeline/TimelineList/TimelineList";
 import Spinner from "../components/Spinner/Spinner";
 import AuthContext from "../context/auth-context";
-import "./Timeline.css";
+// import "./Timeline.css";
+
+import "./css/Common.css";
+import "./css/Main.css";
+import "./css/Reset.css";
+
+import TimelineRight from "../components/Timeline/TimelineRight";
 
 class TimelinePage extends Component {
   state = {
@@ -228,7 +234,7 @@ class TimelinePage extends Component {
   render() {
     return (
       <>
-        {this.state.creating && <Backdrop />}
+        {/* {this.state.creating && <Backdrop />}
         {this.state.creating && (
           <Modal
             title="Add Post"
@@ -270,14 +276,21 @@ class TimelinePage extends Component {
               게시물 작성
             </button>
           </div>
-        )}
+        )} */}
         {this.state.isLoading ? (
           <Spinner />
         ) : (
-          <TimelineList
-            medias={this.state.medias}
-            authUserId={this.context.userId}
-          />
+          <>
+            <div className="main">
+              <div class="container">
+                <TimelineList
+                  medias={this.state.medias}
+                  authUserId={this.context.userId}
+                />
+                <TimelineRight />
+              </div>
+            </div>
+          </>
         )}
       </>
     );
