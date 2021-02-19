@@ -97,8 +97,11 @@
   line-height: 1.4;
 }
 .feed_comments .comment_list .feed_time .time {
-  font-size: 13px;
-  color: #adb5bd;
+  color: #999999;
+  letter-spacing: 0.2px;
+  text-decoration: none solid #999999;
+  text-transform: uppercase;
+  font-size: 11px;
 }
 .comments_form {
   position: relative;
