@@ -18,7 +18,13 @@ const timelineList = (props) => {
       />
     );
   });
-  return <ul className="feeds_list">{medias}</ul>;
+  return (
+    <div className="contents_left">
+      <div class="inner">
+        <ul className="feeds_list">{medias}</ul>
+      </div>
+    </div>
+  );
 };
 
 export default timelineList;

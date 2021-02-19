@@ -10,6 +10,7 @@ import AuthContext from "../context/auth-context";
 import "./Common.css";
 import "./Main.css";
 import "./Reset.css";
+import TimelineRight from "../components/Timeline/TimelineRight";
 
 class TimelinePage extends Component {
   state = {
@@ -280,15 +281,12 @@ class TimelinePage extends Component {
         ) : (
           <>
             <div className="main">
-              <div className="container">
-                <div className="contents_left">
-                  <div class="inner">
-                    <TimelineList
-                      medias={this.state.medias}
-                      authUserId={this.context.userId}
-                    />
-                  </div>
-                </div>
+              <div class="container">
+                <TimelineList
+                  medias={this.state.medias}
+                  authUserId={this.context.userId}
+                />
+                <TimelineRight />
               </div>
             </div>
           </>
