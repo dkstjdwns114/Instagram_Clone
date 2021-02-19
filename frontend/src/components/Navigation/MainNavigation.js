@@ -16,7 +16,7 @@ const mainNavigation = (props) => (
                 <span>로고</span>
                 <Link to="/">
                   <img
-                    src="./img/1600px-Instagram_logo.svg.png"
+                    src="https://res.cloudinary.com/anstagram123/image/upload/v1613730289/anstagram/AnstagramLogo_uvski8.png"
                     alt="main_logo"
                   />
                 </Link>
@@ -37,7 +37,7 @@ const mainNavigation = (props) => (
                     </Link>
                   </li>
                   <li>
-                    <Link to="/mypage">
+                    <Link to={"/profile/" + context.userName}>
                       <i className="fas fa-user-circle"></i>
                     </Link>
                   </li>
