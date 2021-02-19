@@ -10,7 +10,8 @@ import PostDetail from "./pages/PostDetail";
 
 import TestPage from "./pages/Test";
 
-import "./App.css";
+// import "./App.css";
+
 class App extends Component {
   state = {
     token: null,
