@@ -25,32 +25,22 @@ const mainNavigation = (props) => (
                 <input type="text" placeholder="검색" id="search" />
               </div>
               <nav className="nav">
-                <ul className="link_list">
-                  <li>
-                    <Link to="/">
-                      <i className="fas fa-compass"></i>
+                <div className="social-icons header-social-icons">
+                  <section className="icons-section">
+                    <Link to="/" className="icons-button">
+                      <span className="home"></span>
                     </Link>
-                  </li>
-                  <li>
-                    <Link to="/">
-                      <i className="fas fa-heart"></i>
+                    <Link to="/" className="icons-button">
+                      <span className="icon5"></span>
                     </Link>
-                  </li>
-                  <li>
-                    <Link to={"/profile/" + context.userName}>
-                      <i className="fas fa-user-circle"></i>
+                    <Link to="/" className="icons-button">
+                      <span className="icon6"></span>
                     </Link>
-                  </li>
-                  {context.token ? (
-                    <li>
-                      <button onClick={context.logout}>Logout</button>
-                    </li>
-                  ) : (
-                    <li>
-                      <NavLink to="/auth">Authenticate</NavLink>
-                    </li>
-                  )}
-                </ul>
+                    <Link to="/" className="icons-button">
+                      <span className="icon7"></span>
+                    </Link>
+                  </section>
+                </div>
               </nav>
             </div>
           </div>

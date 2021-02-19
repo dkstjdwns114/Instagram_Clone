@@ -22,6 +22,7 @@
 }
 .header .inner .logo {
   display: flex;
+  margin-top: 5px;
 }
 .header .inner .logo span {
   display: inline-block;

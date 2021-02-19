@@ -30,7 +30,7 @@
   position: relative;
   align-items: stretch;
   flex: 0 0 auto;
-  padding-bottom: 4px;
+  /* padding-bottom: 4px; */
 }
 .social-icons .icons-section .icons-button,
 .profile_add .state_btn {
@@ -82,7 +82,27 @@
 .social-icons .icons-section .icons-button:last-child {
   margin-left: auto;
 }
-/* end new */
+
+/* Header Right Icon */
+.header-social-icons {
+  margin-top: 7px;
+}
+.social-icons .icons-section .icons-button span.home {
+  background-position: -231px -181px;
+}
+.social-icons .icons-section .icons-button span.icon5 {
+  background-position: -256px -155px;
+}
+.social-icons .icons-section .icons-button span.icon6 {
+  background-position: -231px -130px;
+}
+.social-icons .icons-section .icons-button span.icon7 {
+  background-position: -230.5px -24px;
+  background-color: #cecece;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+}
 
 .feed_profile {
   display: flex;
