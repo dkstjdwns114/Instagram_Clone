@@ -134,8 +134,8 @@
 
 /* 오른쪽 영역 */
 .main .container .contents_right {
-  /* position: fixed;
-  left: calc(100% - 712px);  */
+  position: fixed;
+  left: calc(100% - 712px);
   width: 383px;
   box-sizing: border-box;
 }
@@ -184,12 +184,12 @@
   font-size: 18px;
   line-height: 1.4;
 }
-/* // footer */
+/* footer */
 
-/* //main */
+/* main */
 @media only screen and (max-width: 1150px) {
   .contents_left {
-    margin-left: 40px;
+    margin-left: 30px;
   }
 }
 
