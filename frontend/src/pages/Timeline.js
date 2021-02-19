@@ -5,7 +5,11 @@ import Backdrop from "../components/Backdrop/Backdrop";
 import TimelineList from "../components/Timeline/TimelineList/TimelineList";
 import Spinner from "../components/Spinner/Spinner";
 import AuthContext from "../context/auth-context";
-import "./Timeline.css";
+// import "./Timeline.css";
+
+import "./Common.css";
+import "./Main.css";
+import "./Reset.css";
 
 class TimelinePage extends Component {
   state = {
@@ -274,10 +278,20 @@ class TimelinePage extends Component {
         {this.state.isLoading ? (
           <Spinner />
         ) : (
-          <TimelineList
-            medias={this.state.medias}
-            authUserId={this.context.userId}
-          />
+          <>
+            <div className="main">
+              <div className="container">
+                <div className="contents_left">
+                  <div class="inner">
+                    <TimelineList
+                      medias={this.state.medias}
+                      authUserId={this.context.userId}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
         )}
       </>
     );

@@ -18,7 +18,7 @@ const timelineList = (props) => {
       />
     );
   });
-  return <ul className="events__list">{medias}</ul>;
+  return <ul className="feeds_list">{medias}</ul>;
 };
 
 export default timelineList;
