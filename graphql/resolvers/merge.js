@@ -16,6 +16,15 @@ const userLoader = new DataLoader((userIds) => {
 const medias = async (mediaIds) => {
   try {
     const medias = await Media.find({ _id: { $in: mediaIds } });
+
+    /*
+    medias.sort((a, b) => {
+      return (
+        mediaIds.indexOf(a._id.toString()) - mediaIds.indexOf(b._id.toString())
+      );
+    });
+    */
+
     return medias.map((media) => {
       return {
         ...media._doc,
