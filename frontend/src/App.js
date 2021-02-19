@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 
 import AuthPage from "./pages/Auth";
 import TimelinePage from "./pages/Timeline";
-import SavedPage from "./pages/Saved";
+import ProfileDetail from "./pages/ProfileDetail";
 import MainNavigation from "./components/Navigation/MainNavigation";
 import AuthContext from "./context/auth-context";
 import PostDetail from "./pages/PostDetail";
@@ -11,7 +11,6 @@ import PostDetail from "./pages/PostDetail";
 import TestPage from "./pages/Test";
 
 import "./App.css";
-
 class App extends Component {
   state = {
     token: null,
@@ -48,25 +47,22 @@ class App extends Component {
           }}
         >
           <MainNavigation />
-          <main className="main-content">
-            <Switch>
-              {this.state.token && <Redirect from="/" to="/timeline" exact />}
-              {this.state.token && (
-                <Redirect from="/auth" to="/timeline" exact />
-              )}
-              {!this.state.token && <Route path="/auth" component={AuthPage} />}
-              <Route path="/timeline" component={TimelinePage} />
-              <Route path="/test" component={TestPage} />
-              <Route path="/p/:id" component={PostDetail} />
-              {this.state.token && (
-                <>
-                  <Route path="/saved" component={SavedPage} />
-                </>
-              )}
-              {this.state.token && <Route path="/test" component={TestPage} />}
-              {!this.state.token && <Redirect to="/auth" exact />}
-            </Switch>
-          </main>
+          {/* <main className="main-content"> */}
+          <Switch>
+            {this.state.token && <Redirect from="/" to="/timeline" exact />}
+            {this.state.token && <Redirect from="/auth" to="/timeline" exact />}
+            {!this.state.token && <Route path="/auth" component={AuthPage} />}
+            <Route path="/timeline" component={TimelinePage} />
+            <Route path="/test" component={TestPage} />
+            <Route path="/p/:id" component={PostDetail} />
+            <Route path="/mypage" component={ProfileDetail} />
+            {/* 로그인 안되어있을경우 튕겨내는 코드 */}
+            {this.state.token && <></>}
+            {/* -------------------------------- */}
+            {this.state.token && <Route path="/test" component={TestPage} />}
+            {!this.state.token && <Redirect to="/auth" exact />}
+          </Switch>
+          {/* </main> */}
         </AuthContext.Provider>
       </BrowserRouter>
     );

@@ -65,7 +65,7 @@ const timelineItem = (props) => (
         <div className="feed_likes comments_margin">
           <div className="likes_user profile">
             <img
-              src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/bearu/bookmark.png"
+              src="https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/s150x150/131994802_214284176856542_767716126641019031_n.jpg?_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=Oy1gj4z4hu0AX9uvUp1&tp=1&oh=6f5bbb5c5743e2186d7b68877c8f16cd&oe=6058B472"
               alt="profile"
               className="profile_img"
             />
@@ -96,7 +96,10 @@ const timelineItem = (props) => (
         </div>
       </div>
     </div>
-    <form className="comments_form">
+    <Link to={"/p/" + props.mediaId} className="btn post-detail">
+      게시물 상세보기
+    </Link>
+    {/* <form className="comments_form">
       <div className="input_box">
         <input type="text" placeholder="댓글달기..." id="comment_input" />
       </div>
@@ -105,12 +108,8 @@ const timelineItem = (props) => (
           <span className="">게시</span>
         </button>
       </div>
-    </form>
+    </form> */}
 
-    {/*       
-    <Link to={"/p/" + props.mediaId} className="btn post-detail">
-      게시물 상세보기
-    </Link> */}
     <div>
       {/* props.userId === props.creatorId  // 이 게시물이 내가 쓴것인지 확인하는 코드*/}
     </div>

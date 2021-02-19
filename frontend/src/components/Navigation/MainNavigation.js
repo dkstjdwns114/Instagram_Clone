@@ -13,8 +13,8 @@ const mainNavigation = (props) => (
           <div className="header_wrap">
             <div className="inner">
               <h1 className="logo">
-                <span>로고z</span>
-                <Link to="login.html">
+                <span>로고</span>
+                <Link to="/">
                   <img
                     src="./img/1600px-Instagram_logo.svg.png"
                     alt="main_logo"
@@ -27,20 +27,29 @@ const mainNavigation = (props) => (
               <nav className="nav">
                 <ul className="link_list">
                   <li>
-                    <Link to="">
+                    <Link to="/">
                       <i className="fas fa-compass"></i>
                     </Link>
                   </li>
                   <li>
-                    <Link to="">
+                    <Link to="/">
                       <i className="fas fa-heart"></i>
                     </Link>
                   </li>
                   <li>
-                    <Link to="">
+                    <Link to="/mypage">
                       <i className="fas fa-user-circle"></i>
                     </Link>
                   </li>
+                  {context.token ? (
+                    <li>
+                      <button onClick={context.logout}>Logout</button>
+                    </li>
+                  ) : (
+                    <li>
+                      <NavLink to="/auth">Authenticate</NavLink>
+                    </li>
+                  )}
                 </ul>
               </nav>
             </div>

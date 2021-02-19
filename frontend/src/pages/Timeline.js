@@ -10,6 +10,7 @@ import AuthContext from "../context/auth-context";
 import "./Common.css";
 import "./Main.css";
 import "./Reset.css";
+
 import TimelineRight from "../components/Timeline/TimelineRight";
 
 class TimelinePage extends Component {
@@ -233,7 +234,7 @@ class TimelinePage extends Component {
   render() {
     return (
       <>
-        {this.state.creating && <Backdrop />}
+        {/* {this.state.creating && <Backdrop />}
         {this.state.creating && (
           <Modal
             title="Add Post"
@@ -275,7 +276,7 @@ class TimelinePage extends Component {
               게시물 작성
             </button>
           </div>
-        )}
+        )} */}
         {this.state.isLoading ? (
           <Spinner />
         ) : (

@@ -139,7 +139,7 @@ const timelineRight = (props) => {
 
       {/* footer */}
       <footer className="footer">
-        <span>Copyright 2020. Kim ijn tae</span>
+        <span>Copyright 2020</span>
       </footer>
       {/* end footer */}
     </div>
