@@ -3,7 +3,16 @@ import { Link } from "react-router-dom";
 
 import "./css/ProfileDetail.css";
 
+import Spinner from "../components/Spinner/Spinner";
+import AuthContext from "../context/auth-context";
+
 class ProfileDetail extends Component {
+  state = {
+    isLoading: false
+  };
+
+  static contextType = AuthContext;
+
   render() {
     return (
       <div className="profileDetail_main">

@@ -38,6 +38,8 @@ type User {
   password: String!
   profile_pic_url: String!
   createdMedias: [Media!]
+  folloing: [User!]
+  follower: [User!]
 }
 
 type AuthData {

@@ -24,6 +24,18 @@ const userSchema = new Schema({
       type: Schema.Types.ObjectId,
       ref: "Media"
     }
+  ],
+  folloing: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User"
+    }
+  ],
+  follower: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "User"
+    }
   ]
 });
 
