@@ -58,26 +58,29 @@
   text-align: center;
   width: 24px;
   background: rgba(0, 0, 0, 0)
-    url("https://www.instagram.com/static/bundles/es6/sprite_glyphs_7f5bab945363.png/7f5bab945363.png")
+    url("https://www.instagram.com/static/bundles/es6/sprite_glyphs_9813fcc3aa16.png/9813fcc3aa16.png")
     no-repeat scroll -231px -130px / auto padding-box border-box;
 }
 .profile_add .state_btn .icon-dots {
-  background-position: -260px -130px;
+  background-position: -466px -337px;
 }
 .social-icons .icons-section .icons-button span.icon1 {
-  background-position: -231px -130px;
+  background-position: -466px -25px;
 }
 .social-icons .icons-section .icons-button span.liked {
-  background-position: -231px -104px;
+  background-position: -466px -0px;
 }
 .social-icons .icons-section .icons-button span.icon2 {
-  background-position: 0px -177px;
+  background-position: -440px -390px;
 }
 .social-icons .icons-section .icons-button span.icon4 {
-  background-position: -208px -255px;
+  background-position: -180px -460px;
 }
 .social-icons .icons-section .icons-button span.saved {
-  background-position: -130px -255px;
+  background-position: -102px -460px;
+}
+.social-icons .icons-section .icons-button span.post-detail {
+  background-position: -390px -459px;
 }
 .social-icons .icons-section .icons-button:last-child {
   margin-left: auto;
@@ -88,16 +91,16 @@
   margin-top: 7px;
 }
 .social-icons .icons-section .icons-button span.home {
-  background-position: -231px -181px;
+  background-position: -466px -77px;
 }
 .social-icons .icons-section .icons-button span.icon5 {
-  background-position: -256px -155px;
+  background-position: -466px -363px;
 }
 .social-icons .icons-section .icons-button span.icon6 {
-  background-position: -231px -130px;
+  background-position: -466px -25px;
 }
 .social-icons .icons-section .icons-button span.icon7 {
-  background-position: -230.5px -24px;
+  background-position: -415.2px -457px;
   background-color: #cecece;
   border-radius: 50%;
   width: 25px;

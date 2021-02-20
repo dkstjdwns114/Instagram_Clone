@@ -17,7 +17,7 @@
 .contents_left {
   width: 650px;
   box-sizing: border-box;
-  margin-right: 40px;
+  margin-right: 25px;
 }
 .contents_left .inner {
   position: relative;
@@ -137,7 +137,8 @@
 
 /* 오른쪽 영역 */
 .main .container .contents_right {
-  position: fixed;
+  /* position: fixed;시 오른쪽 영역 고정 */
+  /* position: fixed; */
   left: calc(100% - 712px);
   width: 383px;
   box-sizing: border-box;

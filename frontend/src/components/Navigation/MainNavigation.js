@@ -36,9 +36,9 @@ const mainNavigation = (props) => (
                     <Link to="/" className="icons-button">
                       <span className="icon6"></span>
                     </Link>
-                    <Link to="/" className="icons-button">
+                    <button className="icons-button" onClick={null}>
                       <span className="icon7"></span>
-                    </Link>
+                    </button>
                   </section>
                 </div>
               </nav>
