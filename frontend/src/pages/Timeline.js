@@ -5,7 +5,6 @@ import Backdrop from "../components/Backdrop/Backdrop";
 import TimelineList from "../components/Timeline/TimelineList/TimelineList";
 import Spinner from "../components/Spinner/Spinner";
 import AuthContext from "../context/auth-context";
-// import "./Timeline.css";
 
 import "./css/Common.css";
 import "./css/Main.css";
@@ -49,7 +48,7 @@ class TimelinePage extends Component {
       ) {
         const res = await fetch("/api/image");
         const data = await res.json();
-        this.setState({ isGetImage: data.url });
+        this.setState({ isGetImage: data.public_id });
       }
       return this.state.isGetImage;
     } catch (error) {

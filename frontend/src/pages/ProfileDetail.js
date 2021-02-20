@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { Image } from "cloudinary-react";
 
 import "./css/ProfileDetail.css";
 
@@ -154,9 +155,12 @@ class ProfileDetail extends Component {
                         <li key={media._id}>
                           <Link to={"/p/" + media._id}>
                             <div className="board_img">
-                              <img
-                                src={media.media_url}
-                                alt={media.media_url}
+                              <Image
+                                key={media._id}
+                                cloudName="anstagram123"
+                                publicId={media.media_url}
+                                width="293px"
+                                height="293px"
                               />
                             </div>
                           </Link>

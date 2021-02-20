@@ -11,13 +11,13 @@ const graphQlResolvers = require("./graphql/resolvers/index");
 
 const isAuth = require("./middleware/is-auth");
 
-let secure_url;
+let public_id;
 
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
 app.get("/api/image", async (req, res) => {
-  res.send({ url: secure_url });
+  res.send({ public_id: public_id });
 });
 
 app.use(bodyParser.json());
@@ -51,7 +51,7 @@ app.post("/api/upload", async (req, res) => {
     });
     console.log(uploadedResponse);
 
-    secure_url = uploadedResponse.secure_url;
+    public_id = uploadedResponse.public_id;
 
     res.json({ msg: "Successed" });
   } catch (error) {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Image } from "cloudinary-react";
 
 const TimelineItem = (props) => {
   const [isLiked, setIsLiked] = useState(false);
@@ -333,7 +334,13 @@ const TimelineItem = (props) => {
         </div>
       </div>
       <div className="feed_box">
-        <img key={props.mediaId} src={props.mediaUrl} alt={props.mediaUrl} />
+        <Image
+          key={props.mediaId}
+          cloudName="anstagram123"
+          publicId={props.mediaUrl}
+          width="650px"
+          height="650px"
+        />
       </div>
       <div className="feed_info">
         <div className="social-icons">

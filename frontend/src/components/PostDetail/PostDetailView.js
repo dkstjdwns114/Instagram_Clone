@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Image } from "cloudinary-react";
 
 const PostDetailView = (props) => {
   const [commentareaElRef, setCommenttextElRef] = useState(null);
@@ -99,10 +100,12 @@ const PostDetailView = (props) => {
     <article className="social-article">
       <div className="social-left-col">
         <div className="social-img-wrap">
-          <img
-            className="social-img"
-            src={props.media_url}
-            alt={props.media_url}
+          <Image
+            key={props.mediaId}
+            cloudName="anstagram123"
+            publicId={props.media_url}
+            width="650px"
+            height="650px"
           />
         </div>
       </div>
@@ -122,14 +125,24 @@ const PostDetailView = (props) => {
             <button type="button">Follow</button>
           </div>
         </div>
-        <div className="social-header">
-          <span>{props.media_caption}</span>
-        </div>
         <div className="social-comments-wrap">
           <div className="social-post">
+            <div className="comment-header">
+              <a href="/gllcollege/" className="social-profile-img">
+                <img
+                  src={props.creator_profile}
+                  alt={props.creator_name + "님의 프로필 사진"}
+                />
+              </a>
+              <div className="social-copy">
+                <span className="social-name">{props.creator_name}</span>
+                <span className="social-post-copy">{props.media_caption}</span>
+                <time>{props.date}</time>
+              </div>
+            </div>
             {comments.map((comment, idx) => {
               return (
-                <div key={idx} className="social-header">
+                <div key={idx} className="comment-header">
                   <a href="/gllcollege/" className="social-profile-img">
                     <img
                       src={comment.creator.profile_pic_url}
