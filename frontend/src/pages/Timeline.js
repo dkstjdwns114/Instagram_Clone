@@ -195,6 +195,7 @@ class TimelinePage extends Component {
               date
               creator {
                 username
+                profile_pic_url
               }
             }
             likeds {

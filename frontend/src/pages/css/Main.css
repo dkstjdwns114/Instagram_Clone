@@ -101,7 +101,8 @@
 .comments_info .comments_tit .comment_contents {
   padding-left: 5px;
 }
-.feed_comments .comment_list .feed_time {
+.feed_comments .comment_list .feed_time,
+.feed_comments .comment_list .feed_more_comment {
   line-height: 1.4;
 }
 .feed_comments .comment_list .feed_time .time {
@@ -110,6 +111,18 @@
   text-decoration: none solid #999999;
   text-transform: uppercase;
   font-size: 11px;
+}
+.feed_comments .comment_list .feed_more_comment .comment_more_click {
+  color: #999999;
+  letter-spacing: 0.3px;
+  text-decoration: none solid #999999;
+  text-transform: uppercase;
+  font-size: 13px;
+  padding-bottom: 2px;
+}
+.feed_comments .comment_list .feed_more_comment .comment_more_click:hover {
+  text-decoration: underline #999999;
+  cursor: pointer;
 }
 .comments_form {
   position: relative;

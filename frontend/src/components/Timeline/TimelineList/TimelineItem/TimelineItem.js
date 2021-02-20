@@ -10,6 +10,7 @@ const TimelineItem = (props) => {
   const [likedId, setLikedId] = useState(null);
   const [savedId, setSavedId] = useState(null);
   const [mediaLikeds, setMediaLikeds] = useState([]);
+  const [mediaComments, setMediaComments] = useState([]);
   const [token, setToken] = useState("");
   const [isModal, setIsModal] = useState("");
 
@@ -19,7 +20,7 @@ const TimelineItem = (props) => {
     getLikedId();
     getSavedId();
     setMediaLikeds(props.mediaLiked);
-    console.log(props);
+    setMediaComments(props.comments);
   }, []);
 
   const getLikedId = () => {
@@ -400,6 +401,67 @@ const TimelineItem = (props) => {
                     </span>
                   </div>
                 </li>
+                {mediaComments.length > 2 && (
+                  <div className="feed_more_comment">
+                    <Link to={"/p/" + props.mediaId}>
+                      <p className="comment_more_click">
+                        댓글 {mediaComments.length}개 모두 보기
+                      </p>
+                    </Link>
+                  </div>
+                )}
+                {mediaComments.length >= 2 && (
+                  <>
+                    <li>
+                      <div className="comments_tit">
+                        <Link
+                          to={
+                            "/profile/" +
+                            mediaComments[mediaComments.length - 2].creator
+                              .username
+                          }
+                        >
+                          <span className="user_id hover-and-pointer">
+                            {
+                              mediaComments[mediaComments.length - 2].creator
+                                .username
+                            }
+                          </span>
+                        </Link>
+                        <span className="comment_contents">
+                          {
+                            mediaComments[mediaComments.length - 2]
+                              .media_comment
+                          }
+                        </span>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="comments_tit">
+                        <Link
+                          to={
+                            "/profile/" +
+                            mediaComments[mediaComments.length - 1].creator
+                              .username
+                          }
+                        >
+                          <span className="user_id hover-and-pointer">
+                            {
+                              mediaComments[mediaComments.length - 1].creator
+                                .username
+                            }
+                          </span>
+                        </Link>
+                        <span className="comment_contents">
+                          {
+                            mediaComments[mediaComments.length - 1]
+                              .media_comment
+                          }
+                        </span>
+                      </div>
+                    </li>
+                  </>
+                )}
               </ul>
               <div className="feed_time">
                 <p className="time">{mediaTimeSet(props.mediaDate)}</p>
@@ -407,9 +469,9 @@ const TimelineItem = (props) => {
             </div>
           </div>
         </div>
-        <Link to={"/p/" + props.mediaId} className="btn post-detail">
+        {/* <Link to={"/p/" + props.mediaId} className="btn post-detail">
           게시물 상세보기
-        </Link>
+        </Link> */}
         {/* <form className="comments_form">
         <div className="input_box">
           <input type="text" placeholder="댓글달기..." id="comment_input" />

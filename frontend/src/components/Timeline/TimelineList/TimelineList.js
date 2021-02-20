@@ -12,7 +12,7 @@ const timelineList = (props) => {
         mediaCaption={media.media_caption}
         mediaLiked={media.likeds}
         mediaDate={media.date}
-        commentCnt={media.commentTexts.length}
+        comments={media.commentTexts}
         creatorId={media.creator._id}
         creatorProfile={media.creator.profile_pic_url}
         creatorName={media.creator.username}
