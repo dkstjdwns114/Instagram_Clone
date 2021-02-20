@@ -4,6 +4,7 @@ const commentsResolver = require("./comments");
 const likesResolver = require("./likes");
 const saveResolver = require("./save");
 const profileResolver = require("./profile");
+const followResolver = require("./follow");
 
 const rootResolver = {
   ...authResolver,
@@ -11,7 +12,8 @@ const rootResolver = {
   ...commentsResolver,
   ...likesResolver,
   ...saveResolver,
-  ...profileResolver
+  ...profileResolver,
+  ...followResolver
 };
 
 module.exports = rootResolver;

@@ -1,6 +1,12 @@
 const { buildSchema } = require("graphql");
 
 module.exports = buildSchema(`
+type Follow {
+  _id: ID!
+  user: User!
+  following: User!
+}
+
 type Comment {
   _id: ID!
   media: Media!
@@ -38,7 +44,7 @@ type User {
   password: String!
   profile_pic_url: String!
   createdMedias: [Media!]
-  folloing: [User!]
+  following: [User!]
   follower: [User!]
 }
 
@@ -66,12 +72,24 @@ input CommentInput {
   media_comment: String!
 }
 
+input FollowInput {
+  current_userId: ID!
+  followed_userId: ID!
+}
+
+input UnfollowInput {
+  current_userId: ID!
+  unfollowed_userId: ID!
+}
+
 type RootQuery {
   medias: [Media!]!
   media(mediaId: String!): Media!
   likeds: [Liked!]!
   saveds: [Saved!]!
   comments: [Comment!]
+  followings: [User!]!
+  followers: [User!]
   login(email: String!, password: String!): AuthData!
   isLike(mediaId: String!, userId: String!): Liked
   isSave(mediaId: String!, userId: String!): Saved
@@ -88,6 +106,8 @@ type RootMutation {
   cancelSaved(savedId: ID!): Media!
   createComment(commentInput: CommentInput): Comment!
   deleteComment(commentId: ID!): Media!
+  createFollowing(followInput: FollowInput): Follow!
+  cancelFollowing(unfollowInput: UnfollowInput): User
 }
 
 schema {

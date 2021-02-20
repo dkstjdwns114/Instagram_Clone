@@ -138,8 +138,18 @@ const transformComment = (result) => {
   };
 };
 
+const transformFollow = (result) => {
+  return {
+    ...result._doc,
+    _id: result.id,
+    user: user.bind(this, result._doc.userId),
+    following: user.bind(this, result._doc.following_userId)
+  };
+};
+
 exports.transformMedia = transformMedia;
 exports.transformLikedAndSaved = transformLikedAndSaved;
 exports.singleMedia = singleMedia;
 exports.transformComment = transformComment;
 exports.transformProfileData = transformProfileData;
+exports.transformFollow = transformFollow;
