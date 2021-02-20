@@ -75,6 +75,7 @@ type RootQuery {
   login(email: String!, password: String!): AuthData!
   isLike(mediaId: String!, userId: String!): Liked
   isSave(mediaId: String!, userId: String!): Saved
+  userData(username: String!): User
 }
 
 type RootMutation {

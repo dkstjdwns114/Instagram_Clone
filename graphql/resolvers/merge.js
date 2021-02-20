@@ -108,6 +108,18 @@ const transformMedia = (media) => {
   };
 };
 
+const transformProfileData = (user) => {
+  return {
+    ...user._doc,
+    _id: user.id,
+    following: user.following,
+    follower: user.following,
+    username: user.username,
+    profile_pic_url: user.profile_pic_url,
+    createdMedias: () => mediaLoader.loadMany(user._doc.createdMedias)
+  };
+};
+
 const transformLikedAndSaved = (liked) => {
   return {
     ...liked._doc,
@@ -130,3 +142,4 @@ exports.transformMedia = transformMedia;
 exports.transformLikedAndSaved = transformLikedAndSaved;
 exports.singleMedia = singleMedia;
 exports.transformComment = transformComment;
+exports.transformProfileData = transformProfileData;
