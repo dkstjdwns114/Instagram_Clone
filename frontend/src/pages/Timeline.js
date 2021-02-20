@@ -200,6 +200,7 @@ class TimelinePage extends Component {
             likeds {
               user {
                 username
+                profile_pic_url
               }
             }
           }

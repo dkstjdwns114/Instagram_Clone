@@ -20,6 +20,7 @@
 
 .social-right-col {
   width: 50%;
+  max-height: 650px;
   align-items: center;
   border-top: 0px solid black;
   border-right: 0px solid black;
@@ -106,7 +107,7 @@
 }
 .social-right-col .social-comments-wrap {
   display: flex;
-  height: 80%;
+  height: 90%;
   width: 100%;
   align-items: stretch;
   flex: 0 0 auto;

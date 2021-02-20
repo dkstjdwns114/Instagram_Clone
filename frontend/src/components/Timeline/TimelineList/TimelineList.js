@@ -6,6 +6,7 @@ const timelineList = (props) => {
   const medias = props.medias.map((media) => {
     return (
       <TimelineItem
+        key={media._id}
         mediaId={media._id}
         mediaUrl={media.media_url}
         mediaCaption={media.media_caption}

@@ -9,22 +9,24 @@ const modalBodyTextStyle = {
   padding: "0px 15px 0px",
   height: "200px",
   overflowY: "scroll",
-  textAlign: "justify"
+  textAlign: "justify",
+  width: "430px"
 };
 
 const likeModal = (props) => (
-  <div className="modal fade" id="myModal2" role="dialog">
-    <div className="modal-dialog" style={{ maxWidth: "700px" }}>
+  <div className="like-modal fade" id="myModal2" role="dialog">
+    <div className="modal-dialog" style={{ width: "430px" }}>
       <div className="modal-content">
         <div
           className="modal-header"
           style={{
-            background: " #0071bc",
+            background: "#0071bc",
             color: "#fff",
             textAlign: "center",
             borderTopLeftRadius: "4px",
             borderTopRightRadius: "4px",
-            padding: "1px"
+            padding: "1px",
+            width: "430px"
           }}
         >
           <h4
@@ -36,27 +38,27 @@ const likeModal = (props) => (
         </div>
         <div className="modal-body">
           <p style={modalBodyTextStyle}>
-            {props.likes.map((like, idx) => {
-              return (
-                <div className="social-header" key={like.user.username}>
-                  <a href="/gllcollege/" className="social-profile-img">
+            <ul className="profile follow_list">
+              {props.likes.map((like, idx) => {
+                return (
+                  <li>
                     <img
                       src={like.user.profile_pic_url}
                       alt={like.user.username + "님의 프로필 사진"}
+                      className="profile_img"
                     />
-                  </a>
-                  <div className="social-follow">
-                    <a
-                      title="gllcollege"
-                      href="/gllcollege/"
-                      className="social-name"
-                    >
-                      {like.user.username}
-                    </a>
-                  </div>
-                </div>
-              );
-            })}
+                    <div className="pofile_info">
+                      <p className="profile_id">{like.user.username}</p>
+                    </div>
+                    <div className="follow_btn" style={{ paddingLeft: "63%" }}>
+                      <button type="button" className="btn">
+                        <span>팔로우</span>
+                      </button>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
           </p>
         </div>
         <div className="modal-footer">

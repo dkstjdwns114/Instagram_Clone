@@ -8,6 +8,16 @@
   z-index: 100;
 }
 
+.like-modal {
+  width: 430px;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  position: fixed;
+  top: 20vh;
+  left: 5%;
+  z-index: 100;
+}
+
 .modal__header {
   padding: 1rem;
   background-image: linear-gradient(135deg, #c2c2c2 0%, #f5f7fa 100%);
@@ -33,6 +43,11 @@
   .modal {
     width: 30rem;
     left: calc((100% - 30rem) / 2);
+  }
+
+  .like-modal {
+    width: 430px;
+    left: calc((100% - 430px) / 2);
   }
 }
 

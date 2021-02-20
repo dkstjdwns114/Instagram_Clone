@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Image } from "cloudinary-react";
+import { Link } from "react-router-dom";
 
 const PostDetailView = (props) => {
   const [commentareaElRef, setCommenttextElRef] = useState(null);
@@ -9,7 +10,7 @@ const PostDetailView = (props) => {
   useEffect(() => {
     let access_token = localStorage.getItem("access_token");
     setAccessToken(access_token);
-    setComments(props.comments.reverse());
+    setComments(props.comments);
     setCommenttextElRef(React.createRef());
   }, []);
 
@@ -59,6 +60,7 @@ const PostDetailView = (props) => {
         let createCommentUserProfile =
           resData.data.createComment.creator.profile_pic_url;
         setComments((state) => [
+          ...state,
           {
             creator: {
               username: createCommentUsername,
@@ -66,8 +68,7 @@ const PostDetailView = (props) => {
             },
             media_comment: text,
             date: new Date().getTime()
-          },
-          ...state
+          }
         ]);
         commentareaElRef.current.value = "";
       })
@@ -128,14 +129,19 @@ const PostDetailView = (props) => {
         <div className="social-comments-wrap">
           <div className="social-post">
             <div className="comment-header">
-              <a href="/gllcollege/" className="social-profile-img">
+              <Link
+                to={"/profile/" + props.creator_name}
+                className="social-profile-img"
+              >
                 <img
                   src={props.creator_profile}
                   alt={props.creator_name + "님의 프로필 사진"}
                 />
-              </a>
+              </Link>
               <div className="social-copy">
-                <span className="social-name">{props.creator_name}</span>
+                <Link to={"/profile/" + props.creator_name}>
+                  <span className="social-name">{props.creator_name}</span>
+                </Link>
                 <span className="social-post-copy">{props.media_caption}</span>
                 <time>{props.date}</time>
               </div>
@@ -143,16 +149,21 @@ const PostDetailView = (props) => {
             {comments.map((comment, idx) => {
               return (
                 <div key={idx} className="comment-header">
-                  <a href="/gllcollege/" className="social-profile-img">
+                  <Link
+                    to={"/profile/" + comment.creator.username}
+                    className="social-profile-img"
+                  >
                     <img
                       src={comment.creator.profile_pic_url}
                       alt={comment.creator.username + "님의 프로필 사진"}
                     />
-                  </a>
+                  </Link>
                   <div className="social-copy">
-                    <span className="social-name">
-                      {comment.creator.username}
-                    </span>
+                    <Link to={"/profile/" + comment.creator.username}>
+                      <span className="social-name">
+                        {comment.creator.username}
+                      </span>
+                    </Link>
                     <span className="social-post-copy">
                       {comment.media_comment}
                     </span>
