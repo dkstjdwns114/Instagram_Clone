@@ -24,7 +24,6 @@ module.exports = {
       following = transformFollow(follow);
 
       const currentUser = await User.findById(req.userId);
-      console.log("currentUser", currentUser);
       if (!currentUser) {
         throw new Error("Current user not found");
       }
