@@ -234,7 +234,14 @@ class TimelinePage extends Component {
   render() {
     return (
       <>
-        {/* {this.state.creating && <Backdrop />}
+        <input
+          type="button"
+          id="create-media"
+          name="create-media"
+          onClick={this.startCreateEventHandler}
+          value="creating"
+          style={{ display: "none" }}
+        />
         {this.state.creating && (
           <Modal
             title="Add Post"
@@ -245,7 +252,7 @@ class TimelinePage extends Component {
             confirmText={this.context.token ? "Upload" : "Confirm"}
           >
             <form>
-              <div className="form-control">
+              <div className="form-create-control">
                 <label htmlFor="image">사진</label>
                 <input
                   type="file"
@@ -258,31 +265,30 @@ class TimelinePage extends Component {
                   <img
                     src={this.state.previewSource}
                     alt="chosen"
-                    style={{ height: "300px" }}
+                    style={{
+                      maxWidth: "448px",
+                      maxHeight: "448px",
+                      display: "block",
+                      margin: "0 auto",
+                      marginTop: "10px"
+                    }}
                   />
                 )}
               </div>
-              <div className="form-control">
+              <div className="form-create-control">
                 <label htmlFor="caption">설명</label>
                 <textarea id="caption" rows="4" ref={this.captionElRef} />
               </div>
             </form>
           </Modal>
         )}
-        {this.context.token && (
-          <div className="events-control">
-            <p>게시물을 작성해보세요!!</p>
-            <button className="btn" onClick={this.startCreateEventHandler}>
-              게시물 작성
-            </button>
-          </div>
-        )} */}
+        {this.state.creating && <Backdrop />}
         {this.state.isLoading ? (
           <Spinner />
         ) : (
           <>
             <div className="main">
-              <div class="container">
+              <div className="container">
                 <TimelineList
                   medias={this.state.medias}
                   authUserId={this.context.userId}

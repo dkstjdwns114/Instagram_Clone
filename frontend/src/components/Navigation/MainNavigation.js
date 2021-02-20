@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 
 import AuthContext from "../../context/auth-context";
+import Backdrop from "../Backdrop/Backdrop";
+import Modal from "../Modal/Modal";
 
 import "./MainNavigation.css";
 
@@ -31,9 +33,9 @@ const mainNavigation = (props) => {
                       <Link to="/" className="icons-button">
                         <span className="home"></span>
                       </Link>
-                      <Link to="/" className="icons-button">
+                      <label className="icons-button" htmlFor="create-media">
                         <span className="icon5"></span>
-                      </Link>
+                      </label>
                       <Link to="/" className="icons-button">
                         <span className="icon6"></span>
                       </Link>
