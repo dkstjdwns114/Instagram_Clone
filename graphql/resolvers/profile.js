@@ -1,7 +1,6 @@
 const DataLoader = require("dataloader");
 
 const User = require("../../models/user");
-const Media = require("../../models/media");
 const { transformProfileData } = require("./merge");
 
 const userNameLoader = new DataLoader((username) => {
