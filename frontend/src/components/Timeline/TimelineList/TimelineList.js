@@ -21,7 +21,7 @@ const timelineList = (props) => {
   });
   return (
     <div className="contents_left">
-      <div class="inner">
+      <div className="inner">
         <ul className="feeds_list">{medias}</ul>
       </div>
     </div>
