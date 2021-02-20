@@ -60,7 +60,12 @@ module.exports = {
         _id: liked.media.id,
         creator: User.bind(this, liked.media._doc.creator)
       };
+      const pullLikeMedia = await Media.findById(media._id);
+
+      pullLikeMedia.likeds.pull({ _id: args.likedId });
+      await pullLikeMedia.save();
       await Liked.deleteOne({ _id: args.likedId });
+
       return media;
     } catch (err) {
       throw err;
