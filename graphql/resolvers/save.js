@@ -1,14 +1,17 @@
 const Media = require("../../models/media");
 const Saved = require("../../models/saved");
-const { transformMedia, transformLikedAndSaved } = require("./merge");
+const { transformSave, transformLikedAndSaved } = require("./merge");
 const user = require("../../models/user");
 
 module.exports = {
-  saveds: async () => {
+  saveds: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
     try {
-      const saveds = await Saved.find();
+      const saveds = await Saved.find({ user: req.userId });
       return saveds.map((saveds) => {
-        return transformMedia(saveds);
+        return transformSave(saveds);
       });
     } catch (err) {
       throw err;

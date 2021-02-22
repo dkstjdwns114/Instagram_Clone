@@ -12,13 +12,68 @@ class ProfileDetail extends Component {
     isLoading: false,
     profile_pic_url: "",
     createdMedias: [],
-    username: ""
+    username: "",
+    isAuth: false,
+    follower: [],
+    following: [],
+    isPosts: true,
+    isSaved: false,
+    isFollowingModal: false,
+    isFollowerModal: false,
+    saveds: []
   };
+
+  constructor(props) {
+    super(props);
+    this.isPostHandler = this.isPostHandler.bind(this);
+    this.isSavedHandler = this.isSavedHandler.bind(this);
+  }
 
   static contextType = AuthContext;
 
   componentDidMount() {
     this.fetchData();
+  }
+
+  fetchSaveds() {
+    this.setState({ isLoading: true });
+    const requestBody = {
+      query: `
+        query {
+          saveds {
+            media {
+              _id
+              media_url
+            }
+          }
+        }
+      `
+    };
+
+    const token = this.context.token;
+
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      }
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        console.log(resData);
+        this.setState({ isLoading: false, saveds: resData.data.saveds });
+      })
+      .catch((err) => {
+        console.log(err);
+        this.setState({ isLoading: false });
+      });
   }
 
   fetchData() {
@@ -33,6 +88,16 @@ class ProfileDetail extends Component {
             createdMedias {
               _id
               media_url
+            }
+            follower {
+              _id
+              username
+              profile_pic_url
+            }
+            following {
+              _id
+              username
+              profile_pic_url
             }
           }
         }
@@ -54,17 +119,31 @@ class ProfileDetail extends Component {
       })
       .then((resData) => {
         console.log(resData);
+        this.fetchSaveds();
+        if (resData.data.userData._id === localStorage.getItem("userId")) {
+          this.setState({ isAuth: true });
+        }
         this.setState({
           isLoading: false,
           profile_pic_url: resData.data.userData.profile_pic_url,
-          createdMedias: resData.data.userData.createdMedias.reverse(),
-          username: resData.data.userData.username
+          createdMedias: resData.data.userData.createdMedias,
+          username: resData.data.userData.username,
+          follower: resData.data.userData.follower,
+          following: resData.data.userData.following
         });
       })
       .catch((err) => {
         console.log(err);
         this.setState({ isLoading: false });
       });
+  }
+
+  isPostHandler() {
+    this.setState({ isPosts: true, isSaved: false });
+  }
+
+  isSavedHandler() {
+    this.setState({ isSaved: true, isPosts: false });
   }
 
   render() {
@@ -86,12 +165,16 @@ class ProfileDetail extends Component {
                 <div className="info">
                   <div className="area_text">
                     <h2 className="user_id">{this.state.username}</h2>
-                    <Link to="" className="profile_edit">
-                      프로필 편집
-                    </Link>
-                    <button type="button" className="setting_btn">
-                      <i className="fas fa-cog"></i>
-                    </button>
+                    {this.state.isAuth && (
+                      <>
+                        <Link to="#" className="profile_edit">
+                          프로필 편집
+                        </Link>
+                        <button type="button" className="setting_btn">
+                          <i className="fas fa-cog"></i>
+                        </button>
+                      </>
+                    )}
                   </div>
                   <div className="area_text">
                     <div className="tit_desc">
@@ -102,11 +185,15 @@ class ProfileDetail extends Component {
                     </div>
                     <div className="tit_desc">
                       <span className="title">팔로워</span>
-                      <span className="sub_title">XX</span>
+                      <span className="sub_title">
+                        {this.state.follower.length}
+                      </span>
                     </div>
                     <div className="tit_desc">
                       <span className="title">팔로우</span>
-                      <span className="sub_title">XX</span>
+                      <span className="sub_title">
+                        {this.state.following.length}
+                      </span>
                     </div>
                   </div>
                   <div className="area_text profile_info">
@@ -121,53 +208,75 @@ class ProfileDetail extends Component {
               <div className="contents">
                 <div className="tab_box">
                   <ul className="tab_list">
-                    <li className="active">
-                      <Link to="#">
+                    <li
+                      className={this.state.isPosts ? "active" : null}
+                      onClick={this.isPostHandler}
+                    >
+                      <span className="tab_span">
                         <i className="fas fa-list"></i>
                         <span>게시물</span>
-                      </Link>
+                      </span>
                     </li>
-                    <li>
-                      <Link to="#">
-                        <i className="fas fa-tv"></i>
-                        <span>IGTV</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="#">
-                        <i className="fas fa-bookmark"></i>
-                        <span>저장됨</span>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="#">
-                        <i className="fas fa-user-tag"></i>
-                        <span>태그됨</span>
-                      </Link>
-                    </li>
+                    {this.state.isAuth && (
+                      <li
+                        className={!this.state.isPosts ? "active" : null}
+                        onClick={this.isSavedHandler}
+                      >
+                        <span className="tab_span">
+                          <i className="fas fa-bookmark"></i>
+                          <span>저장됨</span>
+                        </span>
+                      </li>
+                    )}
                   </ul>
                 </div>
                 <div className="boards">
-                  <ul className="board_list">
-                    {this.state.createdMedias.map((media, idx) => {
-                      console.log(media);
-                      return (
-                        <li key={media._id}>
-                          <Link to={"/p/" + media._id}>
-                            <div className="board_img">
-                              <Image
-                                key={media._id}
-                                cloudName="anstagram123"
-                                publicId={media.media_url}
-                                width="293px"
-                                height="293px"
-                              />
-                            </div>
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
+                  {this.state.isPosts && (
+                    <ul className="board_list">
+                      {this.state.createdMedias.reverse().map((media, idx) => {
+                        return (
+                          <li key={media._id}>
+                            <Link to={"/p/" + media._id}>
+                              <div className="board_img">
+                                <Image
+                                  version="1613990153"
+                                  key={media._id}
+                                  cloudName="anstagram123"
+                                  publicId={media.media_url}
+                                  crop="pad"
+                                  width="293"
+                                  height="293"
+                                />
+                              </div>
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                  {this.state.isSaved && (
+                    <ul className="board_list">
+                      {this.state.saveds.reverse().map((saved, idx) => {
+                        return (
+                          <li key={saved.media._id + idx}>
+                            <Link to={"/p/" + saved.media._id}>
+                              <div className="board_img">
+                                <Image
+                                  version="1613990153"
+                                  key={saved.media._id}
+                                  cloudName="anstagram123"
+                                  publicId={saved.media.media_url}
+                                  crop="pad"
+                                  width="293"
+                                  height="293"
+                                />
+                              </div>
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
                 </div>
               </div>
               {/* end contents */}

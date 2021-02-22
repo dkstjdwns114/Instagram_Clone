@@ -147,9 +147,19 @@ const transformFollow = (result) => {
   };
 };
 
+const transformSave = (save) => {
+  return {
+    ...save._doc,
+    _id: save.id,
+    user: user.bind(this, save._doc.user),
+    media: singleMedia.bind(this, save._doc.media)
+  };
+};
+
 exports.transformMedia = transformMedia;
 exports.transformLikedAndSaved = transformLikedAndSaved;
 exports.singleMedia = singleMedia;
 exports.transformComment = transformComment;
 exports.transformProfileData = transformProfileData;
 exports.transformFollow = transformFollow;
+exports.transformSave = transformSave;
