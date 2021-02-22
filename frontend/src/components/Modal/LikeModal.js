@@ -20,20 +20,16 @@ const likeModal = (props) => (
         <div
           className="modal-header"
           style={{
-            background: "#0071bc",
-            color: "#fff",
             textAlign: "center",
-            borderTopLeftRadius: "4px",
-            borderTopRightRadius: "4px",
             padding: "1px",
-            width: "430px"
+            width: "430px",
+            paddingTop: "10px",
+            paddingBottom: "10px",
+            borderBottom: "0.5px solid #dee2e6"
           }}
         >
-          <h4
-            className="modal-title"
-            style={{ fontSize: "20px", fontFamily: "roboto" }}
-          >
-            좋아요
+          <h4 className="modal-title" style={{ fontSize: "20px" }}>
+            Likes
           </h4>
         </div>
         <div className="modal-body">
@@ -69,7 +65,10 @@ const likeModal = (props) => (
             style={{
               marginLeft: "43%",
               marginTop: "20px",
-              marginBottom: "20px"
+              marginBottom: "20px",
+              padding: "10px",
+              color: "#dc3545",
+              backgroundColor: "transparent"
             }}
             onClick={props.onClose}
           >
