@@ -112,8 +112,8 @@ const transformProfileData = (user) => {
   return {
     ...user._doc,
     _id: user.id,
-    following: user.following,
-    follower: user.following,
+    following: () => userLoader.loadMany(user._doc.following),
+    follower: () => userLoader.loadMany(user._doc.follower),
     username: user.username,
     profile_pic_url: user.profile_pic_url,
     createdMedias: () => mediaLoader.loadMany(user._doc.createdMedias)
