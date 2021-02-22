@@ -360,7 +360,7 @@ class ProfileDetail extends Component {
                     </div>
                   </div>
                   <div className="area_text profile_info">
-                    <h3 className="info_title">User full name</h3>
+                    <h3 className="info_title">{this.state.full_name}</h3>
                     <p className="info_sub">한줄소개</p>
                   </div>
                 </div>
