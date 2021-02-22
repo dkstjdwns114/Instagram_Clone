@@ -376,8 +376,27 @@ class PostDetail extends Component {
           "월 " +
           this.leadingZeros(d.getDate(), 2) +
           "일");
-
     return s;
+  };
+
+  lastTimeSet = (timestamp) => {
+    let currentTime = new Date().getTime();
+    let time = currentTime - Number(timestamp);
+    let gapTime = Math.floor(time / 1000);
+    let txt;
+    if (gapTime < 60) {
+      txt = gapTime + "초 전";
+    } else if (60 <= gapTime && gapTime < 3600) {
+      txt = Math.floor(gapTime / 60) + "분 전";
+    } else if (3600 <= gapTime && gapTime < 86400) {
+      txt = Math.floor(gapTime / 3600) + "시간 전";
+    } else if (86400 <= gapTime && gapTime < 604800) {
+      txt = Math.floor(gapTime / 86400) + "일 전";
+    } else {
+      txt = this.convertTime(timestamp);
+    }
+
+    return txt;
   };
 
   leadingZeros = (n, digits) => {
@@ -389,6 +408,7 @@ class PostDetail extends Component {
     }
     return zero + n;
   };
+
   render() {
     return (
       <>
@@ -415,10 +435,10 @@ class PostDetail extends Component {
               isSaved={this.state.isSaved}
               likeds={this.state.likeds}
               likeModal={this.likeModal}
-              date={this.convertTime(this.state.date)}
+              date={this.state.date}
               mediaId={this.state.mediaId}
               contextToken={this.context.token}
-              convertTime={this.convertTime}
+              convertTime={this.lastTimeSet}
             />
             {this.state.isModal && <Backdrop />}
           </>
