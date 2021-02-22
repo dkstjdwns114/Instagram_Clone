@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Image } from "cloudinary-react";
 
 import "./css/ProfileDetail.css";
 
 import Spinner from "../components/Spinner/Spinner";
 import AuthContext from "../context/auth-context";
+import PostList from "../components/ProfileDetail/PostList/PostList";
+import Saveds from "../components/ProfileDetail/SavedList/SavedList";
 
 class ProfileDetail extends Component {
   state = {
@@ -232,51 +233,9 @@ class ProfileDetail extends Component {
                 </div>
                 <div className="boards">
                   {this.state.isPosts && (
-                    <ul className="board_list">
-                      {this.state.createdMedias.reverse().map((media, idx) => {
-                        return (
-                          <li key={media._id}>
-                            <Link to={"/p/" + media._id}>
-                              <div className="board_img">
-                                <Image
-                                  version="1613990153"
-                                  key={media._id}
-                                  cloudName="anstagram123"
-                                  publicId={media.media_url}
-                                  crop="pad"
-                                  width="293"
-                                  height="293"
-                                />
-                              </div>
-                            </Link>
-                          </li>
-                        );
-                      })}
-                    </ul>
+                    <PostList medias={this.state.createdMedias} />
                   )}
-                  {this.state.isSaved && (
-                    <ul className="board_list">
-                      {this.state.saveds.reverse().map((saved, idx) => {
-                        return (
-                          <li key={saved.media._id + idx}>
-                            <Link to={"/p/" + saved.media._id}>
-                              <div className="board_img">
-                                <Image
-                                  version="1613990153"
-                                  key={saved.media._id}
-                                  cloudName="anstagram123"
-                                  publicId={saved.media.media_url}
-                                  crop="pad"
-                                  width="293"
-                                  height="293"
-                                />
-                              </div>
-                            </Link>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  )}
+                  {this.state.isSaved && <Saveds medias={this.state.saveds} />}
                 </div>
               </div>
               {/* end contents */}
