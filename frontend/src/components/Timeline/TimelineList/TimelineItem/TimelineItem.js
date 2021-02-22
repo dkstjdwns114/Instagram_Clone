@@ -281,10 +281,12 @@ const TimelineItem = (props) => {
 
   const likeModalHandler = () => {
     setIsModal(true);
+    props.viewLikes();
   };
 
   const modalCloseHandler = () => {
     setIsModal(false);
+    props.cancelLikes();
   };
 
   const convertTime = (date) => {

@@ -17,6 +17,8 @@ const TimelineList = (props) => {
         creatorProfile={media.creator.profile_pic_url}
         creatorName={media.creator.username}
         userId={props.authUserId}
+        viewLikes={props.isLikeView}
+        cancelLikes={props.cancelIsLikeView}
       />
     );
   });

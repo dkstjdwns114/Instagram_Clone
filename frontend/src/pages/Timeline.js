@@ -21,7 +21,8 @@ class TimelinePage extends Component {
     previewSource: "",
     isGetImage: undefined,
     imageUrl: "",
-    prevIsGetImage: ""
+    prevIsGetImage: "",
+    isViewLikes: false
   };
 
   static contextType = AuthContext;
@@ -38,6 +39,14 @@ class TimelinePage extends Component {
 
   startCreateEventHandler = () => {
     this.setState({ creating: true });
+  };
+
+  viewLikesHandler = () => {
+    this.setState({ isViewLikes: true });
+  };
+
+  cancelLikesHandler = () => {
+    this.setState({ isViewLikes: false });
   };
 
   loadImage = async () => {
@@ -294,6 +303,7 @@ class TimelinePage extends Component {
           </Modal>
         )}
         {this.state.creating && <Backdrop />}
+        {this.state.isViewLikes && <Backdrop />}
         {this.state.isLoading ? (
           <Spinner />
         ) : (
@@ -303,6 +313,8 @@ class TimelinePage extends Component {
                 <TimelineList
                   medias={this.state.medias}
                   authUserId={this.context.userId}
+                  isLikeView={this.viewLikesHandler}
+                  cancelIsLikeView={this.cancelLikesHandler}
                 />
                 <TimelineRight />
               </div>
