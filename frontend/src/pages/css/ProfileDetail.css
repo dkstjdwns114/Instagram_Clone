@@ -41,11 +41,35 @@
 }
 .profileDetail_profile .info .area_text .profile_edit {
   margin-right: 20px;
-  padding: 7px 10px;
+  padding: 5px 10px;
   border: 1px solid #dbdbdb;
   border-radius: 5px;
   color: #000;
   font-size: 15px;
+}
+.profileDetail_profile .info .area_text .following {
+  margin-right: 20px;
+  padding: 5px 10px;
+  border: 1px solid #0095f6;
+  background-color: #0095f6;
+  border-radius: 5px;
+  color: white;
+  font-size: 15px;
+}
+.profileDetail_profile .info .area_text .following:hover {
+  cursor: pointer;
+}
+.profileDetail_profile .info .area_text .unfollow {
+  margin-right: 20px;
+  padding: 5px 10px;
+  border: 1px solid #9b9b9b;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  color: black;
+  font-size: 15px;
+}
+.profileDetail_profile .info .area_text .unfollow:hover {
+  cursor: pointer;
 }
 .profileDetail_profile .info .area_text .setting_btn {
   border: none;
