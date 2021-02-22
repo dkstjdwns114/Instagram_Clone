@@ -120,6 +120,16 @@ const transformProfileData = (user) => {
   };
 };
 
+const transformTimelineMyData = (user) => {
+  return {
+    ...user._doc,
+    _id: user.id,
+    following: () => userLoader.loadMany(user._doc.following),
+    username: user.username,
+    profile_pic_url: user.profile_pic_url
+  };
+};
+
 const transformLikedAndSaved = (liked) => {
   return {
     ...liked._doc,
@@ -163,3 +173,4 @@ exports.transformComment = transformComment;
 exports.transformProfileData = transformProfileData;
 exports.transformFollow = transformFollow;
 exports.transformSave = transformSave;
+exports.transformTimelineMyData = transformTimelineMyData;

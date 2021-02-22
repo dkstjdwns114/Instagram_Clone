@@ -183,19 +183,17 @@
 }
 .contents_right .aside .follow {
 }
-.follow_info.follow_story {
-  padding-right: 0;
-}
 .follow_info.follow_story .follow_title span.sub_tit {
   padding-right: 13px;
 }
-.follow_info.follow_story .profile_img {
-  border: 3px solid #fa5252;
-}
-.follow_btn .btn span {
+.follow_btn .btn {
   font-size: 13px;
-  font-weight: bold;
-  color: #1c7ed6;
+  color: white;
+  border: 1px solid #0095f6;
+  background-color: #0095f6;
+  padding: 3px;
+  width: 60px;
+  height: 25px;
 }
 
 /* footer */

@@ -22,7 +22,8 @@ class TimelinePage extends Component {
     isGetImage: undefined,
     imageUrl: "",
     prevIsGetImage: "",
-    isViewLikes: false
+    isViewLikes: false,
+    myData: ""
   };
 
   static contextType = AuthContext;
@@ -35,6 +36,7 @@ class TimelinePage extends Component {
 
   componentDidMount() {
     this.fetchMedias();
+    this.fetchMyData();
   }
 
   startCreateEventHandler = () => {
@@ -252,6 +254,45 @@ class TimelinePage extends Component {
       });
   }
 
+  fetchMyData() {
+    this.setState({ isLoading: true });
+    const requestBody = {
+      query: `
+        query {
+          timelineMyData(userId: "${this.context.userId}"){
+            _id
+            username
+            full_name
+            profile_pic_url
+          }
+        }
+      `
+    };
+
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        console.log(resData);
+        console.log(resData.data.timelineMyData);
+        this.setState({ myData: resData.data.timelineMyData });
+      })
+      .catch((err) => {
+        console.log(err);
+        this.setState({ isLoading: false });
+      });
+  }
+
   render() {
     return (
       <>
@@ -316,7 +357,7 @@ class TimelinePage extends Component {
                   isLikeView={this.viewLikesHandler}
                   cancelIsLikeView={this.cancelLikesHandler}
                 />
-                <TimelineRight />
+                <TimelineRight myData={this.state.myData} />
               </div>
             </div>
           </>
