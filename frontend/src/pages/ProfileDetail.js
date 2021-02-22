@@ -21,19 +21,23 @@ class ProfileDetail extends Component {
     isSaved: false,
     isFollowingModal: false,
     isFollowerModal: false,
-    saveds: []
+    saveds: [],
+    profileUserId: "",
+    currentUserId: ""
   };
 
   constructor(props) {
     super(props);
     this.isPostHandler = this.isPostHandler.bind(this);
     this.isSavedHandler = this.isSavedHandler.bind(this);
+    this.followingUserHandler = this.followingUserHandler.bind(this);
   }
 
   static contextType = AuthContext;
 
   componentDidMount() {
     this.fetchData();
+    this.setState({ currentUserId: localStorage.getItem("userId") });
   }
 
   fetchSaveds() {
@@ -120,9 +124,9 @@ class ProfileDetail extends Component {
       })
       .then((resData) => {
         console.log(resData);
-        this.fetchSaveds();
-        if (resData.data.userData._id === localStorage.getItem("userId")) {
+        if (resData.data.userData._id === this.state.currentUserId) {
           this.setState({ isAuth: true });
+          this.fetchSaveds();
         }
         this.setState({
           isLoading: false,
@@ -130,12 +134,60 @@ class ProfileDetail extends Component {
           createdMedias: resData.data.userData.createdMedias,
           username: resData.data.userData.username,
           follower: resData.data.userData.follower,
-          following: resData.data.userData.following
+          following: resData.data.userData.following,
+          profileUserId: resData.data.userData._id
         });
       })
       .catch((err) => {
         console.log(err);
         this.setState({ isLoading: false });
+      });
+  }
+
+  followingUserHandler() {
+    const requestBody = {
+      query: `
+        mutation CreateFollowing($current_userId: ID!, $followed_userId: ID!) {
+          createFollowing(followInput: {current_userId: $current_userId, followed_userId: $followed_userId}) {
+            _id
+            user {
+              _id
+              username
+            }
+            following {
+              _id
+              username
+            }
+          }
+        }
+      `,
+      variables: {
+        current_userId: this.state.currentUserId,
+        followed_userId: this.state.profileUserId
+      }
+    };
+
+    const token = this.context.token;
+
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      }
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        console.log(resData);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }
 
@@ -175,6 +227,14 @@ class ProfileDetail extends Component {
                           <i className="fas fa-cog"></i>
                         </button>
                       </>
+                    )}
+                    {!this.state.isAuth && (
+                      <span
+                        className="following"
+                        onClick={this.followingUserHandler}
+                      >
+                        팔로우
+                      </span>
                     )}
                   </div>
                   <div className="area_text">
