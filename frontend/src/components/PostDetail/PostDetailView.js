@@ -77,26 +77,6 @@ const PostDetailView = (props) => {
       });
   };
 
-  const commentTimeSet = (date) => {
-    let currentTime = new Date().getTime();
-    let time = currentTime - Number(date);
-    let gapTime = Math.floor(time / 1000);
-    let txt;
-    if (gapTime < 60) {
-      txt = gapTime + "초 전";
-    } else if (60 <= gapTime && gapTime < 3600) {
-      txt = Math.floor(gapTime / 60) + "분 전";
-    } else if (3600 <= gapTime && gapTime < 86400) {
-      txt = Math.floor(gapTime / 3600) + "시간 전";
-    } else if (86400 <= gapTime && gapTime < 604800) {
-      txt = Math.floor(gapTime / 86400) + "일 전";
-    } else {
-      txt = props.convertTime(date);
-    }
-
-    return txt;
-  };
-
   return (
     <article className="social-article">
       <div className="social-left-col">
@@ -145,7 +125,7 @@ const PostDetailView = (props) => {
                   <span className="social-name">{props.creator_name}</span>
                 </Link>
                 <span className="social-post-copy">{props.media_caption}</span>
-                <time>{props.date}</time>
+                <time>{props.convertTime(props.date)}</time>
               </div>
             </div>
             {comments.map((comment, idx) => {
@@ -169,7 +149,7 @@ const PostDetailView = (props) => {
                     <span className="social-post-copy">
                       {comment.media_comment}
                     </span>
-                    <time>{commentTimeSet(comment.date)}</time>
+                    <time>{props.convertTime(comment.date)}</time>
                   </div>
                 </div>
               );
@@ -200,7 +180,7 @@ const PostDetailView = (props) => {
             </div>
           </div>
           <div className="social-date">
-            <time>{props.date}</time>
+            <time>{props.convertTime(props.date)}</time>
           </div>
           <div className="comment-add">
             <form onSubmit={commentMediaHandler}>
