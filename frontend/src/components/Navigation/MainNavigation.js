@@ -34,9 +34,6 @@ const mainNavigation = (props) => {
                       <label className="icons-button" htmlFor="create-media">
                         <span className="icon5"></span>
                       </label>
-                      <Link to="/" className="icons-button">
-                        <span className="icon6"></span>
-                      </Link>
                       <span className="icons-button">
                         <span className="icon7">
                           <div className="select-box">
