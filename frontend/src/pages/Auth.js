@@ -17,6 +17,7 @@ class AuthPage extends Component {
     this.emailEl = React.createRef();
     this.passwordEl = React.createRef();
     this.nicknameEl = React.createRef();
+    this.fullnameEl = React.createRef();
   }
 
   switchModelHandler = () => {
@@ -56,10 +57,14 @@ class AuthPage extends Component {
         .toLowerCase()
         .replaceAll(" ", "");
 
+      const full_name = this.fullnameEl.current.value
+        .toLowerCase()
+        .replaceAll(" ", "");
+
       requestBody = {
         query: `
-          mutation CreateUser($email: String!, $password: String!, $username: String!) {
-            createUser(userInput: {email: $email, password: $password, username: $username}) {
+          mutation CreateUser($email: String!, $password: String!, $username: String!, $full_name: String!) {
+            createUser(userInput: {email: $email, password: $password, username: $username, full_name: $full_name}) {
               _id
               email
             }
@@ -68,7 +73,8 @@ class AuthPage extends Component {
         variables: {
           email: email,
           password: password,
-          username: username
+          username: username,
+          full_name: full_name
         }
       };
     }
@@ -111,17 +117,23 @@ class AuthPage extends Component {
       <form className="auth-form" onSubmit={this.submitHandler}>
         <h2>{this.state.isLogin ? "Login" : "Signup"}</h2>
         <div className="form-control">
-          <label htmlFor="email">E-Mail</label>
+          <label htmlFor="email">이메일 주소</label>
           <input type="email" id="email" ref={this.emailEl} />
         </div>
         {!this.state.isLogin && (
-          <div className="form-control">
-            <label htmlFor="nickname">nickname</label>
-            <input type="text" id="nickname" ref={this.nicknameEl} />
-          </div>
+          <>
+            <div className="form-control">
+              <label htmlFor="full_name">성명</label>
+              <input type="text" id="full_name" ref={this.fullnameEl} />
+            </div>
+            <div className="form-control">
+              <label htmlFor="nickname">사용자 이름</label>
+              <input type="text" id="nickname" ref={this.nicknameEl} />
+            </div>
+          </>
         )}
         <div className="form-control">
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">비밀번호</label>
           <input type="password" id="password" ref={this.passwordEl} />
         </div>
         {this.state.isExist && (

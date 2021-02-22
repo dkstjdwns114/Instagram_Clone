@@ -41,6 +41,7 @@ type User {
   _id: ID!
   email: String!
   username: String!
+  full_name: String!
   password: String!
   profile_pic_url: String!
   createdMedias: [Media!]
@@ -63,6 +64,7 @@ input MediaInput {
 input UserInput {
   email: String!
   username: String!
+  full_name: String!
   password: String!
   profile_pic_url: String
 }

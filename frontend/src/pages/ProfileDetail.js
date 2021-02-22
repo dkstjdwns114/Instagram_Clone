@@ -14,6 +14,7 @@ class ProfileDetail extends Component {
     profile_pic_url: "",
     createdMedias: [],
     username: "",
+    full_name: "",
     isAuth: false,
     follower: [],
     following: [],
@@ -90,6 +91,7 @@ class ProfileDetail extends Component {
             _id
             username
             profile_pic_url
+            full_name
             createdMedias {
               _id
               media_url
@@ -133,6 +135,7 @@ class ProfileDetail extends Component {
           profile_pic_url: resData.data.userData.profile_pic_url,
           createdMedias: resData.data.userData.createdMedias,
           username: resData.data.userData.username,
+          full_name: resData.data.userData.full_name,
           follower: resData.data.userData.follower,
           following: resData.data.userData.following,
           profileUserId: resData.data.userData._id
