@@ -2,7 +2,7 @@ import React from "react";
 
 import TimelineItem from "./TimelineItem/TimelineItem";
 
-const timelineList = (props) => {
+const TimelineList = (props) => {
   const medias = props.medias.map((media) => {
     return (
       <TimelineItem
@@ -29,4 +29,4 @@ const timelineList = (props) => {
   );
 };
 
-export default timelineList;
+export default TimelineList;

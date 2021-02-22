@@ -119,7 +119,7 @@ class TimelinePage extends Component {
         return res.json();
       })
       .then((resData) => {
-        this.setState({ prevIsGetImage: resData.data.createMedia.media_url });
+        console.log(resData);
         this.setState((prevState) => {
           const updatedMedias = [...prevState.medias];
           updatedMedias.unshift({
@@ -137,6 +137,9 @@ class TimelinePage extends Component {
           });
           return { medias: updatedMedias };
         });
+        this.setState({
+          prevIsGetImage: resData.data.createMedia.media_url
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -145,8 +148,10 @@ class TimelinePage extends Component {
 
   modalCancelHandler = () => {
     this.setState({
-      creating: false
+      creating: false,
+      previewSource: ""
     });
+    this.captionElRef.current.value = "";
   };
 
   handleFileInputChange = (e) => {
@@ -169,6 +174,7 @@ class TimelinePage extends Component {
         body: JSON.stringify({ data: base64EncodedImage }),
         headers: { "Content-type": "application/json" }
       });
+      this.setState({ previewSource: "" });
     } catch (err) {
       console.error(err);
     }
@@ -223,8 +229,13 @@ class TimelinePage extends Component {
         return res.json();
       })
       .then((resData) => {
+        console.log(resData);
         const medias = resData.data.medias.reverse();
-        this.setState({ medias: medias, isLoading: false });
+        this.setState({
+          medias: medias,
+          isLoading: false,
+          prevIsGetImage: medias[0].media_url
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -260,7 +271,6 @@ class TimelinePage extends Component {
                   id="image"
                   ref={this.imageElRef}
                   onChange={this.handleFileInputChange}
-                  value={this.state.fileInputState}
                 />
                 {this.state.previewSource && (
                   <img

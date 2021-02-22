@@ -104,9 +104,11 @@ const PostDetailView = (props) => {
           <Image
             key={props.mediaId}
             cloudName="anstagram123"
+            version="1613990153"
             publicId={props.media_url}
-            width="650px"
-            height="650px"
+            crop="pad"
+            width="650"
+            height="650"
           />
         </div>
       </div>

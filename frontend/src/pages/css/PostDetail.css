@@ -1,6 +1,6 @@
 .social-article {
   margin: 180px auto;
-  max-width: 1300px;
+  max-width: 1200px;
   max-height: 700px;
   display: flex;
   height: auto;
@@ -19,7 +19,7 @@
 }
 
 .social-right-col {
-  width: 50%;
+  width: 550px;
   max-height: 650px;
   align-items: center;
   border-top: 0px solid black;
