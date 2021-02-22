@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 
 import AuthContext from "../../context/auth-context";
-import Backdrop from "../Backdrop/Backdrop";
-import Modal from "../Modal/Modal";
 
 import "./MainNavigation.css";
 

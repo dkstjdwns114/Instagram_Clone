@@ -41,7 +41,7 @@ const likeModal = (props) => (
             <ul className="profile follow_list">
               {props.likes.map((like, idx) => {
                 return (
-                  <li>
+                  <li key={like.user.username}>
                     <img
                       src={like.user.profile_pic_url}
                       alt={like.user.username + "님의 프로필 사진"}

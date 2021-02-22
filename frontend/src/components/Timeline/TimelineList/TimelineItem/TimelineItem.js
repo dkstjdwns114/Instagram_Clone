@@ -12,7 +12,7 @@ const TimelineItem = (props) => {
   const [mediaLikeds, setMediaLikeds] = useState([]);
   const [mediaComments, setMediaComments] = useState([]);
   const [token, setToken] = useState("");
-  const [isModal, setIsModal] = useState("");
+  const [isModal, setIsModal] = useState(false);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("access_token");
