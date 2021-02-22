@@ -3,41 +3,67 @@ const User = require("../../models/user");
 const { transformFollow } = require("./merge");
 
 module.exports = {
+  isFollowing: async (args, req) => {
+    try {
+      const following = await Follow.findOne({
+        $and: [
+          { following: args.currentUserId },
+          { followed: args.otherUserId }
+        ]
+      });
+      return following;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
+  isFollowed: async (args, req) => {
+    try {
+      const followed = await Follow.findOne({
+        $and: [
+          { following: args.otherUserId },
+          { followed: args.currentUserId }
+        ]
+      });
+      return followed;
+    } catch (err) {
+      throw new Error(err);
+    }
+  },
   createFollowing: async (args, req) => {
     if (!req.isAuth) {
       throw new Error("Unauthenticated!");
     }
-    const followUser = await User.findOne({
+    const followedUser = await User.findOne({
       _id: args.followInput.followed_userId
     });
-    if (!followUser) {
+    if (!followedUser) {
       throw new Error("Following user not found");
     }
 
     const follow = new Follow({
-      userId: req.userId,
-      following_userId: followUser._id
+      following: req.userId,
+      followed: followedUser._id
     });
-    let following;
+    let returnFollowing;
     try {
       await follow.save();
-      following = transformFollow(follow);
+      returnFollowing = transformFollow(follow);
 
       const currentUser = await User.findById(req.userId);
       if (!currentUser) {
         throw new Error("Current user not found");
       }
-      currentUser.following.push(follow.following_userId);
+      currentUser.following.push(follow.followed);
       await currentUser.save();
 
-      const followingUser = await User.findById(followUser._id);
+      const followingUser = await User.findById(followedUser._id);
       if (!followingUser) {
         throw new Error("Following user not found");
       }
-      followingUser.follower.push(follow.userId);
+      followingUser.follower.push(follow.following);
       await followingUser.save();
 
-      return following;
+      return returnFollowing;
     } catch (err) {
       console.log(err);
       throw err;
@@ -50,22 +76,22 @@ module.exports = {
     try {
       const unfollower = await Follow.findOne({
         $and: [
-          { userId: args.unfollowInput.current_userId },
-          { following_userId: args.unfollowInput.unfollowed_userId }
+          { following: args.unfollowInput.current_userId },
+          { followed: args.unfollowInput.unfollowed_userId }
         ]
       });
       if (!unfollower) {
         throw new Error("Unfollower not found.");
       }
 
-      const currentUser = await User.findById(unfollower.userId);
+      const currentUser = await User.findById(unfollower.following);
       if (!currentUser) {
         throw new Error("Current user not found");
       }
       currentUser.following.pull({ _id: args.unfollowInput.unfollowed_userId });
       await currentUser.save();
 
-      const unfollowedUser = await User.findById(unfollower.following_userId);
+      const unfollowedUser = await User.findById(unfollower.followed);
       if (!unfollowedUser) {
         throw new Error("Unfollowed user not found");
       }

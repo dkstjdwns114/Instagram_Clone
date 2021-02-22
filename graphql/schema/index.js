@@ -3,8 +3,8 @@ const { buildSchema } = require("graphql");
 module.exports = buildSchema(`
 type Follow {
   _id: ID!
-  user: User!
   following: User!
+  followed: User!
 }
 
 type Comment {
@@ -96,6 +96,8 @@ type RootQuery {
   isLike(mediaId: String!, userId: String!): Liked
   isSave(mediaId: String!, userId: String!): Saved
   userData(username: String!): User
+  isFollowing(currentUserId: ID!, otherUserId: ID!): Follow
+  isFollowed(currentUserId: ID!, otherUserId: ID!): Follow
 }
 
 type RootMutation {

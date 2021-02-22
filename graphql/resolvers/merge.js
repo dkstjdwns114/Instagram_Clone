@@ -142,8 +142,8 @@ const transformFollow = (result) => {
   return {
     ...result._doc,
     _id: result.id,
-    user: user.bind(this, result._doc.userId),
-    following: user.bind(this, result._doc.following_userId)
+    following: user.bind(this, result._doc.following),
+    followed: user.bind(this, result._doc.followed)
   };
 };
 
