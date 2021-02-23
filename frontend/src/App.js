@@ -9,6 +9,7 @@ import AuthContext from "./context/auth-context";
 import PostDetail from "./pages/PostDetail";
 
 import TestPage from "./pages/Test";
+import EditAccount from "./pages/EditAccount";
 
 // import "./App.css";
 
@@ -61,6 +62,7 @@ class App extends Component {
             <Route path="/test" component={TestPage} />
             <Route path="/p/:id" component={PostDetail} />
             <Route path="/profile/:username" component={ProfileDetail} />
+            <Route path="/accounts/edit" component={EditAccount} />
             {/* 로그인 안되어있을경우 튕겨내는 코드 */}
             {this.state.token && <></>}
             {this.state.token && <Route path="/test" component={TestPage} />}

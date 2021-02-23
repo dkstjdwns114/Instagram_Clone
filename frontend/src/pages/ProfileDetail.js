@@ -345,7 +345,7 @@ class ProfileDetail extends Component {
                     <h2 className="user_id">{this.state.username}</h2>
                     {this.state.isAuth && (
                       <>
-                        <Link to="#" className="profile_edit">
+                        <Link to="/accounts/edit" className="profile_edit">
                           프로필 편집
                         </Link>
                         <button type="button" className="setting_btn">
