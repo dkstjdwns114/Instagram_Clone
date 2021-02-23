@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Axios from "axios";
 
 import Modal from "../components/Modal/Modal";
 import Backdrop from "../components/Backdrop/Backdrop";
@@ -24,7 +25,9 @@ class TimelinePage extends Component {
     imageUrl: "",
     prevIsGetImage: "",
     isViewLikes: false,
-    myData: ""
+    myData: "",
+    imageSelected: "",
+    imgPublicId: ""
   };
 
   static contextType = AuthContext;
@@ -72,49 +75,30 @@ class TimelinePage extends Component {
     }
   };
 
-  modalConfirmHandler = async () => {
-    const caption = this.captionElRef.current.value;
-    if (!this.state.previewSource || caption.length === 0) return;
-
+  uploadData = async () => {
     this.setState({ creating: false });
-    this.uploadImage(this.state.previewSource);
+    // const caption = this.captionElRef.current.value;
+    // if (!this.state.previewSource || caption.length === 0) return;
 
-    await this.loadImage()
-      .then((res) => {
-        this.setState({ imageUrl: res });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    if (this.state.imageUrl === undefined) {
-      await this.loadImage()
-        .then((res) => {
-          this.setState({ imageUrl: res });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
     const requestBody = {
       query: `
-        mutation CreateMedia($media_url: String!, $media_caption: String!) {
-          createMedia(mediaInput: {media_url: $media_url, media_caption: $media_caption}) {
-            _id
-            media_url
-            media_caption
-            date
-            creator {
+          mutation CreateMedia($media_url: String!, $media_caption: String!) {
+            createMedia(mediaInput: {media_url: $media_url, media_caption: $media_caption}) {
               _id
-              username
-              profile_pic_url
+              media_url
+              media_caption
+              date
+              creator {
+                _id
+                username
+                profile_pic_url
+              }
             }
           }
-        }
-      `,
+        `,
       variables: {
-        media_url: this.state.imageUrl,
-        media_caption: caption
+        media_url: this.state.imgPublicId,
+        media_caption: "caption"
       }
     };
 
@@ -136,17 +120,18 @@ class TimelinePage extends Component {
       })
       .then((resData) => {
         console.log(resData);
+        const createMedia = resData.data.createMedia;
         this.setState((prevState) => {
           const updatedMedias = [...prevState.medias];
           updatedMedias.unshift({
-            _id: resData.data.createMedia._id,
-            media_url: resData.data.createMedia.media_url,
-            media_caption: resData.data.createMedia.media_caption,
-            date: resData.data.createMedia.date,
+            _id: createMedia._id,
+            media_url: createMedia.media_url,
+            media_caption: createMedia.media_caption,
+            date: createMedia.date,
             creator: {
               _id: this.context.userId,
-              username: resData.data.createMedia.creator.username,
-              profile_pic_url: resData.data.createMedia.creator.profile_pic_url
+              username: createMedia.creator.username,
+              profile_pic_url: createMedia.creator.profile_pic_url
             },
             commentTexts: [],
             likeds: []
@@ -154,7 +139,7 @@ class TimelinePage extends Component {
           return { medias: updatedMedias };
         });
         this.setState({
-          prevIsGetImage: resData.data.createMedia.media_url
+          prevIsGetImage: createMedia.media_url
         });
       })
       .catch((err) => {
@@ -172,6 +157,7 @@ class TimelinePage extends Component {
 
   handleFileInputChange = (e) => {
     const file = e.target.files[0];
+    this.setState({ imageSelected: file });
     this.previewFile(file);
   };
 
@@ -183,14 +169,26 @@ class TimelinePage extends Component {
     };
   };
 
-  uploadImage = async (base64EncodedImage) => {
+  modalConfirmHandler = async () => {
+    console.log(this.state.imageSelected);
+    const formData = new FormData();
+    formData.append("file", this.state.imageSelected);
+    formData.append("upload_preset", "anstagram");
+
+    console.log(formData);
     try {
-      await fetch("http://localhost:8000/api/upload", {
-        method: "POST",
-        body: JSON.stringify({ data: base64EncodedImage }),
-        headers: { "Content-type": "application/json" }
+      Axios.post(
+        "https://api.cloudinary.com/v1_1/anstagram123/image/upload",
+        formData
+      ).then((response) => {
+        console.log(response.data);
+        this.setState({
+          previewSource: "",
+          imageSelected: "",
+          imgPublicId: response.data.public_id
+        });
+        this.uploadData();
       });
-      this.setState({ previewSource: "" });
     } catch (err) {
       console.error(err);
     }
