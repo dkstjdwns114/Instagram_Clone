@@ -420,56 +420,50 @@ const TimelineItem = (props) => {
                   </div>
                 )}
                 {mediaComments.length >= 2 && (
-                  <>
-                    <li>
-                      <div className="comments_tit">
-                        <Link
-                          to={
-                            "/profile/" +
+                  <li>
+                    <div className="comments_tit">
+                      <Link
+                        to={
+                          "/profile/" +
+                          mediaComments[mediaComments.length - 2].creator
+                            .username
+                        }
+                      >
+                        <span className="user_id hover-and-pointer">
+                          {
                             mediaComments[mediaComments.length - 2].creator
                               .username
                           }
-                        >
-                          <span className="user_id hover-and-pointer">
-                            {
-                              mediaComments[mediaComments.length - 2].creator
-                                .username
-                            }
-                          </span>
-                        </Link>
-                        <span className="comment_contents">
-                          {
-                            mediaComments[mediaComments.length - 2]
-                              .media_comment
-                          }
                         </span>
-                      </div>
-                    </li>
-                    <li>
-                      <div className="comments_tit">
-                        <Link
-                          to={
-                            "/profile/" +
+                      </Link>
+                      <span className="comment_contents">
+                        {mediaComments[mediaComments.length - 2].media_comment}
+                      </span>
+                    </div>
+                  </li>
+                )}
+                {mediaComments.length >= 1 && (
+                  <li>
+                    <div className="comments_tit">
+                      <Link
+                        to={
+                          "/profile/" +
+                          mediaComments[mediaComments.length - 1].creator
+                            .username
+                        }
+                      >
+                        <span className="user_id hover-and-pointer">
+                          {
                             mediaComments[mediaComments.length - 1].creator
                               .username
                           }
-                        >
-                          <span className="user_id hover-and-pointer">
-                            {
-                              mediaComments[mediaComments.length - 1].creator
-                                .username
-                            }
-                          </span>
-                        </Link>
-                        <span className="comment_contents">
-                          {
-                            mediaComments[mediaComments.length - 1]
-                              .media_comment
-                          }
                         </span>
-                      </div>
-                    </li>
-                  </>
+                      </Link>
+                      <span className="comment_contents">
+                        {mediaComments[mediaComments.length - 1].media_comment}
+                      </span>
+                    </div>
+                  </li>
                 )}
               </ul>
               <div className="feed_time">
