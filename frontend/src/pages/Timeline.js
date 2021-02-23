@@ -21,9 +21,6 @@ class TimelinePage extends Component {
     isRightLoading: false,
     fileInputState: "",
     previewSource: "",
-    isGetImage: undefined,
-    imageUrl: "",
-    prevIsGetImage: "",
     isViewLikes: false,
     myData: "",
     imageSelected: "",
@@ -59,26 +56,10 @@ class TimelinePage extends Component {
     this.setState({ isViewLikes: false });
   };
 
-  loadImage = async () => {
-    try {
-      while (
-        this.state.isGetImage === undefined ||
-        this.state.isGetImage === this.state.prevIsGetImage
-      ) {
-        const res = await fetch("/api/image");
-        const data = await res.json();
-        this.setState({ isGetImage: data.public_id });
-      }
-      return this.state.isGetImage;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   uploadData = async () => {
+    const caption = this.captionElRef.current.value;
     this.setState({ creating: false });
-    // const caption = this.captionElRef.current.value;
-    // if (!this.state.previewSource || caption.length === 0) return;
+    if (!this.state.previewSource || caption.length === 0) return;
 
     const requestBody = {
       query: `
@@ -98,7 +79,7 @@ class TimelinePage extends Component {
         `,
       variables: {
         media_url: this.state.imgPublicId,
-        media_caption: "caption"
+        media_caption: caption
       }
     };
 
@@ -139,7 +120,9 @@ class TimelinePage extends Component {
           return { medias: updatedMedias };
         });
         this.setState({
-          prevIsGetImage: createMedia.media_url
+          previewSource: "",
+          imageSelected: "",
+          imgPublicId: ""
         });
       })
       .catch((err) => {
@@ -170,12 +153,9 @@ class TimelinePage extends Component {
   };
 
   modalConfirmHandler = async () => {
-    console.log(this.state.imageSelected);
     const formData = new FormData();
     formData.append("file", this.state.imageSelected);
     formData.append("upload_preset", "anstagram");
-
-    console.log(formData);
     try {
       Axios.post(
         "https://api.cloudinary.com/v1_1/anstagram123/image/upload",
@@ -183,8 +163,6 @@ class TimelinePage extends Component {
       ).then((response) => {
         console.log(response.data);
         this.setState({
-          previewSource: "",
-          imageSelected: "",
           imgPublicId: response.data.public_id
         });
         this.uploadData();
@@ -249,8 +227,7 @@ class TimelinePage extends Component {
         const medias = resData.data.timelineMedia.reverse();
         this.setState({
           medias: medias,
-          isLeftLoading: false,
-          prevIsGetImage: medias[0].media_url
+          isLeftLoading: false
         });
       })
       .catch((err) => {
