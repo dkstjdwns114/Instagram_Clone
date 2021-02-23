@@ -1,6 +1,7 @@
 import React from "react";
 
 const modalBodyTextStyle = {
+  display: "inline-block",
   fontSize: "14px",
   color: "#4a4747",
   fontFamily: "roboto",
@@ -33,7 +34,7 @@ const likeModal = (props) => (
           </h4>
         </div>
         <div className="modal-body">
-          <p style={modalBodyTextStyle}>
+          <span style={modalBodyTextStyle}>
             <ul className="profile follow_list">
               {props.likes.map((like, idx) => {
                 return (
@@ -55,7 +56,7 @@ const likeModal = (props) => (
                 );
               })}
             </ul>
-          </p>
+          </span>
         </div>
         <div className="modal-footer">
           <button

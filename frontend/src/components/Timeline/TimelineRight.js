@@ -7,13 +7,18 @@ const timelineRight = (props) => {
       <aside className="aside">
         <div className="feed_profile aside_profile">
           <div className="profile">
-            <img
-              src={props.myData.profile_pic_url}
-              alt="profile"
-              className="profile_img"
-            />
+            <Link to={"/profile/" + props.myData.username}>
+              <img
+                src={props.myData.profile_pic_url}
+                alt="profile"
+                className="profile_img"
+              />
+            </Link>
+
             <div className="pofile_info">
-              <p className="profile_id">{props.myData.username}</p>
+              <Link to={"/profile/" + props.myData.username}>
+                <p className="profile_id">{props.myData.username}</p>
+              </Link>
               <p className="profile_intro">{props.myData.full_name}</p>
             </div>
           </div>

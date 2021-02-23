@@ -19,6 +19,7 @@ const TimelineList = (props) => {
         userId={props.authUserId}
         viewLikes={props.isLikeView}
         cancelLikes={props.cancelIsLikeView}
+        contextToken={props.contextToken}
       />
     );
   });

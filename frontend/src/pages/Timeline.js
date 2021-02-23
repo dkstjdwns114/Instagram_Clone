@@ -361,6 +361,7 @@ class TimelinePage extends Component {
                   authUserId={this.context.userId}
                   isLikeView={this.viewLikesHandler}
                   cancelIsLikeView={this.cancelLikesHandler}
+                  contextToken={this.context.token}
                 />
                 {this.context.token && (
                   <TimelineRight myData={this.state.myData} />

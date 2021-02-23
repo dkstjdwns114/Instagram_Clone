@@ -15,13 +15,12 @@ const TimelineItem = (props) => {
   const [isModal, setIsModal] = useState(false);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("access_token");
-    setToken(accessToken);
+    setToken(props.contextToken);
     getLikedId();
     getSavedId();
     setMediaLikeds(props.mediaLiked);
     setMediaComments(props.comments);
-  }, []);
+  }, [props]);
 
   const getLikedId = () => {
     const requestBody = {
@@ -97,7 +96,6 @@ const TimelineItem = (props) => {
 
   const likeMediaHandler = () => {
     if (!isLiked) {
-      setIsLiked(true);
       const requestBody = {
         query: `
         mutation LikedMedia($mediaId: ID!){
@@ -139,6 +137,7 @@ const TimelineItem = (props) => {
             }
           });
           setMediaLikeds(updatedLikeds);
+          setIsLiked(true);
         })
         .catch((err) => {
           console.log(err);
@@ -386,7 +385,7 @@ const TimelineItem = (props) => {
                     className="likes_number hover-and-pointer"
                     onClick={likeModalHandler}
                   >
-                    {props.mediaLiked.length} likes
+                    {mediaLikeds.length} likes
                   </span>
                 </p>
               </div>
