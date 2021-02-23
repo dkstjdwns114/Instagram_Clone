@@ -23,7 +23,8 @@ module.exports = {
         full_name: args.userInput.full_name,
         password: hashedPassword,
         profile_pic_url:
-          "https://res.cloudinary.com/anstagram123/image/upload/v1613644236/anstagram/defaultProfile_dsacxp.jpg"
+          "https://res.cloudinary.com/anstagram123/image/upload/v1613644236/anstagram/defaultProfile_dsacxp.jpg",
+        introduction: ""
       });
       const result = await user.save();
       return { ...result._doc, password: null, _id: result.id };

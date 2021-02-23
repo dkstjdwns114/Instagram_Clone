@@ -16,6 +16,7 @@ class ProfileDetail extends Component {
     createdMedias: [],
     username: "",
     full_name: "",
+    introduction: "",
     isAuth: false,
     follower: [],
     following: [],
@@ -152,6 +153,7 @@ class ProfileDetail extends Component {
             username
             profile_pic_url
             full_name
+            introduction
             createdMedias {
               _id
               media_url
@@ -190,20 +192,19 @@ class ProfileDetail extends Component {
           this.setState({ isAuth: true });
           this.fetchSaveds();
         }
+        const userData = resData.data.userData;
         this.setState({
           isLoading: false,
-          profile_pic_url: resData.data.userData.profile_pic_url,
-          createdMedias: resData.data.userData.createdMedias,
-          username: resData.data.userData.username,
-          full_name: resData.data.userData.full_name,
-          follower: resData.data.userData.follower,
-          following: resData.data.userData.following,
-          profileUserId: resData.data.userData._id
+          profile_pic_url: userData.profile_pic_url,
+          createdMedias: userData.createdMedias,
+          username: userData.username,
+          full_name: userData.full_name,
+          introduction: userData.introduction,
+          follower: userData.follower,
+          following: userData.following,
+          profileUserId: userData._id
         });
-        this.fetchAboutFollow(
-          this.state.currentUserId,
-          resData.data.userData._id
-        );
+        this.fetchAboutFollow(this.state.currentUserId, userData._id);
       })
       .catch((err) => {
         console.log(err);
@@ -398,7 +399,7 @@ class ProfileDetail extends Component {
                   </div>
                   <div className="area_text profile_info">
                     <h3 className="info_title">{this.state.full_name}</h3>
-                    <p className="info_sub">한줄소개</p>
+                    <p className="info_sub">{this.state.introduction}</p>
                   </div>
                 </div>
               </div>

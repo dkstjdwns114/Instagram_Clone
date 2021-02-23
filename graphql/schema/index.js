@@ -43,6 +43,7 @@ type User {
   username: String!
   full_name: String!
   password: String!
+  introduction: String!
   profile_pic_url: String!
   createdMedias: [Media!]
   following: [User!]

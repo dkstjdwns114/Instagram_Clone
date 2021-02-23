@@ -35,7 +35,7 @@ class EditAccount extends Component {
     this.imageElRef = React.createRef();
     this.fullNameElRef = React.createRef();
     this.usernameElRef = React.createRef();
-    this.captionElRef = React.createRef();
+    this.introductionElRef = React.createRef();
   }
 
   async fetchData() {
@@ -71,7 +71,7 @@ class EditAccount extends Component {
         const userData = resData.data.userData;
         this.fullNameElRef.current.value = userData.full_name;
         this.usernameElRef.current.value = userData.username;
-        // this.captionElRef.current.value = userData.introduction
+        // this.introductionElRef.current.value = userData.introduction
         this.setState({ previewSource: userData.profile_pic_url });
       })
       .catch((err) => {

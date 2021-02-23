@@ -19,6 +19,10 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
+  introduction: {
+    type: String,
+    required: false
+  },
   profile_pic_url: {
     type: String,
     required: false
