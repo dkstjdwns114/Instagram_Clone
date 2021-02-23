@@ -32,6 +32,27 @@ module.exports = {
       throw err;
     }
   },
+  updateUser: async (args, req) => {
+    try {
+      if (!req.isAuth) {
+        throw new Error("Unauthenticated!");
+      }
+      const modifyUser = await User.findOneAndUpdate(
+        { _id: req.userId },
+        {
+          $set: {
+            username: args.updateUserInput.username,
+            full_name: args.updateUserInput.full_name,
+            profile_pic_url: args.updateUserInput.profile_pic_url,
+            introduction: args.updateUserInput.introduction
+          }
+        }
+      );
+      return modifyUser;
+    } catch (err) {
+      throw err;
+    }
+  },
   login: async ({ email, password }) => {
     const user = await User.findOne({ email: email });
     if (!user) {

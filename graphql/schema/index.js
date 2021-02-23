@@ -85,6 +85,13 @@ input UnfollowInput {
   unfollowed_userId: ID!
 }
 
+input UpdateUserInput {
+  username: String!
+  full_name: String!
+  profile_pic_url: String!
+  introduction: String!
+}
+
 type RootQuery {
   medias: [Media!]!
   media(mediaId: String!): Media!
@@ -115,6 +122,7 @@ type RootMutation {
   deleteComment(commentId: ID!): Media!
   createFollowing(followInput: FollowInput): Follow!
   cancelFollowing(unfollowInput: UnfollowInput): User
+  updateUser(updateUserInput: UpdateUserInput): User
 }
 
 schema {
