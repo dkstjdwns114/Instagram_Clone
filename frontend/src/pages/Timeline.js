@@ -36,7 +36,9 @@ class TimelinePage extends Component {
 
   componentDidMount() {
     this.fetchMedias();
-    this.fetchMyData();
+    if (this.context.token) {
+      this.fetchMyData();
+    }
   }
 
   startCreateEventHandler = () => {
@@ -304,7 +306,7 @@ class TimelinePage extends Component {
           value="creating"
           style={{ display: "none" }}
         />
-        {this.state.creating && (
+        {this.context.token && this.state.creating && (
           <Modal
             title="Add Post"
             canCancel
@@ -343,7 +345,7 @@ class TimelinePage extends Component {
             </form>
           </Modal>
         )}
-        {this.state.creating && <Backdrop />}
+        {this.context.token && this.state.creating && <Backdrop />}
         {this.state.isViewLikes && <Backdrop />}
         {this.state.isLoading ? (
           <Spinner />
@@ -357,7 +359,9 @@ class TimelinePage extends Component {
                   isLikeView={this.viewLikesHandler}
                   cancelIsLikeView={this.cancelLikesHandler}
                 />
-                <TimelineRight myData={this.state.myData} />
+                {this.context.token && (
+                  <TimelineRight myData={this.state.myData} />
+                )}
               </div>
             </div>
           </>

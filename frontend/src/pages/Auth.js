@@ -98,7 +98,7 @@ class AuthPage extends Component {
           this.setState({ isExist: true });
           return;
         }
-        if (this.state.isLogin) {
+        if (resData.data.login.token) {
           this.context.login(
             resData.data.login.token,
             resData.data.login.userId,

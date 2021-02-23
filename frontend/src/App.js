@@ -27,7 +27,7 @@ class App extends Component {
   }
 
   login = (token, userId, tokenExpiration, userName) => {
-    this.setState({ token: token, userId: userId });
+    this.setState({ token: token, userId: userId, userName: userName });
     localStorage.setItem("access_token", token);
     localStorage.setItem("userId", userId);
     localStorage.setItem("userName", userName);
@@ -45,9 +45,9 @@ class App extends Component {
       <BrowserRouter>
         <AuthContext.Provider
           value={{
-            token: localStorage.getItem("access_token"),
-            userId: localStorage.getItem("userId"),
-            userName: localStorage.getItem("userName"),
+            token: this.state.token,
+            userId: this.state.userId,
+            userName: this.state.userName,
             login: this.login,
             logout: this.logout
           }}
