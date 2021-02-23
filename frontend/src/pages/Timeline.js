@@ -362,7 +362,7 @@ class TimelinePage extends Component {
                   isLikeView={this.viewLikesHandler}
                   cancelIsLikeView={this.cancelLikesHandler}
                 />
-                {this.state.myData !== "" && (
+                {this.context.token && (
                   <TimelineRight myData={this.state.myData} />
                 )}
               </div>
