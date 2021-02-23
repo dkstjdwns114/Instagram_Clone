@@ -87,14 +87,15 @@ input UnfollowInput {
 type RootQuery {
   medias: [Media!]!
   media(mediaId: String!): Media!
+  timelineMedia: [Media!]
   likeds: [Liked!]!
   saveds: [Saved!]!
   comments: [Comment!]
   followings: [User!]!
   followers: [User!]
   login(email: String!, password: String!): AuthData!
-  isLike(mediaId: String!, userId: String!): Liked
-  isSave(mediaId: String!, userId: String!): Saved
+  isLike(mediaId: ID!, userId: ID!): Liked
+  isSave(mediaId: ID!, userId: ID!): Saved
   userData(username: String!): User
   timelineMyData(userId: ID!): User
   isFollowing(currentUserId: ID!, otherUserId: ID!): Follow

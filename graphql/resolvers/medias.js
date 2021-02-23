@@ -1,8 +1,92 @@
+const DataLoader = require("dataloader");
+
 const Media = require("../../models/media");
 const User = require("../../models/user");
+const Follow = require("../../models/follow");
+const Comment = require("../../models/comment");
+const Like = require("../../models/liked");
+
 const { transformMedia } = require("./merge");
 
+const userLoader = new DataLoader((userIds) => {
+  return User.find({ _id: { $in: userIds } });
+});
+
+const mediaLoader = new DataLoader((mediaIds) => {
+  return medias(mediaIds);
+});
+
+const user = async (userId) => {
+  try {
+    const user = await userLoader.load(userId.toString());
+    return {
+      ...user._doc,
+      _id: user.id,
+      createdMedias: () => mediaLoader.loadMany(user._doc.createdMedias)
+    };
+  } catch (err) {
+    throw err;
+  }
+};
+
+const comment = async (mediaId) => {
+  try {
+    const comments = await Comment.find({ media: mediaId });
+    const retComment = comments.map((comment) => {
+      return {
+        ...comment._doc,
+        _id: comment.id,
+        media_comment: comment.media_comment,
+        date: comment.date,
+        creator: user.bind(this, comment.creator)
+      };
+    });
+    return retComment;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const likese = async (mediaId) => {
+  try {
+    const likese = await Like.find({ media: mediaId });
+    const retLike = likese.map((like) => {
+      return {
+        ...like._doc,
+        _id: like.id,
+        user: user.bind(this, like.user),
+        media: like.media
+      };
+    });
+    return retLike;
+  } catch (err) {
+    throw err;
+  }
+};
+
 module.exports = {
+  timelineMedia: async (args, req) => {
+    try {
+      const following = await Follow.find({ following: req.userId });
+      let followingUserIds = following.map((followingUserId) => {
+        return followingUserId.followed;
+      });
+      followingUserIds.push(req.userId);
+      const medias = await Media.find({ creator: { $in: followingUserIds } });
+
+      return medias.map((media) => {
+        return {
+          ...media._doc,
+          _id: media.id,
+          creator: user.bind(this, media.creator),
+          commentTexts: comment.bind(this, media),
+          likeds: likese.bind(this, media)
+        };
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
   medias: async () => {
     try {
       const medias = await Media.find();

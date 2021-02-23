@@ -36,9 +36,9 @@ class TimelinePage extends Component {
   }
 
   componentDidMount() {
-    this.fetchMedias();
     setTimeout(() => {
       if (this.context) {
+        this.fetchMedias();
         this.fetchMyData();
       }
     }, 100);
@@ -198,44 +198,46 @@ class TimelinePage extends Component {
 
   fetchMedias() {
     this.setState({ isLeftLoading: true });
+
     const requestBody = {
       query: `
-        query {
-          medias {
-            _id
-            media_url
-            media_caption
-            date
-            creator {
+          query {
+            timelineMedia {
               _id
-              username
-              profile_pic_url
-            }
-            commentTexts {
-              _id
-              media_comment
+              media_url
+              media_caption
               date
               creator {
+                _id
                 username
                 profile_pic_url
               }
-            }
-            likeds {
-              user {
-                username
-                profile_pic_url
+              commentTexts {
+                _id
+                media_comment
+                date
+                creator {
+                  username
+                  profile_pic_url
+                }
+              }
+              likeds {
+                user {
+                  username
+                  profile_pic_url
+                }
               }
             }
           }
-        }
-      `
+        `
     };
 
     fetch("http://localhost:8000/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + this.context.token
       }
     })
       .then((res) => {
@@ -246,7 +248,7 @@ class TimelinePage extends Component {
       })
       .then((resData) => {
         console.log(resData);
-        const medias = resData.data.medias.reverse();
+        const medias = resData.data.timelineMedia.reverse();
         this.setState({
           medias: medias,
           isLeftLoading: false,
