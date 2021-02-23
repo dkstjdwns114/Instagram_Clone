@@ -48,6 +48,7 @@ class EditAccount extends Component {
             username
             profile_pic_url
             full_name
+            introduction
           }
         }
       `
@@ -71,7 +72,7 @@ class EditAccount extends Component {
         const userData = resData.data.userData;
         this.fullNameElRef.current.value = userData.full_name;
         this.usernameElRef.current.value = userData.username;
-        // this.introductionElRef.current.value = userData.introduction
+        this.introductionElRef.current.value = userData.introduction;
         this.setState({ previewSource: userData.profile_pic_url });
       })
       .catch((err) => {
@@ -155,7 +156,7 @@ class EditAccount extends Component {
                 </label>
                 <textarea
                   id="caption"
-                  ref={this.captionElRef}
+                  ref={this.introductionElRef}
                   onChange={this.activeBtnHandler}
                 />
               </div>
