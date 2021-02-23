@@ -7,6 +7,7 @@ import Spinner from "../components/Spinner/Spinner";
 import AuthContext from "../context/auth-context";
 import PostList from "../components/ProfileDetail/PostList/PostList";
 import Saveds from "../components/ProfileDetail/SavedList/SavedList";
+import FollowModal from "../components/Modal/FollowModal";
 
 class ProfileDetail extends Component {
   state = {
@@ -41,6 +42,22 @@ class ProfileDetail extends Component {
     this.fetchData();
     this.setState({ currentUserId: localStorage.getItem("userId") });
   }
+
+  followerClickHandler = () => {
+    this.setState({ isFollowerModal: true });
+  };
+
+  followerCancelHandler = () => {
+    this.setState({ isFollowerModal: false });
+  };
+
+  followingClickHandler = () => {
+    this.setState({ isFollowingModal: true });
+  };
+
+  followingCancelHandler = () => {
+    this.setState({ isFollowingModal: false });
+  };
 
   fetchAboutFollow(currentUser, profileUser) {
     this.setState({ isLoading: true });
@@ -296,6 +313,20 @@ class ProfileDetail extends Component {
   render() {
     return (
       <>
+        {this.state.isFollowingModal && (
+          <FollowModal
+            title="Following"
+            users={this.state.following}
+            onClose={this.followingCancelHandler}
+          />
+        )}
+        {this.state.isFollowerModal && (
+          <FollowModal
+            title="Follower"
+            users={this.state.follower}
+            onClose={this.followerCancelHandler}
+          />
+        )}
         {this.state.isLoading ? (
           <Spinner />
         ) : (
@@ -346,13 +377,19 @@ class ProfileDetail extends Component {
                         {this.state.createdMedias.length}
                       </span>
                     </div>
-                    <div className="tit_desc">
+                    <div
+                      className="tit_desc hover-me"
+                      onClick={this.followerClickHandler}
+                    >
                       <span className="title">팔로워</span>
                       <span className="sub_title">
                         {this.state.follower.length}
                       </span>
                     </div>
-                    <div className="tit_desc">
+                    <div
+                      className="tit_desc hover-me"
+                      onClick={this.followingClickHandler}
+                    >
                       <span className="title">팔로우</span>
                       <span className="sub_title">
                         {this.state.following.length}

@@ -89,6 +89,10 @@
 .profileDetail_profile .info .area_text .tit_desc .sub_title {
   font-weight: bold;
 }
+.profileDetail_profile .info .area_text .hover-me:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
 .profileDetail_profile .info .area_text.profile_info {
   display: block;
 }

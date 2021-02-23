@@ -22,8 +22,8 @@ module.exports = {
   },
   timelineMyData: async (args, req) => {
     try {
-      const user = await userLoader.load(args.userId);
-      return transformTimelineMyData(user);
+      const user = await userLoader.load(args.userId.toString());
+      return user;
     } catch (err) {
       throw err;
     }
