@@ -16,7 +16,8 @@ class TimelinePage extends Component {
   state = {
     creating: false,
     medias: [],
-    isLoading: false,
+    isLeftLoading: false,
+    isRightLoading: false,
     fileInputState: "",
     previewSource: "",
     isGetImage: undefined,
@@ -36,9 +37,11 @@ class TimelinePage extends Component {
 
   componentDidMount() {
     this.fetchMedias();
-    if (this.context.token) {
-      this.fetchMyData();
-    }
+    setTimeout(() => {
+      if (this.context) {
+        this.fetchMyData();
+      }
+    }, 100);
   }
 
   startCreateEventHandler = () => {
@@ -194,7 +197,7 @@ class TimelinePage extends Component {
   };
 
   fetchMedias() {
-    this.setState({ isLoading: true });
+    this.setState({ isLeftLoading: true });
     const requestBody = {
       query: `
         query {
@@ -246,18 +249,18 @@ class TimelinePage extends Component {
         const medias = resData.data.medias.reverse();
         this.setState({
           medias: medias,
-          isLoading: false,
+          isLeftLoading: false,
           prevIsGetImage: medias[0].media_url
         });
       })
       .catch((err) => {
         console.log(err);
-        this.setState({ isLoading: false });
+        this.setState({ isLeftLoading: false });
       });
   }
 
   fetchMyData() {
-    this.setState({ isLoading: true });
+    this.setState({ isRightLoading: true });
     const requestBody = {
       query: `
         query {
@@ -286,12 +289,12 @@ class TimelinePage extends Component {
       })
       .then((resData) => {
         console.log(resData);
-        console.log(resData.data.timelineMyData);
         this.setState({ myData: resData.data.timelineMyData });
+        this.setState({ isRightLoading: false });
       })
       .catch((err) => {
         console.log(err);
-        this.setState({ isLoading: false });
+        this.setState({ isRightLoading: false });
       });
   }
 
@@ -347,7 +350,7 @@ class TimelinePage extends Component {
         )}
         {this.context.token && this.state.creating && <Backdrop />}
         {this.state.isViewLikes && <Backdrop />}
-        {this.state.isLoading ? (
+        {this.state.isRightLoading || this.state.isLeftLoading ? (
           <Spinner />
         ) : (
           <>
@@ -359,7 +362,7 @@ class TimelinePage extends Component {
                   isLikeView={this.viewLikesHandler}
                   cancelIsLikeView={this.cancelLikesHandler}
                 />
-                {this.context.token && (
+                {this.state.myData !== "" && (
                   <TimelineRight myData={this.state.myData} />
                 )}
               </div>
