@@ -13,6 +13,7 @@ const TimelineItem = (props) => {
   const [mediaComments, setMediaComments] = useState([]);
   const [token, setToken] = useState("");
   const [isModal, setIsModal] = useState(false);
+  const [isOwner, setIsOwner] = useState(false);
 
   useEffect(() => {
     setToken(props.contextToken);
@@ -20,6 +21,9 @@ const TimelineItem = (props) => {
     getSavedId();
     setMediaLikeds(props.mediaLiked);
     setMediaComments(props.comments);
+    if (props.creatorId === props.userId) {
+      setIsOwner(true);
+    }
   }, [props]);
 
   const getLikedId = () => {
@@ -338,11 +342,13 @@ const TimelineItem = (props) => {
               <p className="profile_id">{props.creatorName}</p>
             </Link>
           </div>
-          <div className="profile_add link_list">
-            <button type="button" className="state_btn">
-              <span className="icon-dots"></span>
-            </button>
-          </div>
+          {isOwner && (
+            <div className="profile_add link_list">
+              <button type="button" className="state_btn">
+                <span className="icon-dots"></span>
+              </button>
+            </div>
+          )}
         </div>
         <div className="feed_box">
           <Image
