@@ -14,7 +14,7 @@ class PostDetail extends Component {
     likeds: [],
     creatorname: null,
     creatorProfile: null,
-    isLoading: false,
+    isLoading: true,
     isLiked: false,
     isSaved: false,
     media_caption: null,
@@ -22,18 +22,26 @@ class PostDetail extends Component {
     date: null,
     isModal: false,
     likedId: null,
-    savedId: null
+    savedId: null,
+    authUserId: "",
+    accessToken: "",
+    isOwner: false
   };
 
   static contextType = AuthContext;
 
   componentDidMount() {
-    this.fetchMedias();
+    setTimeout(() => {
+      this.setState({
+        authUserId: this.context.userId,
+        accessToken: this.context.token
+      });
+      this.fetchMedias();
+    }, 100);
   }
 
   fetchMedias() {
     this.setState({ isLoading: true });
-    let userId = localStorage.getItem("userId");
     const requestBody = {
       query: `
       query {
@@ -43,6 +51,7 @@ class PostDetail extends Component {
           media_caption
           date
           creator {
+            _id
             username
             profile_pic_url
           }
@@ -61,10 +70,10 @@ class PostDetail extends Component {
             }
           }
         }
-        isLike(mediaId: "${this.state.mediaId}", userId: "${userId}"){
+        isLike(mediaId: "${this.state.mediaId}", userId: "${this.state.authUserId}"){
           _id
         }
-        isSave(mediaId: "${this.state.mediaId}", userId: "${userId}"){
+        isSave(mediaId: "${this.state.mediaId}", userId: "${this.state.authUserId}"){
           _id
         }
       }
@@ -99,6 +108,9 @@ class PostDetail extends Component {
           isLiked: resData.data.isLike,
           isSaved: resData.data.isSave
         });
+        if (media.creator._id === this.state.authUserId) {
+          this.setState({ isOwner: true });
+        }
         if (resData.data.isLike) {
           this.setState({ likedId: resData.data.isLike._id });
         }
@@ -113,11 +125,10 @@ class PostDetail extends Component {
   }
 
   getLikedId = () => {
-    let userId = localStorage.getItem("userId");
     const requestBody = {
       query: `
         query {
-          isLike(mediaId: "${this.state.mediaId}", userId: "${userId}"){
+          isLike(mediaId: "${this.state.mediaId}", userId: "${this.state.authUserId}"){
             _id
           }
         }
@@ -147,11 +158,10 @@ class PostDetail extends Component {
   };
 
   getSavedId = () => {
-    let userId = localStorage.getItem("userId");
     const requestBody = {
       query: `
         query {
-          isSave(mediaId: "${this.state.mediaId}", userId: "${userId}"){
+          isSave(mediaId: "${this.state.mediaId}", userId: "${this.state.authUserId}"){
             _id
           }
         }
@@ -421,7 +431,7 @@ class PostDetail extends Component {
         {this.state.isLoading ? (
           <Spinner />
         ) : (
-          <>
+          <div>
             <PostDetailView
               media_url={this.state.media_url}
               creator_name={this.state.creatorname}
@@ -439,9 +449,12 @@ class PostDetail extends Component {
               mediaId={this.state.mediaId}
               contextToken={this.context.token}
               convertTime={this.lastTimeSet}
+              authUserId={this.state.authUserId}
+              accessToken={this.state.accessToken}
+              isOwner={this.state.isOwner}
             />
             {this.state.isModal && <Backdrop />}
-          </>
+          </div>
         )}
       </>
     );

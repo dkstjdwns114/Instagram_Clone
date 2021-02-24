@@ -1,18 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Image } from "cloudinary-react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const PostDetailView = (props) => {
   const [commentareaElRef, setCommenttextElRef] = useState(null);
   const [token, setAccessToken] = useState(null);
   const [comments, setComments] = useState([]);
   const [isActiveCommentBtn, setIsActiveCommentBtn] = useState(false);
+  const [currentMediaCaption, setCurrentMediaCaption] = useState("");
+  const [isEdit, setIsEdit] = useState(false);
+  const modifyCaptionElRef = useRef();
+  const history = useHistory();
 
   useEffect(() => {
-    let access_token = localStorage.getItem("access_token");
-    setAccessToken(access_token);
+    setAccessToken(props.accessToken);
     setComments(props.comments);
     setCommenttextElRef(React.createRef());
+    setCurrentMediaCaption(props.media_caption);
   }, [props]);
 
   const commentInputChangeHandler = () => {
@@ -21,6 +25,50 @@ const PostDetailView = (props) => {
     } else {
       setIsActiveCommentBtn(false);
     }
+  };
+
+  const deleteMediaHandler = () => {
+    const requestBody = {
+      query: `
+          mutation DeleteMedia($mediaId: ID!) {
+            deleteMedia(mediaId: $mediaId) {
+              _id
+            }
+          }
+        `,
+      variables: {
+        mediaId: props.mediaId
+      }
+    };
+
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      }
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        console.log(resData);
+        history.push("/timeline");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const modifyMediaHandler = () => {
+    setIsEdit(true);
+    setTimeout(() => {
+      modifyCaptionElRef.current.value = currentMediaCaption;
+    }, 10);
   };
 
   const commentMediaHandler = (e) => {
@@ -86,6 +134,47 @@ const PostDetailView = (props) => {
       });
   };
 
+  const modifySubmitEventHandler = () => {
+    const media_caption = modifyCaptionElRef.current.value;
+    console.log(media_caption);
+    const requestBody = {
+      query: `
+        mutation {
+          updateMedia(mediaId: "${props.mediaId}", media_caption: "${media_caption}"){
+            _id
+            media_caption
+          }
+        }
+        `
+    };
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      }
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        console.log(resData);
+        setCurrentMediaCaption(resData.data.updateMedia.media_caption);
+        setIsEdit(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const modifyCancelEventHandler = () => {
+    setIsEdit(false);
+  };
+
   return (
     <article className="social-article">
       <div className="social-left-col">
@@ -103,19 +192,68 @@ const PostDetailView = (props) => {
       </div>
       <div className="social-right-col">
         <div className="social-header">
-          <a href="/gllcollege/" className="social-profile-img">
+          <Link
+            to={"/profile/" + props.creator_name}
+            className="social-profile-img"
+          >
             <img
               src={props.creator_profile}
               alt={props.creator_name + "님의 프로필 사진"}
             />
-          </a>
+          </Link>
           <div className="social-follow">
-            <a title="gllcollege" href="/gllcollege/" className="social-name">
+            <Link to={"/profile/" + props.creator_name} className="social-name">
               {props.creator_name}
-            </a>
-            <span className="SPAN_13">•</span>
-            <button type="button">Follow</button>
+            </Link>
+            {!props.isOwner && (
+              <>
+                <span className="SPAN_13">•</span>
+                <button type="button">Follow</button>
+              </>
+            )}
           </div>
+          {props.isOwner && (
+            <>
+              <div className="profile_add">
+                <span className="state_btn">
+                  <span className="icon-dots">
+                    <div className="select-box">
+                      <div className="select-box__current" tabIndex="1">
+                        <div className="select-box__value">
+                          <input
+                            className="select-box__input"
+                            type="radio"
+                            defaultChecked
+                          />
+                          <p className="select-box__input-text"></p>
+                        </div>
+                      </div>
+                      <ul className="select-box__list">
+                        <>
+                          <li onClick={modifyMediaHandler}>
+                            <label
+                              className="select-box__option"
+                              aria-hidden="aria-hidden"
+                            >
+                              수정
+                            </label>
+                          </li>
+                          <li onClick={deleteMediaHandler} className="warning">
+                            <label
+                              className="select-box__option"
+                              aria-hidden="aria-hidden"
+                            >
+                              삭제
+                            </label>
+                          </li>
+                        </>
+                      </ul>
+                    </div>
+                  </span>
+                </span>
+              </div>
+            </>
+          )}
         </div>
         <div className="social-comments-wrap">
           <div className="social-post">
@@ -133,7 +271,33 @@ const PostDetailView = (props) => {
                 <Link to={"/profile/" + props.creator_name}>
                   <span className="social-name">{props.creator_name}</span>
                 </Link>
-                <span className="social-post-copy">{props.media_caption}</span>
+                {!isEdit ? (
+                  <span className="social-post-copy">
+                    {currentMediaCaption}
+                  </span>
+                ) : (
+                  <>
+                    <input
+                      type="text"
+                      className="timeline-item-modify-text"
+                      placeholder="1자 이상 입력하세요!"
+                      ref={modifyCaptionElRef}
+                    />
+                    <button
+                      className="timeline-item-modify-btn"
+                      onClick={modifySubmitEventHandler}
+                    >
+                      SUBMIT
+                    </button>
+                    <button
+                      className="timeline-item-modify-btn-cancel"
+                      onClick={modifyCancelEventHandler}
+                    >
+                      CANCEL
+                    </button>
+                  </>
+                )}
+
                 <time>{props.convertTime(props.date)}</time>
               </div>
             </div>

@@ -39,6 +39,9 @@
   overflow: hidden;
   padding: 0px 0px 0px 5px;
 }
+.social-right-col .social-name:hover {
+  text-decoration: underline;
+}
 .social-right-col .comment-header {
   position: relative;
   display: flex;
@@ -306,4 +309,24 @@
 
 .postdetail_comments_form .button_box .active-comment-btn:hover {
   cursor: pointer;
+}
+
+.social-copy .timeline-item-modify-text {
+  margin-left: 5px;
+}
+.social-copy .timeline-item-modify-btn {
+  margin-left: 6px;
+  background-color: #0095f6;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+.social-copy .timeline-item-modify-btn-cancel {
+  margin-left: 6px;
+  background-color: #f61000;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 12px;
 }
