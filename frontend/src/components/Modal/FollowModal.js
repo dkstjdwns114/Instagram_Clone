@@ -43,6 +43,7 @@ const followModal = (props) => (
                     <Link
                       to={"/profile/" + user.username}
                       onClick={props.otherUserClick}
+                      style={{ zIndex: "10" }}
                     >
                       <img
                         src={user.profile_pic_url}
@@ -50,7 +51,7 @@ const followModal = (props) => (
                         className="profile_img"
                       />
                     </Link>
-                    <div className="pofile_info">
+                    <div className="pofile_info" style={{ zIndex: "10" }}>
                       <Link
                         to={"/profile/" + user.username}
                         onClick={props.otherUserClick}
@@ -62,15 +63,16 @@ const followModal = (props) => (
                       className="follow_btn"
                       style={{
                         width: "100%",
-                        position: "absolute",
-                        zIndex: "-1"
+                        position: "absolute"
                       }}
                     >
                       <button
                         type="button"
                         className="btn"
-                        style={{ left: "75%", position: "relative" }}
-                        zIndex="120"
+                        style={{
+                          left: "75%",
+                          position: "relative"
+                        }}
                       >
                         <span>팔로우</span>
                       </button>

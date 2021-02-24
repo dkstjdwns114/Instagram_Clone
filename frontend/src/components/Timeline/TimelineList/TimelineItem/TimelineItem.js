@@ -483,7 +483,7 @@ const TimelineItem = (props) => {
   };
 
   const commentFocusHandler = () => {
-    document.getElementById("comment_input").focus();
+    document.getElementById(props.mediaId).focus();
   };
 
   return (
@@ -695,8 +695,8 @@ const TimelineItem = (props) => {
           <div className="input_box">
             <input
               type="text"
+              id={props.mediaId}
               placeholder="댓글달기..."
-              id="comment_input"
               onChange={commentInputChangeHandler}
               ref={addCommentElRef}
             />

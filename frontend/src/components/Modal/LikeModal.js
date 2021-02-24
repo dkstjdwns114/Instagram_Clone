@@ -57,14 +57,13 @@ const likeModal = (props) => (
                       style={{
                         width: "100%",
                         position: "absolute",
-                        zIndex: "-1"
+                        zindex: "-1"
                       }}
                     >
                       <button
                         type="button"
                         className="btn"
                         style={{ left: "75%", position: "relative" }}
-                        zIndex="120"
                       >
                         <span>팔로우</span>
                       </button>

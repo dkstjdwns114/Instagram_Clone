@@ -50,6 +50,9 @@ class ProfileDetail extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.match.params.username !== prevProps.match.params.username) {
+      if (prevState.isAuth) {
+        this.setState({ isAuth: false });
+      }
       this.fetchData();
     }
   }
@@ -369,14 +372,9 @@ class ProfileDetail extends Component {
                   <div className="area_text">
                     <h2 className="user_id">{this.state.username}</h2>
                     {this.state.isAuth && (
-                      <>
-                        <Link to="/accounts/edit" className="profile_edit">
-                          프로필 편집
-                        </Link>
-                        <button type="button" className="setting_btn">
-                          <i className="fas fa-cog"></i>
-                        </button>
-                      </>
+                      <Link to="/accounts/edit" className="profile_edit">
+                        프로필 편집
+                      </Link>
                     )}
                     {!this.state.isAuth &&
                       (!this.state.isFollowing ? (
