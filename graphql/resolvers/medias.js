@@ -5,6 +5,7 @@ const User = require("../../models/user");
 const Follow = require("../../models/follow");
 const Comment = require("../../models/comment");
 const Like = require("../../models/liked");
+const Save = require("../../models/saved");
 
 const { transformMedia } = require("./merge");
 
@@ -143,11 +144,23 @@ module.exports = {
       if (!media) {
         throw new Error("Media not found.");
       }
+
       const user = {
         ...media.creator._doc,
         _id: media.creator._id
       };
+
+      const deleteCreatedMedia = await User.findById(user._id);
+
+      deleteCreatedMedia.createdMedias.pull({ _id: args.mediaId });
+      await deleteCreatedMedia.save();
+
+      await Save.deleteMany({ media: args.mediaId });
+      await Like.deleteMany({ media: args.mediaId });
+      await Comment.deleteMany({ media: args.mediaId });
+
       await Media.deleteOne({ _id: args.mediaId });
+
       return user;
     } catch (err) {
       throw err;
