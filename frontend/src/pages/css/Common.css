@@ -165,3 +165,7 @@
   align-items: center;
   padding: 5px 0;
 }
+
+.state_btn .warning {
+  color: red;
+}

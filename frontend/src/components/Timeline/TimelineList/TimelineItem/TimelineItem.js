@@ -325,6 +325,46 @@ const TimelineItem = (props) => {
     return zero + n;
   };
 
+  const deleteMediaHandler = () => {
+    const requestBody = {
+      query: `
+          mutation DeleteMedia($mediaId: ID!) {
+            deleteMedia(mediaId: $mediaId) {
+              _id
+            }
+          }
+        `,
+      variables: {
+        mediaId: props.mediaId
+      }
+    };
+
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      }
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        console.log(resData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const modifyMediaHandler = () => {
+    console.log("modifyMediaHandler", props.mediaId);
+  };
+
   return (
     <>
       {isModal && <LikeModal likes={mediaLikeds} onClose={modalCloseHandler} />}
@@ -343,11 +383,51 @@ const TimelineItem = (props) => {
             </Link>
           </div>
           {isOwner && (
-            <div className="profile_add link_list">
+            <>
+              <div className="profile_add">
+                <span className="state_btn">
+                  <span className="icon-dots">
+                    <div className="select-box">
+                      <div className="select-box__current" tabIndex="1">
+                        <div className="select-box__value">
+                          <input
+                            className="select-box__input"
+                            type="radio"
+                            defaultChecked
+                          />
+                          <p className="select-box__input-text"></p>
+                        </div>
+                      </div>
+                      <ul className="select-box__list">
+                        <>
+                          <li onClick={modifyMediaHandler}>
+                            <label
+                              className="select-box__option"
+                              aria-hidden="aria-hidden"
+                            >
+                              수정
+                            </label>
+                          </li>
+                          <li onClick={deleteMediaHandler} className="warning">
+                            <label
+                              className="select-box__option"
+                              aria-hidden="aria-hidden"
+                            >
+                              삭제
+                            </label>
+                          </li>
+                        </>
+                      </ul>
+                    </div>
+                  </span>
+                </span>
+              </div>
+              {/* <div className="profile_add link_list">
               <button type="button" className="state_btn">
                 <span className="icon-dots"></span>
               </button>
-            </div>
+            </div> */}
+            </>
           )}
         </div>
         <div className="feed_box">

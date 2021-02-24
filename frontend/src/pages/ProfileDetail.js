@@ -27,7 +27,8 @@ class ProfileDetail extends Component {
     isFollowerModal: false,
     saveds: [],
     isFollowing: false,
-    isFollowed: false
+    isFollowed: false,
+    mediaCnt: 0
   };
 
   constructor(props) {
@@ -197,7 +198,6 @@ class ProfileDetail extends Component {
         this.setState({
           isLoading: false,
           profile_pic_url: userData.profile_pic_url,
-          createdMedias: userData.createdMedias,
           username: userData.username,
           full_name: userData.full_name,
           introduction: userData.introduction,
@@ -205,6 +205,12 @@ class ProfileDetail extends Component {
           following: userData.following,
           profileUserId: userData._id
         });
+        if (userData.createdMedias !== null) {
+          this.setState({
+            createdMedias: userData.createdMedias,
+            mediaCnt: userData.createdMedias.length
+          });
+        }
         this.fetchAboutFollow(this.state.currentUserId, userData._id);
       })
       .catch((err) => {
@@ -378,9 +384,7 @@ class ProfileDetail extends Component {
                   <div className="area_text">
                     <div className="tit_desc">
                       <span className="title">게시물</span>
-                      <span className="sub_title">
-                        {this.state.createdMedias.length}
-                      </span>
+                      <span className="sub_title">{this.state.mediaCnt}</span>
                     </div>
                     <div
                       className="tit_desc hover-me"
