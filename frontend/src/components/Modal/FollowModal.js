@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const modalBodyTextStyle = {
   display: "inline-block",
@@ -39,16 +40,38 @@ const followModal = (props) => (
               {props.users.map((user, idx) => {
                 return (
                   <li key={user.username}>
-                    <img
-                      src={user.profile_pic_url}
-                      alt={user.username + "님의 프로필 사진"}
-                      className="profile_img"
-                    />
+                    <Link
+                      to={"/profile/" + user.username}
+                      onClick={props.otherUserClick}
+                    >
+                      <img
+                        src={user.profile_pic_url}
+                        alt={user.username + "님의 프로필 사진"}
+                        className="profile_img"
+                      />
+                    </Link>
                     <div className="pofile_info">
-                      <p className="profile_id">{user.username}</p>
+                      <Link
+                        to={"/profile/" + user.username}
+                        onClick={props.otherUserClick}
+                      >
+                        <p className="profile_id">{user.username}</p>
+                      </Link>
                     </div>
-                    <div className="follow_btn" style={{ paddingLeft: "63%" }}>
-                      <button type="button" className="btn">
+                    <div
+                      className="follow_btn"
+                      style={{
+                        width: "100%",
+                        position: "absolute",
+                        zIndex: "-1"
+                      }}
+                    >
+                      <button
+                        type="button"
+                        className="btn"
+                        style={{ left: "75%", position: "relative" }}
+                        zIndex="120"
+                      >
                         <span>팔로우</span>
                       </button>
                     </div>

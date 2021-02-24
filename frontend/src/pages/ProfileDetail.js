@@ -48,6 +48,12 @@ class ProfileDetail extends Component {
     }, 100);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.match.params.username !== prevProps.match.params.username) {
+      this.fetchData();
+    }
+  }
+
   followerClickHandler = () => {
     this.setState({ isFollowerModal: true });
   };
@@ -62,6 +68,10 @@ class ProfileDetail extends Component {
 
   followingCancelHandler = () => {
     this.setState({ isFollowingModal: false });
+  };
+
+  otherUserClickHandler = () => {
+    this.setState({ isFollowingModal: false, isFollowerModal: false });
   };
 
   fetchAboutFollow(currentUser, profileUser) {
@@ -328,6 +338,7 @@ class ProfileDetail extends Component {
             title="Following"
             users={this.state.following}
             onClose={this.followingCancelHandler}
+            otherUserClick={this.otherUserClickHandler}
           />
         )}
         {this.state.isFollowerModal && (
@@ -335,6 +346,7 @@ class ProfileDetail extends Component {
             title="Follower"
             users={this.state.follower}
             onClose={this.followerCancelHandler}
+            otherUserClick={this.otherUserClickHandler}
           />
         )}
         {(this.state.isFollowingModal || this.state.isFollowerModal) && (

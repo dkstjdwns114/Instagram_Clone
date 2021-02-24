@@ -117,3 +117,7 @@
   border-color: #dc3545;
   color: white;
 }
+
+.profile_id:hover {
+  text-decoration: underline;
+}

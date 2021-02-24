@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const modalBodyTextStyle = {
   display: "inline-block",
@@ -39,16 +40,32 @@ const likeModal = (props) => (
               {props.likes.map((like, idx) => {
                 return (
                   <li key={like.user.username}>
-                    <img
-                      src={like.user.profile_pic_url}
-                      alt={like.user.username + "님의 프로필 사진"}
-                      className="profile_img"
-                    />
-                    <div className="pofile_info">
-                      <p className="profile_id">{like.user.username}</p>
+                    <Link to={"/profile/" + like.user.username}>
+                      <img
+                        src={like.user.profile_pic_url}
+                        alt={like.user.username + "님의 프로필 사진"}
+                        className="profile_img"
+                      />
+                    </Link>
+                    <div className="profile_info">
+                      <Link to={"/profile/" + like.user.username}>
+                        <p className="profile_id">{like.user.username}</p>
+                      </Link>
                     </div>
-                    <div className="follow_btn" style={{ paddingLeft: "63%" }}>
-                      <button type="button" className="btn">
+                    <div
+                      className="follow_btn"
+                      style={{
+                        width: "100%",
+                        position: "absolute",
+                        zIndex: "-1"
+                      }}
+                    >
+                      <button
+                        type="button"
+                        className="btn"
+                        style={{ left: "75%", position: "relative" }}
+                        zIndex="120"
+                      >
                         <span>팔로우</span>
                       </button>
                     </div>
