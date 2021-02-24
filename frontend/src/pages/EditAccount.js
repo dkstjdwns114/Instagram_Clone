@@ -12,7 +12,6 @@ class EditAccount extends Component {
     previewSource: "",
     isGetImage: undefined,
     imageUrl: "",
-    prevIsGetImage: "",
     isActiveBtn: false,
     imageSelected: "",
     getFullName: "",
@@ -112,6 +111,11 @@ class EditAccount extends Component {
       })
       .catch((err) => {
         console.log(err);
+        this.imageElRef.current.value = "";
+        this.fullNameElRef.current.value = this.state.getFullName;
+        this.usernameElRef.current.value = this.state.getUserName;
+        this.introductionElRef.current.value = this.state.getIntroduction;
+        this.setState({ isActiveBtn: false });
       });
   };
 

@@ -1,7 +1,13 @@
+const DataLoader = require("dataloader");
+
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const User = require("../../models/user");
+
+const userNameLoader = new DataLoader((username) => {
+  return User.find({ username: { $in: username } });
+});
 
 module.exports = {
   createUser: async (args) => {
@@ -33,10 +39,14 @@ module.exports = {
     }
   },
   updateUser: async (args, req) => {
+    if (!req.isAuth) throw new Error("Unauthenticated!");
     try {
-      if (!req.isAuth) {
-        throw new Error("Unauthenticated!");
+      const user = await userNameLoader.load(args.updateUserInput.username);
+
+      if (user._id.toString() !== req.userId.toString()) {
+        throw new Error("Exist Username!");
       }
+
       const modifyUser = await User.findOneAndUpdate(
         { _id: req.userId },
         {
@@ -67,13 +77,13 @@ module.exports = {
       { userId: user.id, email: user.email },
       "somesupersecretkey",
       {
-        expiresIn: "1h"
+        expiresIn: "3h"
       }
     );
     return {
       userId: user.id,
       token: token,
-      tokenExpiration: 1,
+      tokenExpiration: 3,
       userName: user.username
     };
   }
