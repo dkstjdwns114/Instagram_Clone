@@ -6,13 +6,22 @@ const PostDetailView = (props) => {
   const [commentareaElRef, setCommenttextElRef] = useState(null);
   const [token, setAccessToken] = useState(null);
   const [comments, setComments] = useState([]);
+  const [isActiveCommentBtn, setIsActiveCommentBtn] = useState(false);
 
   useEffect(() => {
     let access_token = localStorage.getItem("access_token");
     setAccessToken(access_token);
     setComments(props.comments);
     setCommenttextElRef(React.createRef());
-  }, []);
+  }, [props]);
+
+  const commentInputChangeHandler = () => {
+    if (commentareaElRef.current.value !== "") {
+      setIsActiveCommentBtn(true);
+    } else {
+      setIsActiveCommentBtn(false);
+    }
+  };
 
   const commentMediaHandler = (e) => {
     e.preventDefault();
@@ -182,17 +191,36 @@ const PostDetailView = (props) => {
           <div className="social-date">
             <time>{props.convertTime(props.date)}</time>
           </div>
-          <div className="comment-add">
-            <form onSubmit={commentMediaHandler}>
+          <form
+            onSubmit={commentMediaHandler}
+            className="postdetail_comments_form"
+          >
+            <div className="input_box">
               <input
                 type="text"
                 id="commentarea"
                 placeholder="Add a comment..."
                 ref={commentareaElRef}
+                onChange={commentInputChangeHandler}
               />
-              <input type="submit" className="btn" value="SUBMIT" />
-            </form>
-          </div>
+            </div>
+            <div className="button_box">
+              {isActiveCommentBtn ? (
+                <input
+                  type="submit"
+                  className="active-comment-btn"
+                  value="SUBMIT"
+                />
+              ) : (
+                <input
+                  type="submit"
+                  className="disabled-comment-btn"
+                  value="SUBMIT"
+                  disabled="disabled"
+                />
+              )}
+            </div>
+          </form>
         </div>
       </div>
     </article>

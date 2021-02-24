@@ -145,6 +145,7 @@
   flex: 0 0 auto;
   flex-flow: column nowrap;
   padding: 0px 0px 0px 16px;
+  /* padding-bottom: 30px; */
 }
 .social-right-col .social-date time {
   color: #999999;
@@ -256,13 +257,53 @@
   user-select: none;
 }
 
-.comment-add {
-  margin-top: 10px;
-  padding-left: 20px;
+.postdetail_comments_form {
+  position: relative;
+  height: 25px;
 }
 
-#commentarea {
-  width: 200px;
-  height: 20px;
-  margin-right: 5px;
+.postdetail_comments_form .input_box {
+  position: relative;
+  width: 100%;
+}
+.postdetail_comments_form .input_box input {
+  position: relative;
+  margin-top: 4px;
+  padding-top: 15px;
+  width: 100%;
+  height: 100%;
+  padding-left: 10px;
+  box-sizing: border-box;
+  border: 1px solid #dbdbdb;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  font-size: 15px;
+  outline: none;
+}
+
+.postdetail_comments_form .button_box {
+  position: absolute;
+  right: 10px;
+  top: 11px;
+}
+
+.postdetail_comments_form .button_box .active-comment-btn {
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #0095f6;
+  color: white;
+}
+
+.postdetail_comments_form .button_box .disabled-comment-btn {
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: #bfdffd;
+  color: #0095f6;
+}
+
+.postdetail_comments_form .button_box .active-comment-btn:hover {
+  cursor: pointer;
 }
