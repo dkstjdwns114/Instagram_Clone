@@ -10,6 +10,7 @@ const PostDetailView = (props) => {
   const [currentMediaCaption, setCurrentMediaCaption] = useState("");
   const [isEdit, setIsEdit] = useState(false);
   const modifyCaptionElRef = useRef();
+  const scrollBottomRef = useRef();
   const history = useHistory();
 
   useEffect(() => {
@@ -17,7 +18,12 @@ const PostDetailView = (props) => {
     setComments(props.comments);
     setCommenttextElRef(React.createRef());
     setCurrentMediaCaption(props.media_caption);
-  }, [props]);
+    setTimeout(() => {
+      scrollBottomRef.current.scrollIntoView({
+        behavior: "smooth"
+      });
+    }, 500);
+  }, []);
 
   const commentInputChangeHandler = () => {
     if (commentareaElRef.current.value !== "") {
@@ -128,6 +134,11 @@ const PostDetailView = (props) => {
           }
         ]);
         commentareaElRef.current.value = "";
+        setTimeout(() => {
+          scrollBottomRef.current.scrollIntoView({
+            behavior: "smooth"
+          });
+        }, 300);
       })
       .catch((err) => {
         console.log(err);
@@ -327,6 +338,7 @@ const PostDetailView = (props) => {
                 </div>
               );
             })}
+            <div ref={scrollBottomRef} className="list-bottom"></div>
           </div>
           <div className="social-icons">
             <section className="icons-section">

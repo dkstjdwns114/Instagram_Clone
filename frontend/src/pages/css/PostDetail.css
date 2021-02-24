@@ -123,7 +123,8 @@
   transform-origin: 167px 112px;
   border: 0px solid black;
   flex-flow: column nowrap;
-  overflow: hidden auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
   flex-grow: 1;
   height: 100%;
 }
