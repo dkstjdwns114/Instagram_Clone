@@ -176,6 +176,10 @@
   font-size: 15px;
   color: #bfdffd;
 }
+.comments_form .button_box .comment-submit-btn span {
+  font-size: 15px;
+  color: rgb(28, 126, 214);
+}
 
 /* 오른쪽 영역 */
 .main .container .contents_right {

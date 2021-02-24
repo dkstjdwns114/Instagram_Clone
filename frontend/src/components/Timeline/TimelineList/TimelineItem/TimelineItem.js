@@ -15,8 +15,10 @@ const TimelineItem = (props) => {
   const [isModal, setIsModal] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
   const modifyCaptionElRef = useRef();
+  const addCommentElRef = useRef();
   const [isEdit, setIsEdit] = useState(false);
   const [currentMediaCaption, setCurrentMediaCaption] = useState("");
+  const [isActiveCommentBtn, setIsActiveCommentBtn] = useState(false);
 
   useEffect(() => {
     setToken(props.contextToken);
@@ -29,6 +31,14 @@ const TimelineItem = (props) => {
       setIsOwner(true);
     }
   }, [props]);
+
+  const commentInputChangeHandler = () => {
+    if (addCommentElRef.current.value !== "") {
+      setIsActiveCommentBtn(true);
+    } else {
+      setIsActiveCommentBtn(false);
+    }
+  };
 
   const getLikedId = () => {
     const requestBody = {
@@ -60,6 +70,66 @@ const TimelineItem = (props) => {
         } else {
           setIsLiked(false);
         }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const commentSubmitEventHandler = (e) => {
+    e.preventDefault();
+
+    const comment_text = addCommentElRef.current.value;
+
+    if (comment_text.trim().length === 0) {
+      addCommentElRef.current.value = "";
+      return;
+    }
+
+    const requestBody = {
+      query: `
+        mutation CreateComment($mediaId: ID!, $media_comment: String!) {
+          createComment(commentInput: {mediaId: $mediaId, media_comment: $media_comment}){
+            _id
+            creator {
+              username
+              profile_pic_url
+            }
+          }
+        }
+      `,
+      variables: {
+        mediaId: props.mediaId,
+        media_comment: comment_text
+      }
+    };
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      }
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        console.log(resData);
+        let createCommentUsername = resData.data.createComment.creator.username;
+        setMediaComments((state) => [
+          ...state,
+          {
+            creator: {
+              username: createCommentUsername
+            },
+            media_comment: comment_text
+          }
+        ]);
+        addCommentElRef.current.value = "";
       })
       .catch((err) => {
         console.log(err);
@@ -622,16 +692,28 @@ const TimelineItem = (props) => {
             </div>
           </div>
         </div>
-        {/* <form className="comments_form">
+        <form className="comments_form" onSubmit={commentSubmitEventHandler}>
           <div className="input_box">
-            <input type="text" placeholder="댓글달기..." id="comment_input" />
+            <input
+              type="text"
+              placeholder="댓글달기..."
+              id="comment_input"
+              onChange={commentInputChangeHandler}
+              ref={addCommentElRef}
+            />
           </div>
           <div className="button_box">
-            <button type="button" className="btn" disabled="disabled">
-              <span className="">게시</span>
-            </button>
+            {!isActiveCommentBtn ? (
+              <button type="submit" className="btn" disabled="disabled">
+                <span className="">게시</span>
+              </button>
+            ) : (
+              <button type="submit" className="comment-submit-btn">
+                <span className="">게시</span>
+              </button>
+            )}
           </div>
-        </form> */}
+        </form>
       </li>
     </>
   );
