@@ -4,10 +4,11 @@ import AuthContext from "../context/auth-context";
 import Axios from "axios";
 
 import "./css/EditAccount.css";
+import Spinner from "../components/Spinner/Spinner";
 
 class EditAccount extends Component {
   state = {
-    isLoading: false,
+    isLoading: true,
     profile_pic_url: "",
     fileInputState: "",
     previewSource: "",
@@ -19,7 +20,8 @@ class EditAccount extends Component {
     getFullName: "",
     getUserName: "",
     getIntroduction: "",
-    currentUserName: ""
+    currentUserName: "",
+    authUserId: ""
   };
 
   static contextType = AuthContext;
@@ -116,7 +118,6 @@ class EditAccount extends Component {
   };
 
   async fetchData() {
-    this.setState({ isLoading: true });
     const requestBody = {
       query: `
         query{
@@ -159,7 +160,8 @@ class EditAccount extends Component {
           getFullName: userData.full_name,
           getUserName: userData.username,
           getIntroduction: userData.introduction,
-          currentUserName: userData.username
+          currentUserName: userData.username,
+          isLoading: false
         });
       })
       .catch((err) => {
@@ -198,12 +200,14 @@ class EditAccount extends Component {
           formData
         ).then((response) => {
           this.setState({
-            profile_pic_url: response.data.secure_url
+            profile_pic_url: response.data.secure_url,
+            isLoading: false
           });
           this.updateData();
         });
       } catch (err) {
         console.error(err);
+        this.setState({ isLoading: false });
       }
     } else {
       this.updateData();
@@ -212,92 +216,98 @@ class EditAccount extends Component {
 
   render() {
     return (
-      <div className="wrap">
-        <div className="container">
-          <div className="inner">
-            <header className="title">
-              <h1>
-                <span className="header_tit">프로필 편집</span>
-              </h1>
-            </header>
-            <form className="form">
-              <div className="form-create-control">
-                <label htmlFor="image">사진</label>
-                <input
-                  type="file"
-                  id="image"
-                  ref={this.imageElRef}
-                  onChange={this.fileOnChangeHandler}
-                />
-                {this.state.previewSource && (
-                  <img
-                    src={this.state.previewSource}
-                    alt="chosen"
-                    id="profile_img"
-                  />
-                )}
-              </div>
-              <div className="input_box">
-                <label className="form_tit" htmlFor="full_name">
-                  이름
-                </label>
-                <input
-                  id="full_name"
-                  ref={this.fullNameElRef}
-                  type="text"
-                  placeholder="이름"
-                  onChange={this.activeBtnHandler}
-                />
-              </div>
-              <div className="input_box">
-                <label className="form_tit" htmlFor="username">
-                  사용자이름
-                </label>
-                <input
-                  id="username"
-                  ref={this.usernameElRef}
-                  type="text"
-                  placeholder="사용자이름"
-                  onChange={this.activeBtnHandler}
-                />
-              </div>
-              <div className="input_box">
-                <label className="form_tit" htmlFor="caption">
-                  소개
-                </label>
-                <textarea
-                  id="caption"
-                  ref={this.introductionElRef}
-                  onChange={this.activeBtnHandler}
-                />
-              </div>
-              <div className="button_box">
-                {!this.state.isActiveBtn ? (
-                  <button type="button" className="btn" disabled="disabled">
-                    <span>제출</span>
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    className="active-btn"
-                    onClick={this.submitBtnHandler}
+      <>
+        {this.state.isLoading ? (
+          <Spinner />
+        ) : (
+          <div className="wrap">
+            <div className="container">
+              <div className="inner">
+                <header className="title">
+                  <h1>
+                    <span className="header_tit">프로필 편집</span>
+                  </h1>
+                </header>
+                <form className="form">
+                  <div className="form-create-control">
+                    <label htmlFor="image">사진</label>
+                    <input
+                      type="file"
+                      id="image"
+                      ref={this.imageElRef}
+                      onChange={this.fileOnChangeHandler}
+                    />
+                    {this.state.previewSource && (
+                      <img
+                        src={this.state.previewSource}
+                        alt="chosen"
+                        id="profile_img"
+                      />
+                    )}
+                  </div>
+                  <div className="input_box">
+                    <label className="form_tit" htmlFor="full_name">
+                      이름
+                    </label>
+                    <input
+                      id="full_name"
+                      ref={this.fullNameElRef}
+                      type="text"
+                      placeholder="이름"
+                      onChange={this.activeBtnHandler}
+                    />
+                  </div>
+                  <div className="input_box">
+                    <label className="form_tit" htmlFor="username">
+                      사용자이름
+                    </label>
+                    <input
+                      id="username"
+                      ref={this.usernameElRef}
+                      type="text"
+                      placeholder="사용자이름"
+                      onChange={this.activeBtnHandler}
+                    />
+                  </div>
+                  <div className="input_box">
+                    <label className="form_tit" htmlFor="caption">
+                      소개
+                    </label>
+                    <textarea
+                      id="caption"
+                      ref={this.introductionElRef}
+                      onChange={this.activeBtnHandler}
+                    />
+                  </div>
+                  <div className="button_box">
+                    {!this.state.isActiveBtn ? (
+                      <button type="button" className="btn" disabled="disabled">
+                        <span>제출</span>
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className="active-btn"
+                        onClick={this.submitBtnHandler}
+                      >
+                        <span>제출</span>
+                      </button>
+                    )}
+                  </div>
+                </form>
+                <div className="move_mypage">
+                  <Link
+                    to={"/profile/" + this.state.currentUserName}
+                    className="page_move"
                   >
-                    <span>제출</span>
-                  </button>
-                )}
+                    <span>마이페이지로 이동</span>
+                  </Link>
+                </div>
               </div>
-            </form>
-            <div className="move_mypage">
-              <Link
-                to={"/profile/" + this.state.currentUserName}
-                className="page_move"
-              >
-                <span>마이페이지로 이동</span>
-              </Link>
             </div>
           </div>
-        </div>
-      </div>
+        )}
+      </>
     );
   }
 }

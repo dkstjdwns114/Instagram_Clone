@@ -14,11 +14,11 @@ const TimelineItem = (props) => {
   const [token, setToken] = useState("");
   const [isModal, setIsModal] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
-  const modifyCaptionElRef = useRef();
-  const addCommentElRef = useRef();
   const [isEdit, setIsEdit] = useState(false);
   const [currentMediaCaption, setCurrentMediaCaption] = useState("");
   const [isActiveCommentBtn, setIsActiveCommentBtn] = useState(false);
+  const modifyCaptionElRef = useRef();
+  const addCommentElRef = useRef();
 
   useEffect(() => {
     setToken(props.contextToken);
@@ -482,6 +482,10 @@ const TimelineItem = (props) => {
     }, 10);
   };
 
+  const commentFocusHandler = () => {
+    document.getElementById("comment_input").focus();
+  };
+
   return (
     <>
       {isModal && <LikeModal likes={mediaLikeds} onClose={modalCloseHandler} />}
@@ -539,11 +543,6 @@ const TimelineItem = (props) => {
                   </span>
                 </span>
               </div>
-              {/* <div className="profile_add link_list">
-              <button type="button" className="state_btn">
-                <span className="icon-dots"></span>
-              </button>
-            </div> */}
             </>
           )}
         </div>
@@ -568,7 +567,7 @@ const TimelineItem = (props) => {
                   <span className="liked"></span>
                 )}
               </button>
-              <button className="icons-button" onClick={null}>
+              <button className="icons-button" onClick={commentFocusHandler}>
                 <span className="icon2"></span>
               </button>
               <button className="icons-button" onClick={saveMediaHandler}>

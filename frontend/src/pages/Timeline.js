@@ -17,8 +17,8 @@ class TimelinePage extends Component {
   state = {
     creating: false,
     medias: [],
-    isLeftLoading: false,
-    isRightLoading: false,
+    isLeftLoading: true,
+    isRightLoading: true,
     fileInputState: "",
     previewSource: "",
     isViewLikes: false,

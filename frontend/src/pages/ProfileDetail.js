@@ -12,7 +12,7 @@ import Backdrop from "../components/Backdrop/Backdrop";
 
 class ProfileDetail extends Component {
   state = {
-    isLoading: false,
+    isLoading: true,
     profile_pic_url: "",
     createdMedias: [],
     username: "",
