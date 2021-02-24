@@ -42,8 +42,10 @@ class ProfileDetail extends Component {
   static contextType = AuthContext;
 
   componentDidMount() {
-    this.fetchData();
-    this.setState({ currentUserId: localStorage.getItem("userId") });
+    setTimeout(() => {
+      this.fetchData();
+      this.setState({ currentUserId: this.context.userId });
+    }, 100);
   }
 
   followerClickHandler = () => {
