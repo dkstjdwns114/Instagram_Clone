@@ -114,6 +114,7 @@ type RootQuery {
 type RootMutation {
   createMedia(mediaInput: MediaInput): Media
   deleteMedia(mediaId: ID!): User
+  updateMedia(mediaId: ID!, media_caption: String!): Media
   createUser(userInput: UserInput): User
   likedMedia(mediaId: ID!): Liked!
   cancelLiked(likedId: ID!): Media!

@@ -95,6 +95,27 @@
   font-size: 15px;
   line-height: 1.4;
 }
+.comments_tit .timeline-item-modify-text {
+  margin-left: 5px;
+  width: 72%;
+}
+.comments_tit .timeline-item-modify-btn {
+  margin-left: 6px;
+  background-color: #0095f6;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+.comments_tit .timeline-item-modify-btn-cancel {
+  margin-left: 6px;
+  background-color: #f61000;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+}
+
 .comments_info .comments_tit .user_id {
   font-weight: bold;
 }

@@ -165,5 +165,25 @@ module.exports = {
     } catch (err) {
       throw err;
     }
+  },
+  updateMedia: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
+    try {
+      const media = await Media.findOneAndUpdate(
+        { _id: args.mediaId },
+        {
+          $set: {
+            media_caption: args.media_caption
+          }
+        },
+        { new: true, useFindAndModify: false }
+      );
+
+      return media;
+    } catch (err) {
+      throw err;
+    }
   }
 };

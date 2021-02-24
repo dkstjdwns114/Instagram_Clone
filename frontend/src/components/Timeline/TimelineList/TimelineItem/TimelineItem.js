@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Image } from "cloudinary-react";
 
@@ -14,6 +14,9 @@ const TimelineItem = (props) => {
   const [token, setToken] = useState("");
   const [isModal, setIsModal] = useState(false);
   const [isOwner, setIsOwner] = useState(false);
+  const modifyCaptionElRef = useRef();
+  const [isEdit, setIsEdit] = useState(false);
+  const [currentMediaCaption, setCurrentMediaCaption] = useState("");
 
   useEffect(() => {
     setToken(props.contextToken);
@@ -21,6 +24,7 @@ const TimelineItem = (props) => {
     getSavedId();
     setMediaLikeds(props.mediaLiked);
     setMediaComments(props.comments);
+    setCurrentMediaCaption(props.mediaCaption);
     if (props.creatorId === props.userId) {
       setIsOwner(true);
     }
@@ -60,6 +64,46 @@ const TimelineItem = (props) => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const modifySubmitEventHandler = () => {
+    const media_caption = modifyCaptionElRef.current.value;
+    const requestBody = {
+      query: `
+        mutation {
+          updateMedia(mediaId: "${props.mediaId}", media_caption: "${media_caption}"){
+            _id
+            media_caption
+          }
+        }
+        `
+    };
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      }
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        console.log(resData);
+        setCurrentMediaCaption(resData.data.updateMedia.media_caption);
+        setIsEdit(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const modifyCancelEventHandler = () => {
+    setIsEdit(false);
   };
 
   const getSavedId = () => {
@@ -362,7 +406,10 @@ const TimelineItem = (props) => {
   };
 
   const modifyMediaHandler = () => {
-    console.log("modifyMediaHandler", props.mediaId);
+    setIsEdit(true);
+    setTimeout(() => {
+      modifyCaptionElRef.current.value = currentMediaCaption;
+    }, 10);
   };
 
   return (
@@ -485,9 +532,32 @@ const TimelineItem = (props) => {
                         {props.creatorName}
                       </span>
                     </Link>
-                    <span className="comment_contents">
-                      {props.mediaCaption}
-                    </span>
+                    {!isEdit ? (
+                      <span className="comment_contents">
+                        {currentMediaCaption}
+                      </span>
+                    ) : (
+                      <>
+                        <input
+                          type="text"
+                          className="timeline-item-modify-text"
+                          placeholder="1자 이상 입력하세요!"
+                          ref={modifyCaptionElRef}
+                        />
+                        <button
+                          className="timeline-item-modify-btn"
+                          onClick={modifySubmitEventHandler}
+                        >
+                          SUBMIT
+                        </button>
+                        <button
+                          className="timeline-item-modify-btn-cancel"
+                          onClick={modifyCancelEventHandler}
+                        >
+                          CANCEL
+                        </button>
+                      </>
+                    )}
                   </div>
                 </li>
                 {mediaComments.length > 2 && (
@@ -552,22 +622,16 @@ const TimelineItem = (props) => {
             </div>
           </div>
         </div>
-        {/* <Link to={"/p/" + props.mediaId} className="btn post-detail">
-          게시물 상세보기
-        </Link> */}
         {/* <form className="comments_form">
-        <div className="input_box">
-          <input type="text" placeholder="댓글달기..." id="comment_input" />
-        </div>
-        <div className="button_box">
-          <button type="button" className="btn" disabled="disabled">
-            <span className="">게시</span>
-          </button>
-        </div>
-      </form> */}
-        <div>
-          {/* props.userId === props.creatorId  // 이 게시물이 내가 쓴것인지 확인하는 코드*/}
-        </div>
+          <div className="input_box">
+            <input type="text" placeholder="댓글달기..." id="comment_input" />
+          </div>
+          <div className="button_box">
+            <button type="button" className="btn" disabled="disabled">
+              <span className="">게시</span>
+            </button>
+          </div>
+        </form> */}
       </li>
     </>
   );
