@@ -46,7 +46,8 @@ module.exports = {
             profile_pic_url: args.updateUserInput.profile_pic_url,
             introduction: args.updateUserInput.introduction
           }
-        }
+        },
+        { new: true, useFindAndModify: false }
       );
       return modifyUser;
     } catch (err) {

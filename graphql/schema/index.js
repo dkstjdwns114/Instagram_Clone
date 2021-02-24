@@ -105,6 +105,7 @@ type RootQuery {
   isLike(mediaId: ID!, userId: ID!): Liked
   isSave(mediaId: ID!, userId: ID!): Saved
   userData(username: String!): User
+  editProfileData: User
   timelineMyData(userId: ID!): User
   isFollowing(currentUserId: ID!, otherUserId: ID!): Follow
   isFollowed(currentUserId: ID!, otherUserId: ID!): Follow

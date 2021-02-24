@@ -87,10 +87,15 @@ title h1 .header_tit {
   border-radius: 4px;
 }
 
+.form .button_box .active-btn span {
+  font-size: 18px;
+  line-height: 1.4;
+  color: #fff;
+}
+
 .form .button_box .btn span {
   font-size: 18px;
   line-height: 1.4;
-  font-weight: bold;
   color: #fff;
 }
 .form .input_box textarea {

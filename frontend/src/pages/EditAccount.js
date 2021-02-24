@@ -1,27 +1,27 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import AuthContext from "../context/auth-context";
+import Axios from "axios";
 
 import "./css/EditAccount.css";
 
 class EditAccount extends Component {
   state = {
     isLoading: false,
-    authUserName: "",
     profile_pic_url: "",
     fileInputState: "",
     previewSource: "",
     isGetImage: undefined,
     imageUrl: "",
     prevIsGetImage: "",
-    isActiveBtn: false
+    isActiveBtn: false,
+    imageSelected: ""
   };
 
   static contextType = AuthContext;
 
   componentDidMount() {
     setTimeout(() => {
-      this.setState({ authUserName: this.context.userName });
       this.fetchData();
     }, 100);
   }
@@ -38,27 +38,43 @@ class EditAccount extends Component {
     this.introductionElRef = React.createRef();
   }
 
-  async fetchData() {
-    this.setState({ isLoading: true });
+  updateData = async () => {
+    const username = this.usernameElRef.current.value;
+    const full_name = this.fullNameElRef.current.value;
+    let intruduction = this.introductionElRef.current.value;
+
+    if (full_name.length === 0 || username.length === 0) return;
+
+    if (intruduction.length === 0) intruduction = "";
+
     const requestBody = {
       query: `
-        query{
-          userData(username: "${this.state.authUserName}"){
-            _id
-            username
-            profile_pic_url
-            full_name
-            introduction
+          mutation UpdateUser($username: String!, $full_name: String!, $profile_pic_url: String!, $introduction: String!) {
+            updateUser(updateUserInput: {username: $username, full_name: $full_name, profile_pic_url: $profile_pic_url, introduction: $introduction}) {
+              _id
+              username
+              full_name
+              profile_pic_url
+              introduction
+            }
           }
-        }
-      `
+        `,
+      variables: {
+        username: username,
+        full_name: full_name,
+        profile_pic_url: this.state.profile_pic_url,
+        introduction: intruduction
+      }
     };
+
+    const token = this.context.token;
 
     fetch("http://localhost:8000/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
       }
     })
       .then((res) => {
@@ -69,11 +85,54 @@ class EditAccount extends Component {
       })
       .then((resData) => {
         console.log(resData);
-        const userData = resData.data.userData;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  async fetchData() {
+    this.setState({ isLoading: true });
+    const requestBody = {
+      query: `
+        query{
+          editProfileData{
+            _id
+            username
+            profile_pic_url
+            full_name
+            introduction
+          }
+        }
+      `
+    };
+
+    const token = this.context.token;
+
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      }
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        console.log(resData);
+        const userData = resData.data.editProfileData;
         this.fullNameElRef.current.value = userData.full_name;
         this.usernameElRef.current.value = userData.username;
         this.introductionElRef.current.value = userData.introduction;
-        this.setState({ previewSource: userData.profile_pic_url });
+        this.setState({
+          previewSource: userData.profile_pic_url,
+          profile_pic_url: userData.profile_pic_url
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -88,6 +147,7 @@ class EditAccount extends Component {
 
   handleFileInputChange = (e) => {
     const file = e.target.files[0];
+    this.setState({ imageSelected: file });
     this.previewFile(file);
   };
 
@@ -97,6 +157,29 @@ class EditAccount extends Component {
     reader.onloadend = () => {
       this.setState({ previewSource: reader.result });
     };
+  };
+
+  submitBtnHandler = async () => {
+    if (this.imageElRef.current.value !== "") {
+      try {
+        const formData = new FormData();
+        formData.append("file", this.state.imageSelected);
+        formData.append("upload_preset", "anstagram");
+        Axios.post(
+          "https://api.cloudinary.com/v1_1/anstagram123/image/upload",
+          formData
+        ).then((response) => {
+          this.setState({
+            profile_pic_url: response.data.secure_url
+          });
+          this.updateData();
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    } else {
+      this.updateData();
+    }
   };
 
   render() {
@@ -161,13 +244,19 @@ class EditAccount extends Component {
                 />
               </div>
               <div className="button_box">
-                <button
-                  type="button"
-                  className={!this.state.isActiveBtn ? "btn" : "btn active-btn"}
-                  disabled="disabled"
-                >
-                  <span>제출</span>
-                </button>
+                {!this.state.isActiveBtn ? (
+                  <button type="button" className="btn" disabled="disabled">
+                    <span>제출</span>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="active-btn"
+                    onClick={this.submitBtnHandler}
+                  >
+                    <span>제출</span>
+                  </button>
+                )}
               </div>
             </form>
             <div className="password_forget">

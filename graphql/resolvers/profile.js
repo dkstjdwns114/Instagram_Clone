@@ -20,6 +20,17 @@ module.exports = {
       throw err;
     }
   },
+  editProfileData: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
+    try {
+      const user = await userLoader.load(req.userId);
+      return transformProfileData(user);
+    } catch (err) {
+      throw err;
+    }
+  },
   timelineMyData: async (args, req) => {
     try {
       const user = await userLoader.load(args.userId.toString());
