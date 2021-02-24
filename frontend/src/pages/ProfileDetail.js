@@ -8,6 +8,7 @@ import AuthContext from "../context/auth-context";
 import PostList from "../components/ProfileDetail/PostList/PostList";
 import Saveds from "../components/ProfileDetail/SavedList/SavedList";
 import FollowModal from "../components/Modal/FollowModal";
+import Backdrop from "../components/Backdrop/Backdrop";
 
 class ProfileDetail extends Component {
   state = {
@@ -327,6 +328,9 @@ class ProfileDetail extends Component {
             users={this.state.follower}
             onClose={this.followerCancelHandler}
           />
+        )}
+        {(this.state.isFollowingModal || this.state.isFollowerModal) && (
+          <Backdrop />
         )}
         {this.state.isLoading ? (
           <Spinner />
