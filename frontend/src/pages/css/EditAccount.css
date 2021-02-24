@@ -109,15 +109,15 @@ title h1 .header_tit {
   border-radius: 4px;
   font-size: 12px;
 }
-.wrap .container .inner .password_forget {
+.wrap .container .inner .move_mypage {
   display: flex;
   justify-content: center;
-  margin-top: 40px;
+  margin-top: 30px;
 }
-.password_forget .page_move {
+.move_mypage .page_move {
   display: block;
 }
-.password_forget .page_move span {
+.move_mypage .page_move span {
   font-size: 15px;
   color: #003768;
 }

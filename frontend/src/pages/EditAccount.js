@@ -15,7 +15,11 @@ class EditAccount extends Component {
     imageUrl: "",
     prevIsGetImage: "",
     isActiveBtn: false,
-    imageSelected: ""
+    imageSelected: "",
+    getFullName: "",
+    getUserName: "",
+    getIntroduction: "",
+    currentUserName: ""
   };
 
   static contextType = AuthContext;
@@ -27,7 +31,16 @@ class EditAccount extends Component {
   }
 
   activeBtnHandler = () => {
-    this.setState({ isActiveBtn: true });
+    if (
+      this.imageElRef.current.value !== "" ||
+      this.fullNameElRef.current.value !== this.state.getFullName ||
+      this.usernameElRef.current.value !== this.state.getUserName ||
+      this.introductionElRef.current.value !== this.state.getIntroduction
+    ) {
+      this.setState({ isActiveBtn: true });
+    } else {
+      this.setState({ isActiveBtn: false });
+    }
   };
 
   constructor(props) {
@@ -85,6 +98,17 @@ class EditAccount extends Component {
       })
       .then((resData) => {
         console.log(resData);
+        const modifiedData = resData.data.updateUser;
+        this.imageElRef.current.value = "";
+        this.fullNameElRef.current.value = modifiedData.full_name;
+        this.usernameElRef.current.value = modifiedData.username;
+        this.introductionElRef.current.value = modifiedData.introduction;
+        this.setState({
+          isActiveBtn: false,
+          previewSource: modifiedData.profile_pic_url,
+          profile_pic_url: modifiedData.profile_pic_url,
+          currentUserName: modifiedData.username
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -131,7 +155,11 @@ class EditAccount extends Component {
         this.introductionElRef.current.value = userData.introduction;
         this.setState({
           previewSource: userData.profile_pic_url,
-          profile_pic_url: userData.profile_pic_url
+          profile_pic_url: userData.profile_pic_url,
+          getFullName: userData.full_name,
+          getUserName: userData.username,
+          getIntroduction: userData.introduction,
+          currentUserName: userData.username
         });
       })
       .catch((err) => {
@@ -259,8 +287,11 @@ class EditAccount extends Component {
                 )}
               </div>
             </form>
-            <div className="password_forget">
-              <Link to="#" className="page_move">
+            <div className="move_mypage">
+              <Link
+                to={"/profile/" + this.state.currentUserName}
+                className="page_move"
+              >
                 <span>마이페이지로 이동</span>
               </Link>
             </div>
