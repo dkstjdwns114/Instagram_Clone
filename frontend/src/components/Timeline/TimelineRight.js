@@ -38,7 +38,7 @@ const timelineRight = (props) => {
                   />
                   <div className="pofile_info">
                     <p className="profile_id">테스트아이디1번</p>
-                    <p className="profile_intro">팔로워 1명</p>
+                    <p className="profile_intro">Anstagram 추천</p>
                   </div>
                   <div className="follow_btn">
                     <button type="button" className="btn">

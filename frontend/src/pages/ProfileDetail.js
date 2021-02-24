@@ -378,12 +378,21 @@ class ProfileDetail extends Component {
                     )}
                     {!this.state.isAuth &&
                       (!this.state.isFollowing ? (
-                        <span
-                          className="following"
-                          onClick={this.followingUserHandler}
-                        >
-                          팔로우
-                        </span>
+                        this.state.isFollowed ? (
+                          <span
+                            className="following"
+                            onClick={this.followingUserHandler}
+                          >
+                            맞팔로우
+                          </span>
+                        ) : (
+                          <span
+                            className="following"
+                            onClick={this.followingUserHandler}
+                          >
+                            팔로우
+                          </span>
+                        )
                       ) : (
                         <span
                           className="unfollow"
