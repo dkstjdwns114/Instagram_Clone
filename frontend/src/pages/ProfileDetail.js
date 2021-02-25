@@ -469,7 +469,7 @@ class ProfileDetail extends Component {
 
               {/* footer */}
               <footer className="footer">
-                <span>Copyright 2020</span>
+                <span>ⓒ 2021. Anstagram all rights reserved.</span>
               </footer>
               {/* end footer */}
             </div>
