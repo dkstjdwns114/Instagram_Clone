@@ -75,16 +75,6 @@ input CommentInput {
   media_comment: String!
 }
 
-input FollowInput {
-  current_userId: ID!
-  followed_userId: ID!
-}
-
-input UnfollowInput {
-  current_userId: ID!
-  unfollowed_userId: ID!
-}
-
 input UpdateUserInput {
   username: String!
   full_name: String!
@@ -122,8 +112,8 @@ type RootMutation {
   cancelSaved(savedId: ID!): Media!
   createComment(commentInput: CommentInput): Comment!
   deleteComment(commentId: ID!): Media!
-  createFollowing(followInput: FollowInput): Follow!
-  cancelFollowing(unfollowInput: UnfollowInput): User
+  createFollowing(followed_userId: ID!): Follow!
+  cancelFollowing(unfollowed_userId: ID!): User
   updateUser(updateUserInput: UpdateUserInput): User
 }
 

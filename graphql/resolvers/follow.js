@@ -34,7 +34,7 @@ module.exports = {
       throw new Error("Unauthenticated!");
     }
     const followedUser = await User.findOne({
-      _id: args.followInput.followed_userId
+      _id: args.followed_userId
     });
     if (!followedUser) {
       throw new Error("Following user not found");
@@ -75,10 +75,7 @@ module.exports = {
     }
     try {
       const unfollower = await Follow.findOne({
-        $and: [
-          { following: args.unfollowInput.current_userId },
-          { followed: args.unfollowInput.unfollowed_userId }
-        ]
+        $and: [{ following: req.userId }, { followed: args.unfollowed_userId }]
       });
       if (!unfollower) {
         throw new Error("Unfollower not found.");
@@ -88,14 +85,14 @@ module.exports = {
       if (!currentUser) {
         throw new Error("Current user not found");
       }
-      currentUser.following.pull({ _id: args.unfollowInput.unfollowed_userId });
+      currentUser.following.pull({ _id: args.unfollowed_userId });
       await currentUser.save();
 
       const unfollowedUser = await User.findById(unfollower.followed);
       if (!unfollowedUser) {
         throw new Error("Unfollowed user not found");
       }
-      unfollowedUser.follower.pull({ _id: args.unfollowInput.current_userId });
+      unfollowedUser.follower.pull({ _id: req.userId });
       await unfollowedUser.save();
 
       await Follow.deleteOne({ _id: unfollower._id });

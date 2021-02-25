@@ -237,8 +237,8 @@ class ProfileDetail extends Component {
   followingUserHandler() {
     const requestBody = {
       query: `
-        mutation CreateFollowing($current_userId: ID!, $followed_userId: ID!) {
-          createFollowing(followInput: {current_userId: $current_userId, followed_userId: $followed_userId}) {
+        mutation CreateFollowing($followed_userId: ID!) {
+          createFollowing(followed_userId: $followed_userId) {
             _id
             following {
               _id
@@ -254,7 +254,6 @@ class ProfileDetail extends Component {
         }
       `,
       variables: {
-        current_userId: this.state.currentUserId,
         followed_userId: this.state.profileUserId
       }
     };
@@ -287,15 +286,14 @@ class ProfileDetail extends Component {
   unfollowUserHandler() {
     const requestBody = {
       query: `
-        mutation CancelFollowing($current_userId: ID!, $unfollowed_userId: ID!) {
-          cancelFollowing(unfollowInput: {current_userId: $current_userId, unfollowed_userId: $unfollowed_userId}) {
+        mutation CancelFollowing($unfollowed_userId: ID!) {
+          cancelFollowing(unfollowed_userId: $unfollowed_userId) {
             _id
             username
           }
         }
       `,
       variables: {
-        current_userId: this.state.currentUserId,
         unfollowed_userId: this.state.profileUserId
       }
     };
