@@ -7,8 +7,6 @@ import ProfileDetail from "./pages/ProfileDetail";
 import MainNavigation from "./components/Navigation/MainNavigation";
 import AuthContext from "./context/auth-context";
 import PostDetail from "./pages/PostDetail";
-
-import TestPage from "./pages/Test";
 import EditAccount from "./pages/EditAccount";
 
 class App extends Component {
@@ -56,14 +54,14 @@ class App extends Component {
             {this.state.token && <Redirect from="/" to="/timeline" exact />}
             {this.state.token && <Redirect from="/auth" to="/timeline" exact />}
             {!this.state.token && <Route path="/auth" component={AuthPage} />}
-            <Route path="/timeline" component={TimelinePage} />
-            <Route path="/test" component={TestPage} />
-            <Route path="/p/:id" component={PostDetail} />
-            <Route path="/profile/:username" component={ProfileDetail} />
-            <Route path="/accounts/edit" component={EditAccount} />
-            {/* 로그인 안되어있을경우 튕겨내는 코드 */}
-            {this.state.token && <></>}
-            {this.state.token && <Route path="/test" component={TestPage} />}
+            {this.state.token && (
+              <>
+                <Route path="/timeline" component={TimelinePage} />
+                <Route path="/p/:id" component={PostDetail} />
+                <Route path="/profile/:username" component={ProfileDetail} />
+                <Route path="/accounts/edit" component={EditAccount} />
+              </>
+            )}
             {!this.state.token && <Redirect to="/auth" exact />}
           </Switch>
         </AuthContext.Provider>

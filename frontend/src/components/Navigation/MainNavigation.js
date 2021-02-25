@@ -23,7 +23,7 @@ const mainNavigation = (props) => {
                   </Link>
                 </h1>
                 <div className="input_box">
-                  <input type="text" placeholder="검색" id="search" />
+                  <input type="text" placeholder="검색" id="search" disabled />
                 </div>
                 <nav className="nav">
                   <div className="social-icons header-social-icons">
