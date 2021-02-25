@@ -1,41 +1,106 @@
-.auth-form {
-  width: 25rem;
-  max-width: 80%;
-  margin: 5rem auto;
+.wrap {
+  height: 100vh;
 }
-
-.form-control label,
-.form-control input {
-  width: 100%;
+.wrap .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background: #f1f3f5;
+}
+.wrap .container .login_inner {
+  width: 400px;
+  height: 450px;
+  padding: 10px 35px;
+  box-sizing: border-box;
+  background: #fff;
+  border: 1px solid #dbdbdb;
+}
+.wrap .container .login_inner .login_header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0;
+}
+.login_header h1 {
+  display: flex;
+}
+header h1 .header_tit {
+  display: block;
+  text-indent: -9999px;
+}
+.login_header h1 .page_move {
   display: block;
 }
-
-.form-control label {
-  margin-bottom: 0.5rem;
+.login_header h1 .page_move img {
+  height: 50px;
 }
-
-.form-control {
-  margin-bottom: 1rem;
+.wrap .container .login_inner .login_form {
+  margin-bottom: 30px;
 }
-
-.form-actions button {
-  background: #5101d1;
-  font: inherit;
-  border: 1px solid #5101d1;
-  border-radius: 3px;
-  padding: 0.25rem 1rem;
-  margin-right: 1rem;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.26);
-  color: white;
+.login_form .input_box {
+  width: 100%;
+  height: 45px;
+  margin-bottom: 30px;
+}
+.login_form .input_box input {
+  width: 100%;
+  height: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+  background: #fafafa;
+  border: 1px solid #dbdbdb;
+  border-radius: 4px;
+  font-size: 15px;
+}
+.login_form .alt_text {
+  text-align: center;
+  margin-bottom: 20px;
+  color: red;
+}
+.login_form .button_box {
+  display: flex;
+  width: 100%;
+  height: 40px;
+}
+.login_form .button_box .btn {
+  width: 100%;
+  height: 100%;
+  background-color: #bfdffd;
+  border: 1px solid #bfdffd;
+  border-radius: 4px;
+}
+.login_form .button_box .btn span {
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: bold;
+  color: #fff;
+}
+.login_form .button_box .active-btn {
+  width: 100%;
+  height: 100%;
   cursor: pointer;
+  background-color: rgb(28, 126, 214);
+  border-radius: 4px;
 }
-
-.form-actions button:hover,
-.form-actions button:active {
-  background: #6219d6;
-  border-color: #6219d6;
+.login_form .button_box .active-btn span {
+  font-size: 18px;
+  line-height: 1.4;
+  color: #fff;
 }
-
-.redText {
-  color: crimson;
+.wrap .container .login_inner .password_forget {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+.password_forget .page_move {
+  display: block;
+}
+.password_forget .page_move span {
+  font-size: 15px;
+  color: #003768;
+}
+.password_forget .hover-link:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
