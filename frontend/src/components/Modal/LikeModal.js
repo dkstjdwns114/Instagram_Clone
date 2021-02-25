@@ -62,16 +62,20 @@ const likeModal = (props) => (
                         position: "absolute"
                       }}
                     >
-                      <button
-                        type="button"
-                        className="btn"
+                      <Link
+                        to={"/profile/" + like.user.username}
+                        onClick={props.otherUserClick}
+                        className="view_profile_btn"
                         style={{
-                          left: "75%",
-                          position: "relative"
+                          left: "70%",
+                          position: "relative",
+                          width: "83px",
+                          color: "#0095f6",
+                          backgroundColor: "transparent"
                         }}
                       >
-                        <span>팔로우</span>
-                      </button>
+                        <span>프로필 보기</span>
+                      </Link>
                     </div>
                   </li>
                 );

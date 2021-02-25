@@ -37,14 +37,6 @@ class AuthPage extends Component {
   isActiveBtnSetHandler = () => {
     if (
       this.state.isLogin &&
-      this.emailEl.current.value !== "" &&
-      this.passwordEl.current.value !== ""
-    ) {
-      this.setState({ isActiveBtn: true });
-      return;
-    }
-    if (
-      this.state.isLogin &&
       this.emailEl.current.value === "" &&
       this.passwordEl.current.value === ""
     ) {
@@ -52,11 +44,9 @@ class AuthPage extends Component {
       return;
     }
     if (
-      !this.state.isLogin &&
+      this.state.isLogin &&
       this.emailEl.current.value !== "" &&
-      this.passwordEl.current.value !== "" &&
-      this.nicknameEl.current.value !== "" &&
-      this.fullnameEl.current.value !== ""
+      this.passwordEl.current.value !== ""
     ) {
       this.setState({ isActiveBtn: true });
       return;
@@ -71,10 +61,19 @@ class AuthPage extends Component {
       this.setState({ isActiveBtn: true });
       return;
     }
+    if (
+      !this.state.isLogin &&
+      this.emailEl.current.value !== "" &&
+      this.passwordEl.current.value !== "" &&
+      this.nicknameEl.current.value !== "" &&
+      this.fullnameEl.current.value !== ""
+    ) {
+      this.setState({ isActiveBtn: true });
+      return;
+    }
   };
 
   switchModelHandler = () => {
-    console.log("switchModelHandler");
     this.setState((prevState) => {
       return { isLogin: !prevState.isLogin };
     });
@@ -152,11 +151,11 @@ class AuthPage extends Component {
         return res.json();
       })
       .then((resData) => {
-        this.setState({ isLogin: true });
         if (resData.data.createUser === null) {
           this.setState({ isExist: true });
           return;
         }
+        this.setState({ isLogin: true });
         if (resData.data.login.token) {
           this.context.login(
             resData.data.login.token,

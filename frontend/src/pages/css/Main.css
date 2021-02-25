@@ -221,6 +221,14 @@
   height: 25px;
 }
 
+.sidebar_follow_btn .btn {
+  font-size: 13px;
+  color: #0095f6;
+  padding: 3px;
+  width: 60px;
+  height: 25px;
+}
+
 /* footer */
 .footer {
   display: flex;
