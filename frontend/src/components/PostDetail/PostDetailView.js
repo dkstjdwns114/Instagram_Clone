@@ -18,11 +18,6 @@ const PostDetailView = (props) => {
     setComments(props.comments);
     setCommenttextElRef(React.createRef());
     setCurrentMediaCaption(props.media_caption);
-    setTimeout(() => {
-      scrollBottomRef.current.scrollIntoView({
-        behavior: "smooth"
-      });
-    }, 500);
   }, []);
 
   const commentInputChangeHandler = () => {
@@ -216,12 +211,6 @@ const PostDetailView = (props) => {
             <Link to={"/profile/" + props.creator_name} className="social-name">
               {props.creator_name}
             </Link>
-            {!props.isOwner && (
-              <>
-                <span className="SPAN_13">•</span>
-                <button type="button">Follow</button>
-              </>
-            )}
           </div>
           {props.isOwner && (
             <>
