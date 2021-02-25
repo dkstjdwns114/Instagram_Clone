@@ -1,6 +1,7 @@
 /* main */
 .profileDetail_main {
   position: relative;
+  min-height: 1040px;
   top: 55px;
   background: #f8f9fa;
 }

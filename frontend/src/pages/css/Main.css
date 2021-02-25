@@ -3,6 +3,7 @@
   position: relative;
   top: 55px;
   background: #f8f9fa;
+  min-height: 1040px;
 }
 .main .container {
   display: flex;
