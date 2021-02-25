@@ -41,7 +41,16 @@ mongoose
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => {
+<<<<<<< HEAD
     app.listen(8000);
+=======
+    const port = process.env.PORT || 8000;
+    app.listen(port);
+    app.use(express.static(path.join(__dirname, "frontend/build")));
+    app.get("*", (req, res) => {
+      res.sendFile(path.join(__dirname + "/frontend/build/index.html"));
+    });
+>>>>>>> parent of 1ff42b4... Bug Fix
   })
   .catch((err) => {
     console.log(err);
