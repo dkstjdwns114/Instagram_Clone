@@ -31,19 +31,83 @@ const timelineRight = (props) => {
             <div className="follow_list_wrap feed_profile">
               <ul className="profile follow_list scroll">
                 <li>
-                  <img
-                    src="https://scontent-ssn1-1.cdninstagram.com/v/t51.2885-19/s150x150/131994802_214284176856542_767716126641019031_n.jpg?_nc_ht=scontent-ssn1-1.cdninstagram.com&_nc_ohc=Oy1gj4z4hu0AX9uvUp1&tp=1&oh=6f5bbb5c5743e2186d7b68877c8f16cd&oe=6058B472"
-                    alt="profile"
-                    className="profile_img"
-                  />
+                  <Link to="/profile/anstagram">
+                    <img
+                      src="https://res.cloudinary.com/anstagram123/image/upload/v1613644236/anstagram/defaultProfile_dsacxp.jpg"
+                      alt="profile"
+                      className="profile_img"
+                    />
+                  </Link>
                   <div className="pofile_info">
-                    <p className="profile_id">테스트아이디1번</p>
+                    <Link to="/profile/anstagram">
+                      <p className="profile_id">anstagram</p>
+                    </Link>
                     <p className="profile_intro">Anstagram 추천</p>
                   </div>
-                  <div className="follow_btn">
-                    <button type="button" className="btn">
-                      <span>팔로우</span>
-                    </button>
+                  <div className="sidebar_follow_btn">
+                    <Link to="/profile/anstagram" className="btn">
+                      <span>프로필 보기</span>
+                    </Link>
+                  </div>
+                </li>
+                <li>
+                  <Link to="/profile/sooyaaa__">
+                    <img
+                      src="https://res.cloudinary.com/anstagram123/image/upload/v1614239288/anstagram/oqfxj2hxf8c9ls3txk8o.jpg"
+                      alt="profile"
+                      className="profile_img"
+                    />
+                  </Link>
+                  <div className="pofile_info">
+                    <Link to="/profile/sooyaaa__">
+                      <p className="profile_id">sooyaaa__</p>
+                    </Link>
+                    <p className="profile_intro">Anstagram 추천</p>
+                  </div>
+                  <div className="sidebar_follow_btn">
+                    <Link to="/profile/sooyaaa__" className="btn">
+                      <span>프로필 보기</span>
+                    </Link>
+                  </div>
+                </li>
+                <li>
+                  <Link to="/profile/sooyaaa__">
+                    <img
+                      src="https://res.cloudinary.com/anstagram123/image/upload/v1614239044/anstagram/cqp5pvi4kxylazf2o0ny.jpg"
+                      alt="profile"
+                      className="profile_img"
+                    />
+                  </Link>
+                  <div className="pofile_info">
+                    <Link to="/profile/yoohyein00">
+                      <p className="profile_id">yoohyein00</p>
+                    </Link>
+                    <p className="profile_intro">Anstagram 추천</p>
+                  </div>
+                  <div className="sidebar_follow_btn">
+                    <Link to="/profile/yoohyein00" className="btn">
+                      <span>프로필 보기</span>
+                    </Link>
+                  </div>
+                </li>
+                <li>
+                  <Link to="/profile/sooyaaa__">
+                    <img
+                      src="https://res.cloudinary.com/anstagram123/image/upload/v1614238911/anstagram/lozw5jhibl6i3ghmbbwj.jpg"
+                      alt="profile"
+                      className="profile_img"
+                    />
+                  </Link>
+                  <div className="pofile_info">
+                    <Link to="/profile/k_hanna_">
+                      <p className="profile_id">k_hanna_</p>
+                    </Link>
+                    <p className="profile_intro">Anstagram 추천</p>
+                  </div>
+                  <div className="sidebar_follow_btn">
+                    <Link to="/profile/k_hanna_" className="btn">
+                      <span>프로필 보기</span>
+                    </Link>
                   </div>
                 </li>
               </ul>
@@ -54,7 +118,7 @@ const timelineRight = (props) => {
 
       {/* footer */}
       <footer className="footer">
-        <span>Copyright 2020</span>
+        <span>ⓒ 2021. Anstagram all rights reserved.</span>
       </footer>
       {/* end footer */}
     </div>
