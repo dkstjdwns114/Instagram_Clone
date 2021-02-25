@@ -187,4 +187,6 @@
 }
 /* footer */
 
-/* main */
+.comment_add .state_btn {
+  padding-bottom: 20px;
+}

@@ -9,7 +9,10 @@ const PostDetailView = (props) => {
   const [isActiveCommentBtn, setIsActiveCommentBtn] = useState(false);
   const [currentMediaCaption, setCurrentMediaCaption] = useState("");
   const [isEdit, setIsEdit] = useState(false);
+  const [isCommentEdit, setIsCommentEdit] = useState(false);
+  const [editCommentId, setEditCommentId] = useState("");
   const modifyCaptionElRef = useRef();
+  const modifyCommentTextElRef = useRef();
   const scrollBottomRef = useRef();
   const history = useHistory();
 
@@ -72,6 +75,53 @@ const PostDetailView = (props) => {
     }, 10);
   };
 
+  const modifyCommentHandler = (text, currentCommentId) => {
+    setIsCommentEdit(true);
+    setEditCommentId(currentCommentId);
+    setTimeout(() => {
+      modifyCommentTextElRef.current.value = text;
+    }, 10);
+  };
+
+  const deleteCommentHandler = (commentId) => {
+    const requestBody = {
+      query: `
+          mutation DeleteComment($commentId: ID!) {
+            deleteComment(commentId: $commentId) {
+              _id
+            }
+          }
+        `,
+      variables: {
+        commentId: commentId
+      }
+    };
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      }
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        console.log(resData);
+        const removedComments = comments.filter(
+          (comment) => comment._id !== commentId
+        );
+        setComments(removedComments);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const commentMediaHandler = (e) => {
     e.preventDefault();
 
@@ -88,6 +138,7 @@ const PostDetailView = (props) => {
           createComment(commentInput: {mediaId: $mediaId, media_comment: $media_comment}){
             _id
             creator {
+              _id
               username
               profile_pic_url
             }
@@ -121,9 +172,11 @@ const PostDetailView = (props) => {
           ...state,
           {
             creator: {
+              _id: resData.data.createComment.creator._id,
               username: createCommentUsername,
               profile_pic_url: createCommentUserProfile
             },
+            _id: resData.data.createComment._id,
             media_comment: text,
             date: new Date().getTime()
           }
@@ -142,7 +195,6 @@ const PostDetailView = (props) => {
 
   const modifySubmitEventHandler = () => {
     const media_caption = modifyCaptionElRef.current.value;
-    console.log(media_caption);
     const requestBody = {
       query: `
         mutation {
@@ -177,8 +229,74 @@ const PostDetailView = (props) => {
       });
   };
 
+  const modifySubmitCommentHandler = (
+    commentId,
+    commentCreatorId,
+    commentCreatorProfile,
+    commentCreatorName
+  ) => {
+    const comment_text = modifyCommentTextElRef.current.value;
+    const requestBody = {
+      query: `
+        mutation {
+          updateComment(commentId: "${commentId}", comment_text: "${comment_text}"){
+            _id
+            media_comment
+            date
+          }
+        }
+        `
+    };
+    fetch("http://localhost:8000/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      }
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        console.log(resData);
+        const currentComment = resData.data.updateComment;
+        const currentCommentId = currentComment._id;
+        let updateComments = [];
+        comments.forEach((comment) => {
+          if (comment._id.toString() !== currentCommentId.toString()) {
+            updateComments.push(comment);
+          } else {
+            updateComments.push({
+              _id: currentComment._id,
+              date: currentComment.date,
+              media_comment: currentComment.media_comment,
+              creator: {
+                _id: commentCreatorId,
+                username: commentCreatorName,
+                profile_pic_url: commentCreatorProfile
+              }
+            });
+          }
+        });
+        setComments(updateComments);
+        setIsCommentEdit(false);
+        setEditCommentId("");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const modifyCancelEventHandler = () => {
     setIsEdit(false);
+  };
+
+  const modifyCancelCommentHandler = () => {
+    setIsCommentEdit(false);
   };
 
   return (
@@ -231,20 +349,10 @@ const PostDetailView = (props) => {
                       <ul className="select-box__list">
                         <>
                           <li onClick={modifyMediaHandler}>
-                            <label
-                              className="select-box__option"
-                              aria-hidden="aria-hidden"
-                            >
-                              수정
-                            </label>
+                            <label className="select-box__option">수정</label>
                           </li>
                           <li onClick={deleteMediaHandler} className="warning">
-                            <label
-                              className="select-box__option"
-                              aria-hidden="aria-hidden"
-                            >
-                              삭제
-                            </label>
+                            <label className="select-box__option">삭제</label>
                           </li>
                         </>
                       </ul>
@@ -319,11 +427,94 @@ const PostDetailView = (props) => {
                         {comment.creator.username}
                       </span>
                     </Link>
-                    <span className="social-post-copy">
-                      {comment.media_comment}
-                    </span>
+                    {editCommentId !== comment._id && (
+                      <span className="social-post-copy">
+                        {comment.media_comment}
+                      </span>
+                    )}
+                    {isCommentEdit && editCommentId === comment._id && (
+                      <>
+                        <input
+                          type="text"
+                          className="timeline-item-modify-text"
+                          placeholder="1자 이상 입력하세요!"
+                          ref={modifyCommentTextElRef}
+                        />
+                        <button
+                          className="timeline-item-modify-btn"
+                          onClick={() =>
+                            modifySubmitCommentHandler(
+                              comment._id,
+                              comment.creator._id,
+                              comment.creator.profile_pic_url,
+                              comment.creator.username
+                            )
+                          }
+                        >
+                          SUBMIT
+                        </button>
+                        <button
+                          className="timeline-item-modify-btn-cancel"
+                          onClick={modifyCancelCommentHandler}
+                        >
+                          CANCEL
+                        </button>
+                      </>
+                    )}
+
                     <time>{props.convertTime(comment.date)}</time>
                   </div>
+                  {comment.creator._id === props.authUserId && (
+                    <>
+                      <div className="profile_add comment_add">
+                        <span className="state_btn">
+                          <span className="icon-dots">
+                            <div className="select-box">
+                              <div className="select-box__current" tabIndex="1">
+                                <div className="select-box__value">
+                                  <input
+                                    className="select-box__input"
+                                    type="radio"
+                                    defaultChecked
+                                  />
+                                  <p className="select-box__input-text"></p>
+                                </div>
+                              </div>
+                              <ul
+                                className="select-box__list"
+                                style={{ zIndex: "10" }}
+                              >
+                                <>
+                                  <li
+                                    onClick={() =>
+                                      modifyCommentHandler(
+                                        comment.media_comment,
+                                        comment._id
+                                      )
+                                    }
+                                  >
+                                    <label className="select-box__option">
+                                      수정
+                                    </label>
+                                  </li>
+                                  <li
+                                    onClick={() =>
+                                      deleteCommentHandler(comment._id)
+                                    }
+                                    className="warning"
+                                  >
+                                    <label className="select-box__option">
+                                      삭제
+                                    </label>
+                                  </li>
+                                </>
+                              </ul>
+                            </div>
+                          </span>
+                        </span>
+                      </div>
+                    </>
+                  )}
                 </div>
               );
             })}

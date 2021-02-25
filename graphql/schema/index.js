@@ -110,8 +110,9 @@ type RootMutation {
   cancelLiked(likedId: ID!): Media!
   savedMedia(mediaId: ID!): Saved!
   cancelSaved(savedId: ID!): Media!
-  createComment(commentInput: CommentInput): Comment!
-  deleteComment(commentId: ID!): Media!
+  createComment(commentInput: CommentInput): Comment
+  deleteComment(commentId: ID!): Media
+  updateComment(commentId: ID!, comment_text: String!): Comment
   createFollowing(followed_userId: ID!): Follow!
   cancelFollowing(unfollowed_userId: ID!): User
   updateUser(updateUserInput: UpdateUserInput): User

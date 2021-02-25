@@ -69,5 +69,24 @@ module.exports = {
     } catch (err) {
       throw err;
     }
+  },
+  updateComment: async (args, req) => {
+    if (!req.isAuth) {
+      throw new Error("Unauthenticated!");
+    }
+    try {
+      const comment = await Commented.findOneAndUpdate(
+        { _id: args.commentId },
+        {
+          $set: {
+            media_comment: args.comment_text
+          }
+        },
+        { new: true, useFindAndModify: false }
+      );
+      return comment;
+    } catch (err) {
+      throw err;
+    }
   }
 };

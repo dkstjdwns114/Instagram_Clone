@@ -56,12 +56,14 @@ class PostDetail extends Component {
             profile_pic_url
           }
           commentTexts {
+            _id
+            date
+            media_comment
             creator {
+              _id
               username
               profile_pic_url
             }
-            date
-            media_comment
           }
           likeds {
             user {
