@@ -40,14 +40,17 @@ const likeModal = (props) => (
               {props.likes.map((like, idx) => {
                 return (
                   <li key={like.user.username}>
-                    <Link to={"/profile/" + like.user.username}>
+                    <Link
+                      to={"/profile/" + like.user.username}
+                      style={{ zIndex: "10" }}
+                    >
                       <img
                         src={like.user.profile_pic_url}
                         alt={like.user.username + "님의 프로필 사진"}
                         className="profile_img"
                       />
                     </Link>
-                    <div className="profile_info">
+                    <div className="profile_info" style={{ zIndex: "10" }}>
                       <Link to={"/profile/" + like.user.username}>
                         <p className="profile_id">{like.user.username}</p>
                       </Link>
@@ -56,14 +59,16 @@ const likeModal = (props) => (
                       className="follow_btn"
                       style={{
                         width: "100%",
-                        position: "absolute",
-                        zindex: "-1"
+                        position: "absolute"
                       }}
                     >
                       <button
                         type="button"
                         className="btn"
-                        style={{ left: "75%", position: "relative" }}
+                        style={{
+                          left: "75%",
+                          position: "relative"
+                        }}
                       >
                         <span>팔로우</span>
                       </button>
