@@ -183,8 +183,7 @@
 
 /* 오른쪽 영역 */
 .main .container .contents_right {
-  /* position: fixed;시 오른쪽 영역 고정 */
-  /* position: fixed; */
+  position: fixed;
   left: calc(100% - 712px);
   width: 383px;
   box-sizing: border-box;
