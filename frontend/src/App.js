@@ -11,8 +11,6 @@ import PostDetail from "./pages/PostDetail";
 import TestPage from "./pages/Test";
 import EditAccount from "./pages/EditAccount";
 
-// import "./App.css";
-
 class App extends Component {
   state = {
     token: null,
