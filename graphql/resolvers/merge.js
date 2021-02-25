@@ -16,7 +16,6 @@ const userLoader = new DataLoader((userIds) => {
 const medias = async (mediaIds) => {
   try {
     const medias = await Media.find({ _id: { $in: mediaIds } });
-
     /*
     medias.sort((a, b) => {
       return (
@@ -24,7 +23,6 @@ const medias = async (mediaIds) => {
       );
     });
     */
-
     return medias.map((media) => {
       return {
         ...media._doc,
@@ -55,7 +53,9 @@ const user = async (userId) => {
     return {
       ...user._doc,
       _id: user.id,
-      createdMedias: () => mediaLoader.loadMany(user._doc.createdMedias)
+      createdMedias: () => mediaLoader.loadMany(user._doc.createdMedias),
+      following: () => mediaLoader.loadMany(user._doc.following),
+      follower: () => mediaLoader.loadMany(user._doc.follower)
     };
   } catch (err) {
     throw err;
@@ -108,7 +108,10 @@ const transformMedia = (media) => {
   };
 };
 
-const transformProfileData = (user) => {
+const transformProfileData = async (user) => {
+  const userFollowings = await userLoader.loadMany(user._doc.following);
+  const userFollowers = await userLoader.loadMany(user._doc.follower);
+  const userMedias = await mediaLoader.loadMany(user._doc.createdMedias);
   return {
     ...user._doc,
     _id: user.id,
