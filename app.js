@@ -64,7 +64,7 @@ mongoose.set("useFindAndModify", false);
 
 mongoose
   .connect(
-    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster0.6v20o.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`,
+    `mongodb+srv://test1:KQ2DmS5BaPpKIBxL@cluster0.6v20o.mongodb.net/instagram-clone?retryWrites=true&w=majority`,
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => {
