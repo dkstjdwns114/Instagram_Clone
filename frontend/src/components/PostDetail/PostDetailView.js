@@ -45,7 +45,7 @@ const PostDetailView = (props) => {
       }
     };
 
-    fetch("http://localhost:8000/graphql", {
+    fetch("/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -96,7 +96,7 @@ const PostDetailView = (props) => {
         commentId: commentId
       }
     };
-    fetch("http://localhost:8000/graphql", {
+    fetch("/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -150,7 +150,7 @@ const PostDetailView = (props) => {
         media_comment: text
       }
     };
-    fetch("http://localhost:8000/graphql", {
+    fetch("/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -205,7 +205,7 @@ const PostDetailView = (props) => {
         }
         `
     };
-    fetch("http://localhost:8000/graphql", {
+    fetch("/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -247,7 +247,7 @@ const PostDetailView = (props) => {
         }
         `
     };
-    fetch("http://localhost:8000/graphql", {
+    fetch("/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {

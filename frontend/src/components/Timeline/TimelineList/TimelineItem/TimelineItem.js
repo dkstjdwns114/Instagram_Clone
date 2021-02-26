@@ -50,7 +50,7 @@ const TimelineItem = (props) => {
         }
         `
     };
-    fetch("http://localhost:8000/graphql", {
+    fetch("/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -103,7 +103,7 @@ const TimelineItem = (props) => {
         media_comment: comment_text
       }
     };
-    fetch("http://localhost:8000/graphql", {
+    fetch("/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -148,7 +148,7 @@ const TimelineItem = (props) => {
         }
         `
     };
-    fetch("http://localhost:8000/graphql", {
+    fetch("/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -186,7 +186,7 @@ const TimelineItem = (props) => {
         }
         `
     };
-    fetch("http://localhost:8000/graphql", {
+    fetch("/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -230,7 +230,7 @@ const TimelineItem = (props) => {
           mediaId: props.mediaId
         }
       };
-      fetch("http://localhost:8000/graphql", {
+      fetch("/graphql", {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -275,7 +275,7 @@ const TimelineItem = (props) => {
           likedId: likedId
         }
       };
-      fetch("http://localhost:8000/graphql", {
+      fetch("/graphql", {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -317,7 +317,7 @@ const TimelineItem = (props) => {
           mediaId: props.mediaId
         }
       };
-      fetch("http://localhost:8000/graphql", {
+      fetch("/graphql", {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -352,7 +352,7 @@ const TimelineItem = (props) => {
           savedId: savedId
         }
       };
-      fetch("http://localhost:8000/graphql", {
+      fetch("/graphql", {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -453,7 +453,7 @@ const TimelineItem = (props) => {
       }
     };
 
-    fetch("http://localhost:8000/graphql", {
+    fetch("/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {

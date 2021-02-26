@@ -82,7 +82,7 @@ class PostDetail extends Component {
       `
     };
 
-    fetch("http://localhost:8000/graphql", {
+    fetch("/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -136,7 +136,7 @@ class PostDetail extends Component {
         }
         `
     };
-    fetch("http://localhost:8000/graphql", {
+    fetch("/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -169,7 +169,7 @@ class PostDetail extends Component {
         }
         `
     };
-    fetch("http://localhost:8000/graphql", {
+    fetch("/graphql", {
       method: "POST",
       body: JSON.stringify(requestBody),
       headers: {
@@ -211,7 +211,7 @@ class PostDetail extends Component {
           mediaId: this.state.mediaId
         }
       };
-      fetch("http://localhost:8000/graphql", {
+      fetch("/graphql", {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -255,7 +255,7 @@ class PostDetail extends Component {
           likedId: this.state.likedId
         }
       };
-      fetch("http://localhost:8000/graphql", {
+      fetch("/graphql", {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -299,7 +299,7 @@ class PostDetail extends Component {
           mediaId: this.state.mediaId
         }
       };
-      fetch("http://localhost:8000/graphql", {
+      fetch("/graphql", {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
@@ -334,7 +334,7 @@ class PostDetail extends Component {
           savedId: this.state.savedId
         }
       };
-      fetch("http://localhost:8000/graphql", {
+      fetch("/graphql", {
         method: "POST",
         body: JSON.stringify(requestBody),
         headers: {
