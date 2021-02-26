@@ -43,6 +43,10 @@ class ProfileDetail extends Component {
 
   componentDidMount() {
     setTimeout(() => {
+      if (!this.context.token) {
+        this.props.history.push("/auth");
+        return;
+      }
       this.fetchData();
       this.setState({ currentUserId: this.context.userId });
     }, 100);
@@ -106,7 +110,6 @@ class ProfileDetail extends Component {
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
         this.setState({
           isLoading: false,
           isFollowed: resData.data.isFollowed,
@@ -151,7 +154,6 @@ class ProfileDetail extends Component {
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
         this.setState({ isLoading: false, saveds: resData.data.saveds });
       })
       .catch((err) => {
@@ -204,7 +206,6 @@ class ProfileDetail extends Component {
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
         if (resData.data.userData._id === this.state.currentUserId) {
           this.setState({ isAuth: true });
           this.fetchSaveds();
@@ -275,7 +276,6 @@ class ProfileDetail extends Component {
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
         this.setState({ isFollowing: true });
       })
       .catch((err) => {
@@ -315,7 +315,6 @@ class ProfileDetail extends Component {
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
         this.setState({ isFollowing: false });
       })
       .catch((err) => {

@@ -25,6 +25,10 @@ class EditAccount extends Component {
 
   componentDidMount() {
     setTimeout(() => {
+      if (!this.context.token) {
+        this.props.history.push("/auth");
+        return;
+      }
       this.fetchData();
     }, 300);
   }
@@ -96,7 +100,6 @@ class EditAccount extends Component {
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
         const modifiedData = resData.data.updateUser;
         this.imageElRef.current.value = "";
         this.fullNameElRef.current.value = modifiedData.full_name;
@@ -151,7 +154,6 @@ class EditAccount extends Component {
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
         const userData = resData.data.editProfileData;
         this.fullNameElRef.current.value = userData.full_name;
         this.usernameElRef.current.value = userData.username;

@@ -35,6 +35,7 @@ class App extends Component {
     localStorage.removeItem("access_token");
     localStorage.removeItem("userId");
     localStorage.removeItem("userName");
+    document.location.href = "/auth";
   };
 
   render() {
@@ -54,14 +55,11 @@ class App extends Component {
             {this.state.token && <Redirect from="/" to="/timeline" exact />}
             {this.state.token && <Redirect from="/auth" to="/timeline" exact />}
             {!this.state.token && <Route path="/auth" component={AuthPage} />}
-            {this.state.token && (
-              <>
-                <Route path="/timeline" component={TimelinePage} />
-                <Route path="/p/:id" component={PostDetail} />
-                <Route path="/profile/:username" component={ProfileDetail} />
-                <Route path="/accounts/edit" component={EditAccount} />
-              </>
-            )}
+            <Route path="/timeline" component={TimelinePage} />
+            <Route path="/p/:id" component={PostDetail} />
+            <Route path="/profile/:username" component={ProfileDetail} />
+            <Route path="/accounts/edit" component={EditAccount} />
+            {this.state.token && <></>}
             {!this.state.token && <Redirect to="/auth" exact />}
           </Switch>
         </AuthContext.Provider>

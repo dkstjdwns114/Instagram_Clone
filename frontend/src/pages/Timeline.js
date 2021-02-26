@@ -37,6 +37,10 @@ class TimelinePage extends Component {
 
   componentDidMount() {
     setTimeout(() => {
+      if (!this.context.token) {
+        this.props.history.push("/auth");
+        return;
+      }
       if (this.context) {
         this.fetchMedias();
         this.fetchMyData();
@@ -100,7 +104,6 @@ class TimelinePage extends Component {
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
         const createMedia = resData.data.createMedia;
         this.setState((prevState) => {
           const updatedMedias = [...prevState.medias];
@@ -223,7 +226,6 @@ class TimelinePage extends Component {
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
         const medias = resData.data.timelineMedia.reverse();
         this.setState({
           medias: medias,
@@ -265,7 +267,6 @@ class TimelinePage extends Component {
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
         this.setState({ myData: resData.data.timelineMyData });
         this.setState({ isRightLoading: false });
       })

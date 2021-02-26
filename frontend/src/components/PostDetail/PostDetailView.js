@@ -21,7 +21,7 @@ const PostDetailView = (props) => {
     setComments(props.comments);
     setCommenttextElRef(React.createRef());
     setCurrentMediaCaption(props.media_caption);
-  }, []);
+  }, [props.accessToken]);
 
   const commentInputChangeHandler = () => {
     if (commentareaElRef.current.value !== "") {
@@ -60,7 +60,6 @@ const PostDetailView = (props) => {
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
         history.push("/timeline");
       })
       .catch((err) => {
@@ -111,7 +110,6 @@ const PostDetailView = (props) => {
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
         const removedComments = comments.filter(
           (comment) => comment._id !== commentId
         );
@@ -220,7 +218,6 @@ const PostDetailView = (props) => {
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
         setCurrentMediaCaption(resData.data.updateMedia.media_caption);
         setIsEdit(false);
       })
@@ -262,7 +259,6 @@ const PostDetailView = (props) => {
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
         const currentComment = resData.data.updateComment;
         const currentCommentId = currentComment._id;
         let updateComments = [];
@@ -297,6 +293,7 @@ const PostDetailView = (props) => {
 
   const modifyCancelCommentHandler = () => {
     setIsCommentEdit(false);
+    setEditCommentId("");
   };
 
   return (

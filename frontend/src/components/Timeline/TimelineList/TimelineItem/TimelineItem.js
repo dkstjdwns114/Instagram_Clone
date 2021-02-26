@@ -118,7 +118,6 @@ const TimelineItem = (props) => {
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
         let createCommentUsername = resData.data.createComment.creator.username;
         setMediaComments((state) => [
           ...state,
@@ -163,7 +162,6 @@ const TimelineItem = (props) => {
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
         setCurrentMediaCaption(resData.data.updateMedia.media_caption);
         setIsEdit(false);
       })
@@ -245,7 +243,6 @@ const TimelineItem = (props) => {
           return res.json();
         })
         .then((resData) => {
-          console.log(resData);
           setLikedId(resData.data.likedMedia._id);
           const updatedLikeds = mediaLikeds;
           updatedLikeds.push({
@@ -290,7 +287,6 @@ const TimelineItem = (props) => {
           return res.json();
         })
         .then((resData) => {
-          console.log(resData);
           const currentLikeds = mediaLikeds;
           currentLikeds.pop();
           setMediaLikeds(currentLikeds);
@@ -332,7 +328,6 @@ const TimelineItem = (props) => {
           return res.json();
         })
         .then((resData) => {
-          console.log(resData);
           setSavedId(resData.data.savedMedia._id);
         })
         .catch((err) => {
@@ -368,7 +363,6 @@ const TimelineItem = (props) => {
         })
         .then((resData) => {
           setIsSaved(false);
-          console.log(resData);
         })
         .catch((err) => {
           console.log(err);
@@ -467,9 +461,7 @@ const TimelineItem = (props) => {
         }
         return res.json();
       })
-      .then((resData) => {
-        console.log(resData);
-      })
+      .then((resData) => {})
       .catch((err) => {
         console.log(err);
       });

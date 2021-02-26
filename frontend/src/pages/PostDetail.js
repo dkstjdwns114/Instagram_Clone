@@ -32,6 +32,10 @@ class PostDetail extends Component {
 
   componentDidMount() {
     setTimeout(() => {
+      if (!this.context.token) {
+        this.props.history.push("/auth");
+        return;
+      }
       this.setState({
         authUserId: this.context.userId,
         accessToken: this.context.token
@@ -96,7 +100,6 @@ class PostDetail extends Component {
         return res.json();
       })
       .then((resData) => {
-        console.log(resData);
         const media = resData.data.media;
         this.setState({
           comments: media.commentTexts,
@@ -314,7 +317,6 @@ class PostDetail extends Component {
           return res.json();
         })
         .then((resData) => {
-          console.log(resData);
           this.setState({ savedId: resData.data.savedMedia._id });
         })
         .catch((err) => {
@@ -348,9 +350,7 @@ class PostDetail extends Component {
           }
           return res.json();
         })
-        .then((resData) => {
-          console.log(resData);
-        })
+        .then((resData) => {})
         .catch((err) => {
           console.log(err);
         });
