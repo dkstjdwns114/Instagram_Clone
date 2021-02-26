@@ -2,7 +2,7 @@
   "name": "instagramclone",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "heroku-postbuild": "cd frontend && npm install && npm install --only=dev --noshrinkwrap && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
