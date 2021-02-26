@@ -164,7 +164,6 @@ class TimelinePage extends Component {
         "https://api.cloudinary.com/v1_1/anstagram123/image/upload",
         formData
       ).then((response) => {
-        console.log(response.data);
         this.setState({
           imgPublicId: response.data.public_id
         });
