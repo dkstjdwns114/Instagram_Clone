@@ -129,6 +129,7 @@ const TimelineItem = (props) => {
           }
         ]);
         addCommentElRef.current.value = "";
+        setIsActiveCommentBtn(false);
       })
       .catch((err) => {
         console.log(err);
