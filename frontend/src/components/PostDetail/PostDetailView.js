@@ -180,6 +180,7 @@ const PostDetailView = (props) => {
           }
         ]);
         commentareaElRef.current.value = "";
+        setIsActiveCommentBtn(false);
         setTimeout(() => {
           scrollBottomRef.current.scrollIntoView({
             behavior: "smooth"
