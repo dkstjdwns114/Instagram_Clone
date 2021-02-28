@@ -24,7 +24,8 @@ class TimelinePage extends Component {
     isViewLikes: false,
     myData: "",
     imageSelected: "",
-    imgPublicId: ""
+    imgPublicId: "",
+    rightUsers: []
   };
 
   static contextType = AuthContext;
@@ -44,6 +45,7 @@ class TimelinePage extends Component {
       if (this.context) {
         this.fetchMedias();
         this.fetchMyData();
+        this.fetchRightUsers();
       }
     }, 100);
   }
@@ -173,6 +175,46 @@ class TimelinePage extends Component {
       console.error(err);
     }
   };
+
+  fetchRightUsers() {
+    this.setState({ isRightLoading: true });
+    const requestBody = {
+      query: `
+        query {
+          users {
+            _id
+            username
+            profile_pic_url
+        }
+      }
+      `
+    };
+
+    fetch("/graphql", {
+      method: "POST",
+      body: JSON.stringify(requestBody),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then((res) => {
+        if (res.status !== 200 && res.status !== 201) {
+          throw new Error("Failed!");
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        console.log(resData);
+        const getUsers = resData.data.users.filter(
+          (user) => user._id !== this.context.userId
+        );
+        this.setState({ rightUsers: getUsers });
+      })
+      .catch((err) => {
+        console.log(err);
+        this.setState({ isRightLoading: false });
+      });
+  }
 
   fetchMedias() {
     this.setState({ isLeftLoading: true });
@@ -341,7 +383,10 @@ class TimelinePage extends Component {
                   contextToken={this.context.token}
                 />
                 {this.context.token && (
-                  <TimelineRight myData={this.state.myData} />
+                  <TimelineRight
+                    myData={this.state.myData}
+                    recommendUsers={this.state.rightUsers}
+                  />
                 )}
               </div>
             </div>

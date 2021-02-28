@@ -108,6 +108,15 @@ const transformMedia = (media) => {
   };
 };
 
+const transformUser = (user) => {
+  return {
+    ...user._doc,
+    _id: user.id,
+    username: user._doc.username,
+    profile_pic_url: user._doc.profile_pic_url
+  };
+};
+
 const transformProfileData = async (user) => {
   const userFollowings = await userLoader.loadMany(user._doc.following);
   const userFollowers = await userLoader.loadMany(user._doc.follower);
@@ -177,3 +186,4 @@ exports.transformProfileData = transformProfileData;
 exports.transformFollow = transformFollow;
 exports.transformSave = transformSave;
 exports.transformTimelineMyData = transformTimelineMyData;
+exports.transformUser = transformUser;

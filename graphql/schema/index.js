@@ -91,6 +91,7 @@ type RootQuery {
   comments: [Comment!]
   followings: [User!]!
   followers: [User!]
+  users: [User!]
   login(email: String!, password: String!): AuthData!
   isLike(mediaId: ID!, userId: ID!): Liked
   isSave(mediaId: ID!, userId: ID!): Saved

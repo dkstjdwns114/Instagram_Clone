@@ -2,6 +2,7 @@ const DataLoader = require("dataloader");
 
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { transformUser } = require("./merge");
 
 const User = require("../../models/user");
 
@@ -10,6 +11,16 @@ const userNameLoader = new DataLoader((username) => {
 });
 
 module.exports = {
+  users: async () => {
+    try {
+      const users = await User.find();
+      return users.map((user) => {
+        return transformUser(user);
+      });
+    } catch (err) {
+      throw err;
+    }
+  },
   createUser: async (args) => {
     try {
       const existingUser = await User.findOne({
