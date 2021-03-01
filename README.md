@@ -19,6 +19,7 @@
 3. 타임라인에서 오른쪽 상단의 + 아이콘 클릭시 게시물을 작성할 수 있습니다.
 
    ![AddPost](./readmeImg/add_post.png)
+   ![SelectImgAddPost](./readmeImg/select_img_add_post.png)
 
 4. 댓글이 3개 이상인 게시물의 경우 댓글 더보기를 클릭하면 게시물 상세페이지로 이동합니다.
 
