@@ -22,19 +22,20 @@
    ![SelectImgAddPost](./readmeImg/select_img_add_post.png)
 
 4. 댓글이 3개 이상인 게시물의 경우 댓글 더보기를 클릭하면 게시물 상세페이지로 이동합니다.
+5. 하트 클릭 또는 이미지 더블클릭시 게시물 좋아요, 오른쪽 저장버튼 클릭시 게시물이 저장됩니다. (내 프로필에 저장된 게시물에서 확인 가능)
 
    ![MovePostDetail](./readmeImg/timeline.png)
 
-5. 상대방이 나를 팔로우했을 경우 맞팔로우하기 버튼이 뜹니다.
-6. 프로필 상세페이지에서 팔로우/팔로워 조회가 가능합니다.
+6. 상대방이 나를 팔로우했을 경우 맞팔로우하기 버튼이 뜹니다.
+7. 프로필 상세페이지에서 팔로우/팔로워 조회가 가능합니다.
 
    ![ProfileDetail](./readmeImg/profile_detail.png)
 
-7. 내 프로필 상세페이지에 방문했을 경우 프로필 수정페이지로 이동이 가능합니다.
+8. 내 프로필 상세페이지에 방문했을 경우 프로필 수정페이지로 이동이 가능합니다.
 
    ![ProfileEditBtn](./readmeImg/edit_profile_btn.png)
 
-8. 해당 페이지에서 회원의 프로필사진, 닉네임, 이름, 설명 등을 수정할 수 있습니다.
+9. 해당 페이지에서 회원의 프로필사진, 닉네임, 이름, 설명 등을 수정할 수 있습니다.
 
    ![ProfileEditPage](./readmeImg/edit_profile.png)
 
