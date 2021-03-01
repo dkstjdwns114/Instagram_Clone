@@ -300,7 +300,7 @@ const PostDetailView = (props) => {
   return (
     <article className="social-article">
       <div className="social-left-col">
-        <div className="social-img-wrap">
+        <div className="social-img-wrap" onDoubleClick={props.likeHandler}>
           <Image
             key={props.mediaId}
             cloudName="anstagram123"
