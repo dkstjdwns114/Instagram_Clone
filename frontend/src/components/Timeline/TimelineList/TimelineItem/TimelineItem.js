@@ -539,7 +539,7 @@ const TimelineItem = (props) => {
             </>
           )}
         </div>
-        <div className="feed_box">
+        <div className="feed_box" onDoubleClick={likeMediaHandler}>
           <Image
             key={props.mediaId}
             cloudName="anstagram123"
